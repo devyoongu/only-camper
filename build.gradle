@@ -1,0 +1,106 @@
+//querydsl 추가
+buildscript {
+   dependencies {
+      classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
+   }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'dev.practice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+//apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // NotEmpty
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//    implementation 'org.springframework.session:spring-session-jdbc'
+
+    implementation 'org.flywaydb:flyway-core:7.10.0'
+    compileOnly 'org.projectlombok:lombok'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+    annotationProcessor(
+            'org.projectlombok:lombok',
+            'org.projectlombok:lombok-mapstruct-binding:0.1.0'
+    )
+
+    // aws sqs
+    implementation platform('software.amazon.awssdk:bom:2.15.0')
+    implementation 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.1.RELEASE'
+
+    implementation 'com.google.guava:guava:28.2-jre'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    //querydsl 추가
+    implementation 'com.querydsl:querydsl-jpa'
+    //querydsl 추가
+    implementation 'com.querydsl:querydsl-apt'
+
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+   library = "com.querydsl:querydsl-apt"
+   jpa = true
+   querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+   main {
+      java {
+         srcDirs = ['src/main/java', querydslDir]
+      }
+   }
+}
+
+compileQuerydsl{
+   options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+   querydsl.extendsFrom compileClasspath
+}
+
+compileJava {
+    options.annotationProcessorPath = configurations.annotationProcessor
+    options.setAnnotationProcessorGeneratedSourcesDirectory(file("$projectDir/src/generated/java"))
+}

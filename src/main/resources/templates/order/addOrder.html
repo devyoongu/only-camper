@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class="container">
+    <div class="jumbotron">
+
+        <div class="py-5 text-center">
+            <h2>주문 등록</h2>
+        </div>
+
+        <form method="post" th:object="${item}">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+                <div class="col">
+                    <img class="item-images" th:src="${item.representImagePath}"
+                         src="/images/springInstroduction.png" alt="사진없음">
+                </div>
+                <div class="col">
+                    <!--상품-->
+                    <div class="mb-3">
+                        <label for="itemName" class="form-label">상품</label>
+                        <input type="text" name="itemName" id="itemName"
+                               th:value="${item.getItemName()}"
+                               class="form-control" readonly/>
+                        <input type="hidden" th:value="${item.getItemToken()}" id="itemToken">
+                        <input type="hidden" th:value="${item.getRepresentImagePath()}" name="representImagePath">
+                        <input type="hidden" th:value="${item.getRepresentImageName()}" name="representImageName">
+                        <input type="hidden" th:value="${item.getRepresentImageSize()}" name="representImageSize">
+                        <input type="hidden" th:value="${item.getRepresentImageSize()}" name="representImageSize">
+
+                        <div th:each="group,stat : ${item.getOrderItemOptionGroupList()}">
+                            <input type="hidden" th:field="*{orderItemOptionGroupList[__${stat.index}__].ordering}">
+                            <input type="hidden"
+                                   th:field="*{orderItemOptionGroupList[__${stat.index}__].itemOptionGroupName}">
+                        </div>
+
+                    </div>
+
+                    <!--옵션그룹-->
+                    <div id="optionGroupSelect">
+                        <div class="mb-3" th:if="${item.orderItemOptionGroupList.size() >0}">
+                            <label for="optionGroupOrdering" class="form-label">옵션그룹</label>
+                            <select name="optionGroupOrdering" id="optionGroupOrdering" class="form-control"
+                                    th:onchange="onOptionGroupChange()">
+                                <option value="">옵션그룹선택</option>
+                                <option th:each="option, itemStat : ${item.orderItemOptionGroupList}"
+                                        th:value="${option.ordering}"
+                                        th:text="${option.itemOptionGroupName}"/>
+                            </select>
+                            <div class="field-error" th:errors="*{optionGroupOrdering}">
+                                옵션 그룹선택
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--옵션-->
+                    <div id="optionSelect">
+                        <div class="mb-3" th:if="${optionList.size() >0}"
+                             th:onchange="onCalcuChange()"
+                        >
+                            <label for="optionOrdering" class="form-label">옵션</label>
+                            <select name="optionOrdering" id="optionOrdering" class="form-control">
+                                <option value="">옵션선택</option>
+                                <option th:each="option, itemStat : ${optionList}"
+                                        th:value="${option.getOrdering()}"
+                                        th:text="|${option.itemOptionName+'('+option.getItemOptionPrice()+'원)-잔여수량:'+ option.optionStockQuantity}|"/>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="orderCount" class="form-label">수량</label>
+                        <input type="text" name="orderCount" id="orderCount"
+                               th:onchange="onCalcuChange()"
+                               th:name="orderCount"
+                               th:value="${orderCount}"
+                               class="form-control"/>
+                        <div class="field-error" th:errors="*{orderCount}">
+                            수량 입력 오류
+                        </div>
+                    </div>
+
+                    <!--결제수단-->
+                    <div class="mb-3">
+                        <labdel for="payMethod" class="form-label">결제수단선택</labdel>
+                        <select name="payMethod" id="payMethod" class="form-control">
+                            <option th:each="value : ${T(dev.practice.order.domain.order.payment.PayMethod).values()}"
+                                    th:value="${value.name()}"
+                                    th:text="${value.name}"/>
+                        </select>
+                    </div>
+                    <p>총금액 : <span id="totalAmount"></span></p>
+                    <input type="hidden" name="itemPrice" id="itemPrice" th:value="${item.getItemPrice()}"/>
+                </div>
+                <input type="hidden" th:value="${deliveryFragment.getReceiverName()}" name="receiverName">
+                <input type="hidden" th:value="${deliveryFragment.getReceiverPhone()}" name="receiverPhone">
+                <input type="hidden" th:value="${deliveryFragment.getReceiverZipcode()}" name="receiverZipcode">
+                <input type="hidden" th:value="${deliveryFragment.getReceiverAddress1()}" name="receiverAddress1">
+                <input type="hidden" th:value="${deliveryFragment.getReceiverAddress2()}" name="receiverAddress2">
+                <input type="hidden" th:value="${deliveryFragment.getEtcMessage()}" name="etcMessage">
+            </div>
+
+
+            <hr class="my-4">
+
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-lg"
+                            id="btnSubmit"
+                            type="submit">주문 등록
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"
+                            onclick="location.href='partner.html'"
+                            th:onclick="|location.href='@{/partner}'|"
+                            type="button">취소
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

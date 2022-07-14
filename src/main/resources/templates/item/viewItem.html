@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="jumbotron">
+
+        <div class="py-5 text-center">
+            <h2>상품 상세</h2>
+        </div>
+
+        <form action="partnerMain.html" th:action  method="post">
+
+            <div th:object="${item}">
+
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}">글로벌 오류 메시지</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemToken">상품id</label>
+                    <input type="text" id="itemToken" th:field="*{itemToken}"
+                           th:errorclass="field-error" class="form-control" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemName">상품명</label>
+                    <input type="text" id="itemName" th:field="*{itemName}"
+                           th:errorclass="field-error" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">상품가격</label>
+                    <input type="text" id="itemPrice" th:field="*{itemPrice}"
+                           th:errorclass="field-error" class="form-control"  readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="stockQuantity">재고수량</label>
+                    <input type="text" id="stockQuantity" th:field="*{stockQuantity}"
+                           th:errorclass="field-error" class="form-control" placeholder="재고수량을 입력하세요" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">상품상태</label>
+                    <input type="text" id="status" th:field="*{status}"
+                           th:errorclass="field-error" class="form-control" readonly>
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-lg"
+                            onclick="location.href='editPartner.html'"
+                            th:onclick="|location.href='@{/item/edit/{itemToken}(itemToken=${itemToken})}'|"
+                            type="button">상품 수정
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"
+                            onclick="location.href='partner.html'"
+                            th:onclick="|location.href='@{/item/list}'|"
+                            type="button">상품 목록
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>

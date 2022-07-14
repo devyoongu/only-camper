@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="jumbotron">
+        <p class="lead">Seller 기능</p>
+        <p>
+            <a class="btn btn-lg btn-secondary" href="/partner/add">Seller 가입</a>
+            <a class="btn btn-lg btn-secondary" href="/partner/list">Seller 목록</a>
+        </p>
+        <p class="lead">상품 기능</p>
+        <p>
+            <a class="btn btn-lg btn-dark" href="/item/add">상품 등록</a>
+            <a class="btn btn-lg btn-dark" href="/item/list">상품 목록</a>
+        </p>
+        <p class="lead">주문 기능</p>
+        <p>
+            <a class="btn btn-lg btn-info" href="/order/manager">상품 주문</a>
+            <a class="btn btn-lg btn-info" href="/order/list">주문 내역</a>
+        </p>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>

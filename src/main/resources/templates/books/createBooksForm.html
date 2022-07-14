@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <form action="#" th:action="@{/books/save}" th:object="${form}"
+      method="post">
+        <fieldset>
+            <input type="submit" id="submitButton" th:value="Save">
+            <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
+            <table>
+                <thead>
+                    <tr>
+                        <th> Title</th>
+                        <th> Author</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="book, itemStat : *{books}">
+                        <td><input th:field="*{books[__${itemStat.index}__].title}" /></td>
+                        <td><input th:field="*{books[__${itemStat.index}__].author}" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
+
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>

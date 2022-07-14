@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="bodyHeader" class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">onlyCamper</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><img th:if="${user != null}" th:src="${user.getPicture()}" alt="profile" referrerpolicy="no-referrer"
+                         style="border-radius: 50px;
+                             border: 1px solid #ccc;
+                             width: 50px;"
+
+                ></li>
+                <li><span th:if="${user != null}" th:text="|${user.getName()+'('+user.getRole()+')'}|" style="color: #eee;line-height: 52px;margin: 0 8px;"></span></li>
+                <li><a th:if="${user == null}" href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a></li>
+                <li><a th:if="${user != null}" href="/logout" class="btn btn-info active" role="button">Logout</a></li>
+                <li>
+                    <a th:if="${user != null}" href="/logout" class="icon" role="button">
+                        <i class="fa fa-shopping-cart" style="color: #eee;font-size: 35px;}"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

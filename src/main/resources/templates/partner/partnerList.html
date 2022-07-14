@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container-xl">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="">
+
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>파트너명</th>
+                    <th>사업자등록번호</th>
+                    <th>email</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="partner, i : ${partners}">
+                    <td th:text="${i.index}"></td>
+                    <td th:text="${partner.partnerName}"></td>
+                    <td th:text="${partner.businessNo}"></td>
+                    <td th:text="${partner.email}"></td>
+                    <td>
+                        <a href="#" th:href="@{/partner/edit/{partnerToken} (partnerToken=${partner.partnerToken})}"
+                           class="btn btn-primary" role="button">수정</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>

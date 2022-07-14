@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="jumbotron">
+
+        <div class="py-5 text-center">
+            <h2>파트너 수정</h2>
+        </div>
+
+        <form action="partnerMain.html" th:action th:object="${partner}" method="post">
+
+            <div class="form-group">
+                <label for="partnerToken">파트너Id</label>
+                <input type="text" id="partnerToken" th:field="*{partnerToken}"
+                       th:errorclass="field-error" class="form-control" readonly>
+            </div>
+
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}">글로벌 오류 메시지</p>
+            </div>
+
+            <div class="form-group">
+                <label for="partnerName">상호명</label>
+                <input type="text" id="partnerName" th:field="*{partnerName}"
+                       th:errorclass="field-error" class="form-control" placeholder="상호명을 입력하세요">
+                <div class="field-error" th:errors="*{partnerName}">
+                    상호명 오류
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="businessNo">사업자등록번호</label>
+                <input type="text" id="businessNo" th:field="*{businessNo}"
+                       th:errorclass="field-error" class="form-control" placeholder="사업자등록번호를 입력하세요">
+                <div class="field-error" th:errors="*{businessNo}">
+                    사업자등록번호 오류
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="text" id="email" th:field="*{email}"
+                       th:errorclass="field-error" class="form-control" placeholder="이메일주소를 입력하세요">
+                <div class="field-error" th:errors="*{email}">
+                    이메일주소 오류
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">상품 수정</button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"
+                            onclick="location.href='partner.html'"
+                            th:onclick="|location.href='@{/partner}'|"
+                            type="button">취소
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="bodyHeader">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <!--            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>-->
+                onlyCamper
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
+                    aria-controls="offcanvasNavbar2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-white bg-dark" tabindex="-1" id="offcanvasNavbar2"
+                 aria-labelledby="offcanvasNavbar2Label">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Offcanvas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <form class="d-flex mt-3 mt-lg-0" th:action="@{/item/list}" role="form" method="get">
+                        <input class="form-control me-2" type="search" placeholder="상품 검색" id="itemName" name="itemName"
+                               aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li th:if="${user != null}" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarLgDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0">
+                                <img th:src="${user.getPicture()}" alt="profile" referrerpolicy="no-referrer"
+                                     style="border-radius: 50px;border: 1px solid #ccc;width: 40px;">
+                                <span th:if="${user != null}" th:text="|${user.getName()+'('+user.getRole()+')'}|"
+                                      style="line-height: 40px;"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarLgDropdown">
+                                <!--                            <li><hr class="dropdown-divider"></li>-->
+                                <li><a href="/logout" class="dropdown-item">LogOut</a></li>
+                            </ul>
+                        </li>
+                        <li th:if="${user != null}" class="nav-item">
+                            <a th:if="${user != null}" href="/order/list" role="button">
+                                <i class="fa fa-shopping-cart" style="position:relative;color: #eee;font-size: 35px;">
+                                    <span th:if="${myOrderCount>0}"
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style="top: 5px !important;font-size: 10px" th:text="${myOrderCount}">
+                                    99+
+                                    <span class="visually-hidden">unread messages</span>
+                                  </span>
+                                </i>
+                            </a>
+                        </li>
+                        <li th:if="${user == null}" class="nav-item">
+                            <a href="/oauth2/authorization/google" class="btn btn-outline-success">Google Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

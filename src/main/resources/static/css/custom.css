@@ -1,0 +1,51 @@
+/* 전체 영역을 통틀어서 스타일 정의 */
+
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+* {
+    font-family: 'Nanum Gothic';
+}
+
+a {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #bbbbbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 네비게이션 영역 */
+.navbar-nav li {
+    padding: 0 5px;
+}
+
+
+.field-error {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.container.custom-container{
+    padding: 20px 0;
+}
+
+.item-images{
+    width: 100%;
+    /*height: 100%;*/
+}
+
+main > .container {
+  padding: 60px 15px 0;
+}
+
+.bg-light.sub-page{
+    padding: 20px 0;
+}
+
+/*@media (min-width: 992px) {*/
+/*  .container-xl {*/
+/*    max-width: 540px;*/
+/*  }*/
+/*}*/

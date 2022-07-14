@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="jumbotron">
+
+        <div class="py-5 text-center">
+            <h2>상품 등록</h2>
+        </div>
+
+        <form action="partnerMain.html" th:action  method="post">
+
+            <div th:object="${item}">
+
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}">글로벌 오류 메시지</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="member">Seller</label>
+                    <select name="partnerToken" id="member" class="form-control">
+                        <option value="">Seller선택</option>
+                        <option th:each="partner : ${partners}"
+                                th:value="${partner.partnerToken}"
+                                th:text="|${partner.partnerName+'('+partner.businessNo+')'}|"/>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemName">상품명</label>
+                    <input type="text" id="itemName" th:field="*{itemName}"
+                           th:errorclass="field-error" class="form-control" placeholder="상품명을 입력하세요">
+                    <div class="field-error" th:errors="*{itemName}">
+                        상품명 오류
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">상품가격</label>
+                    <input type="text" id="itemPrice" th:field="*{itemPrice}"
+                           th:errorclass="field-error" class="form-control" placeholder="가격을 입력하세요">
+                    <div class="field-error" th:errors="*{itemPrice}">
+                        가격 오류
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="stockQuantity">재고수량</label>
+                    <input type="text" id="stockQuantity" th:field="*{stockQuantity}"
+                           th:errorclass="field-error" class="form-control" placeholder="재고수량을 입력하세요">
+                    <div class="field-error" th:errors="*{stockQuantity}">
+                        재고수량 오류
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="form-group" th:field="*{itemOptionGroupList}">
+                        <label for="itemOptionGroupList" >옵션그룹</label>
+                        <input type="text" id="itemOptionGroupList"
+                               th:field="*{itemOptionGroupList[0].itemOptionGroupName}"
+                               class="form-control"
+                               placeholder="옵션그룹 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="itemOptionList" >옵션1</label>
+                    <input type="text" id="itemOptionList"
+                           th:field="*{itemOptionGroupList[0].itemOptionList[0].itemOptionName}"
+                           th:errorclass="field-error" class="form-control" placeholder="옵션이름 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="itemOptionPrice" >옵션1가격</label>
+                    <input type="text" id="itemOptionPrice"
+                       th:field="*{itemOptionGroupList[0].itemOptionList[0].itemOptionPrice}"
+                       th:errorclass="field-error" class="form-control" placeholder="옵션가격을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="itemOptionList2" >옵션2</label>
+                    <input type="text" id="itemOptionList2"
+                           th:field="*{itemOptionGroupList[0].itemOptionList[1].itemOptionName}"
+                           th:errorclass="field-error" class="form-control" placeholder="옵션이름 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="itemOptionPric2" >옵션2가격</label>
+                    <input type="text" id="itemOptionPric2"
+                       th:field="*{itemOptionGroupList[0].itemOptionList[1].itemOptionPrice}"
+                       th:errorclass="field-error" class="form-control" placeholder="옵션가격을 입력하세요">
+                </div>
+
+                <hr class="my-4">
+
+                <div class="form-group">
+                    <label for="status">상품상태</label>
+                    <select name="status" id="status" class="form-control">
+<!--                        <option value="">상품상태</option>-->
+                        <option th:each="value : ${T(dev.practice.order.domain.item.Status).values()}"
+                                th:value="${value.name()}"
+                                th:text="${value.getDescription()}"/>
+                    </select>
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">상품 등록</button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"
+                            onclick="location.href='partner.html'"
+                            th:onclick="|location.href='@{/partner}'|"
+                            type="button">취소
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>

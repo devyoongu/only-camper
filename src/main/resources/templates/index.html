@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+<main>
+    <section class="py-5 text-center container" style="padding: 0px !important;">
+        <div class="row py-lg-5" style="padding: 20px !important;">
+            <div th:if="${user != null}" class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">You are onlyCamper's seller</h1>
+                <p class="lead text-muted">You can register the product.<br>
+                    and you can check the registered product.</p>
+                <p>
+                    <a href="/item/add" class="btn btn-primary my-2">Product registration</a>
+                    <a href="/item/list-seller" class="btn btn-secondary my-2">My products</a>
+                </p>
+            </div>
+            <div th:unless="${user != null}" class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Is this your first visit?</h1>
+                <p class="lead text-muted">Log in to sign up for the seller<br>
+                    Take the opportunity to sell
+                </p>
+                <p>
+                    <a href="/oauth2/authorization/google" class="btn btn-outline-success">Google Login</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-light" style="padding-bottom: 30px;">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 g-3">
+                <div th:each="item : ${items}" class="col">
+                    <div class="card shadow-sm">
+                        <a th:href="@{/order/{itemToken}(itemToken=${item.itemToken})}">
+                            <img th:if="${item.representImagePath != null} " class="item-images" th:src="${item.representImagePath}"
+                                             src="/images/springInstroduction.png" alt="사진없음">
+                            <svg th:if="${item.representImagePath == null}" class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#55595c"></rect>
+                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                            </svg>
+                        </a>
+                        <div class="card-body">
+                            <p th:text="${item.itemName}" class="card-text"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a th:href="@{/order/{itemToken}(itemToken=${item.itemToken})}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true" style="margin-right: 4px;"></i>Buy
+                                    </a>
+                                    <a href="#"
+                                       th:attr="onclick=|checkIsPartner('${item.itemToken}')|"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <i class="fa fa-pencil" aria-hidden="true" style="margin-right: 4px;"></i>Edit
+                                    </a>
+                                </div>
+                                <small th:text="${item.itemPrice+'₩'}" class="text-muted">itemPrice</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    해당 상품의 판매자만 수정할 수 있습니다.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
