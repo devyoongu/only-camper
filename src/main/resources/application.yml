@@ -5,6 +5,8 @@ spring:
 #  web:
 #    resources:
 #      static-locations: classpath:/static
+  config:
+    import: classpath:/aws.yml
   lifecycle:
     timeout-per-shutdown-phase: 20s
   jpa:
