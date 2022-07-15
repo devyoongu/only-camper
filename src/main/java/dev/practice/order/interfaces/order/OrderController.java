@@ -84,9 +84,9 @@ public class OrderController {
             , @LoginUser SessionUser user, Model model) {
 
         condition.setUserId(user.getId());
-        Page<OrderInfo.Main> orderListMine = orderRepository.getOrderListMine(condition, pageable);
+        List<OrderInfo.Main> orderList = orderRepository.getOrderListMine(condition, pageable);
 
-        model.addAttribute("orderList", orderListMine.getContent());
+        model.addAttribute("orderList", orderList);
         return "order/orderList";
     }
 

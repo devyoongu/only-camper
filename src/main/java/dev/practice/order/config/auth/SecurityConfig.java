@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile","/item/**").permitAll()
-                    .antMatchers("/api/v1/**").hasRole(Role.USER.name()) //api/v1/~ 시작되는 api는 user권한에 할당
+//                    .antMatchers("/api/v1/**").hasRole(Role.USER.name()) //api/v1/~ 시작되는 api는 user권한에 할당
 //                    .antMatchers("/partner/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated() // matcher 설정 이외 페이지는 인증된 사용자만 접근 설정
                 .and()

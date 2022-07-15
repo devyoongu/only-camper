@@ -50,7 +50,7 @@ public class Order extends AbstractEntity {
     @RequiredArgsConstructor
     public enum Status {
         INIT("주문시작"),
-        ORDER_COMPLETE("주문완료"),
+        ORDER_COMPLETE("결제완료"),
         DELIVERY_PREPARE("배송준비"),
         IN_DELIVERY("배송중"),
         DELIVERY_COMPLETE("배송완료");

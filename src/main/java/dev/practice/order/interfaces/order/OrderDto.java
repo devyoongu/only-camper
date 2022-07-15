@@ -1,12 +1,4 @@
 package dev.practice.order.interfaces.order;
-
-import dev.practice.order.domain.book.Book;
-import dev.practice.order.domain.item.Item;
-import dev.practice.order.domain.order.Order;
-import dev.practice.order.domain.order.fragment.DeliveryFragment;
-import dev.practice.order.domain.order.item.OrderItem;
-import dev.practice.order.domain.order.item.OrderItemOption;
-import dev.practice.order.domain.order.item.OrderItemOptionGroup;
 import dev.practice.order.domain.order.payment.PayMethod;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OrderDto {
 
@@ -192,7 +183,6 @@ public class OrderDto {
         @NotNull(message = "amount 는 필수값입니다")
         private Long amount;
 
-        @NotBlank(message = "orderDescription 는 필수값입니다")
         private String orderDescription;
     }
 

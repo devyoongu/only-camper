@@ -1,8 +1,10 @@
 package dev.practice.order.infrastructure.order;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.EnumPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import dev.practice.order.config.auth.dto.SessionUser;
 import dev.practice.order.domain.order.Order;
@@ -16,8 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static dev.practice.order.domain.item.QItem.item;
 import static dev.practice.order.domain.order.QOrder.*;
@@ -36,27 +40,23 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom{
     }
 
     @Override
-    public Page<OrderInfo.Main> getOrderListMine(OrderSearchCondition condition, Pageable pageable) {
+    public List<OrderInfo.Main> getOrderListMine(OrderSearchCondition condition, Pageable pageable) {
 
-        QueryResults<Order> results = queryFactory.selectFrom(order)
+        List<Order> orderList = queryFactory.selectFrom(order)
                 .where(
                         userIdEq(condition.getUserId())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();// result + count
-
-        List<Order> contents = results.getResults();
-        long total = results.getTotal();
+                .fetch();
 
 
-        List<OrderInfo.Main> orderInfoList = contents.stream()
+        List<OrderInfo.Main> orderInfoList = orderList.stream()
                 .map(o -> orderInfoMapper.of(o, o.getOrderItemList()))
                 .collect(Collectors.toList());
 
 
-
-        return new PageImpl<>(orderInfoList, pageable, total);
+        return orderInfoList;
 
     }
 
@@ -68,7 +68,15 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom{
                         userIdEq(user.getId())
                 ).fetch();
 
-        int size = orders.size();
+        ArrayList<Order> initOrderList = new ArrayList<>();
+
+        orders.forEach(o-> {
+            if (o.getStatus().name() == "INIT") {
+                initOrderList.add(o);
+            }
+        });
+
+        int size = initOrderList.size();
 
         return size;
     }
