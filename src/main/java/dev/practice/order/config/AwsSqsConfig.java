@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AwsSqsConfig {
-    @Value("${cloud.aws.access-key}")
-    private String awsAccessKey;
+//    @Value("${cloud.aws.access-key}")
+    private String awsAccessKey ="123";
 
-    @Value("${cloud.aws.secret-key}")
-    private String awsSecretKey;
+//    @Value("${cloud.aws.secret-key}")
+    private String awsSecretKey="1234";
 
     @Bean
     public AmazonSQSAsync amazonSQSAsync() {

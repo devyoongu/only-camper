@@ -1,54 +1,54 @@
-#server:
-#  shutdown: graceful
-#
-#spring:
-##  web:
-##    resources:
-##      static-locations: classpath:/static
+server:
+  shutdown: graceful
+
+spring:
+  profiles:
+    include: "oauth"
 #  config:
 #    import: classpath:/aws.yml
-#  lifecycle:
-#    timeout-per-shutdown-phase: 20s
-#  jpa:
-#    #    database-platform: mysql
-#    hibernate:
-#      ddl-auto: create
-#    properties:
-#      hibernate:
-#        #        show_sql: true #시스템아웃으로 표기 시(비추천)
-#        format_sql: true
-##        use_sql_comments : true #jpql 로그볼 시
-#        default_batch_fetch_size: 100 #in 절을 사용하겠다는 설정이며 in 절에 들어갈 갯수 설정
-#
-#  datasource:
-#    hikari:
-#      driver-class-name: com.mysql.cj.jdbc.Driver
-#      jdbc-url: jdbc:mysql://localhost:3306/order?serverTimezone=UTC&characterEncoding=UTF-8
-#      username: order-svc
-#      password: order-pass
-#  flyway:
-#    user: order-svc
-#    password: order-pass
-#    schemas: order
-#    url: jdbc:mysql://localhost:3306/order?serverTimezone=UTC&characterEncoding=UTF-8
-#    enabled: true
-#
-##  devtools:
-##    livereload:
-##      enabled: true
-##    restart:
-##      enabled: true
-##  thymeleaf:
-##    cache: false
-#
-##  h2:
-##    console:
-##      enabled: true
-##      path: /h2-console
-#
-#logging:
-#  config: classpath:logback-local.xml
-#  level: #logger를 통해서 볼때 (추천)
-#    org.hibernate.SQL: debug
-#    org.hibernate.type: trace #쿼리 인자값 보기
-#
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        #        show_sql: true #시스템아웃으로 표기 시(비추천)
+        format_sql: true
+#        use_sql_comments : true #jpql 로그볼 시
+        default_batch_fetch_size: 100 #in 절을 사용하겠다는 설정이며 in 절에 들어갈 갯수 설정
+
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/order?serverTimezone=UTC&characterEncoding=UTF-8
+      username: order-svc
+      password: order-pass
+  flyway:
+    user: order-svc
+    password: order-pass
+    schemas: order
+    url: jdbc:mysql://localhost:3306/order?serverTimezone=UTC&characterEncoding=UTF-8
+    enabled: true
+  session:
+    store-type: jdbc
+
+#  devtools:
+#    livereload:
+#      enabled: true
+#    restart:
+#      enabled: true
+#  thymeleaf:
+#    cache: false
+
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+
+logging:
+  config: classpath:logback-local.xml
+  level: #logger를 통해서 볼때 (추천)
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace #쿼리 인자값 보기
+
