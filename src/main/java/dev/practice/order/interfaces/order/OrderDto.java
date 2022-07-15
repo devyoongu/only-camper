@@ -76,6 +76,7 @@ public class OrderDto {
         @NotNull(message = "itemPrice 는 필수값입니다")
         private Long itemPrice;
 
+        @Builder.Default
         private List<RegisterOrderItemOptionGroupRequest> orderItemOptionGroupList = new ArrayList<>();
 
         private String representImagePath;

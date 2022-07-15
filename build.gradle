@@ -68,7 +68,7 @@ dependencies {
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
 }
 
 test {
