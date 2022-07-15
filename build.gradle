@@ -37,7 +37,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 //    implementation 'org.springframework.session:spring-session-jdbc'
 
-    implementation 'org.flywaydb:flyway-core:7.10.0'
+//    implementation 'org.flywaydb:flyway-core:7.10.0'
     compileOnly 'org.projectlombok:lombok'
 
     // MapStruct
