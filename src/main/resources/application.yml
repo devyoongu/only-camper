@@ -1,7 +1,5 @@
 server:
   shutdown: graceful
-  port: 28080
-
 
 spring:
 #  web:
@@ -33,13 +31,13 @@ spring:
     url: jdbc:mysql://localhost:3306/order?serverTimezone=UTC&characterEncoding=UTF-8
     enabled: true
 
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: true
-  thymeleaf:
-    cache: false
+#  devtools:
+#    livereload:
+#      enabled: true
+#    restart:
+#      enabled: true
+#  thymeleaf:
+#    cache: false
 
 #  h2:
 #    console:
