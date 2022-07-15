@@ -50,8 +50,3 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type: trace #쿼리 인자값 보기
 
-# aws 의 access-key, secret-key 를 반영해야 정상 동작함
-cloud:
-  aws:
-    access-key: AKIAZ6DIH2TO4G6LDAKD
-    secret-key: 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
