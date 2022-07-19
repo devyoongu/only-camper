@@ -97,6 +97,12 @@ public class ItemController {
     /**아이템 등록 form*/
     @GetMapping("/add")
     public String addItemForm(Model model) {
+        log.trace("Trace Level 테스트");
+        log.debug("DEBUG Level 테스트");
+//        log.info("INFO Level 테스트");
+//        log.warn("Warn Level 테스트");
+//        log.error("ERROR Level 테스트");
+
         ItemDto.RegisterItemRequest item = new ItemDto.RegisterItemRequest();
         ItemDto.RegisterItemOptionGroupRequest optionGroup= new ItemDto.RegisterItemOptionGroupRequest();
 
