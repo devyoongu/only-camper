@@ -14,14 +14,14 @@
 
 
 	<!-- 루트 로그 레벨 -->
-	<property name ="LOG_LEVEL" value = "${log.config.level}"/>
+	<property name ="LOG_LEVEL" value = "${logging.config.level}"/>
 
 	<!-- 로그 파일 경로 -->
-	<property name ="LOG_PATH" value = "${log.config.path}"/>
+	<property name ="LOG_PATH" value = "${logging.config.path}"/>
 
 	<!-- 로그 파일 명 -->
-	<property name ="LOG_FILE_NAME" value = "${log.config.filename}"/>
-	<property name ="ERR_LOG_FILE_NAME" value = "${log.config.filename}_error"/>
+	<property name ="LOG_FILE_NAME" value = "${logging.config.filename}"/>
+	<property name ="ERR_LOG_FILE_NAME" value = "${logging.config.filename}_error"/>
 
 	<!-- 로그 파일 패턴 -->
 	<property name ="LOG_PATTERN" value = "%-5level %d{yyyy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
