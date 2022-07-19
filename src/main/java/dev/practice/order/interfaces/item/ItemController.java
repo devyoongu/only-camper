@@ -10,6 +10,7 @@ import dev.practice.order.domain.item.ItemService;
 import dev.practice.order.domain.partner.Partner;
 import dev.practice.order.domain.partner.PartnerService;
 import dev.practice.order.domain.user.User;
+import dev.practice.order.infrastructure.aws.S3Uploader;
 import dev.practice.order.infrastructure.user.UserRepository;
 import dev.practice.order.infrastructure.item.ItemRepository;
 import dev.practice.order.infrastructure.partner.PartnerRepository;
@@ -51,6 +52,8 @@ public class ItemController {
     private final ItemRepository itemRepository;
 
     private final UserRepository userRepository;
+
+    private final S3Uploader s3Uploader;
 
     public String findPartnerToken = new String(); //heap 영역참조로 다른 쓰레드에서 접근하기 위함
 
@@ -97,11 +100,6 @@ public class ItemController {
     /**아이템 등록 form*/
     @GetMapping("/add")
     public String addItemForm(Model model) {
-        log.trace("Trace Level 테스트");
-        log.debug("DEBUG Level 테스트");
-//        log.info("INFO Level 테스트");
-//        log.warn("Warn Level 테스트");
-//        log.error("ERROR Level 테스트");
 
         ItemDto.RegisterItemRequest item = new ItemDto.RegisterItemRequest();
         ItemDto.RegisterItemOptionGroupRequest optionGroup= new ItemDto.RegisterItemOptionGroupRequest();
@@ -126,11 +124,10 @@ public class ItemController {
 
         findByPartnerToken(user);
 
-        FileInfo fileInfo = itemService.fileSaveAndParsing(itemDto.getImage());
+//        FileInfo fileInfo = itemService.fileSaveAndParsing(itemDto.getImage());
 
-        itemDto.setRepresentImageName(fileInfo.getFileName());
-        itemDto.setRepresentImagePath(fileInfo.getFilePath());
-        itemDto.setRepresentImageSize(fileInfo.getFileSize());
+        String aStatic = s3Uploader.upload(itemDto.getImage(), "static");
+        itemDto.setRepresentImagePath(aStatic);
 
         var itemToken = itemService.registerItem(itemDto, this.findPartnerToken);
 
