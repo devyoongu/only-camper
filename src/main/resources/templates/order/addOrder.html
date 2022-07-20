@@ -52,6 +52,9 @@
                                 옵션 그룹선택
                             </div>
                         </div>
+                        <div th:if="${item.orderItemOptionGroupList.size() == 0}">
+                            <input type="hidden" name="optionGroupOrdering" value="-1">
+                        </div>
                     </div>
 
                     <!--옵션-->
@@ -90,7 +93,7 @@
                                     th:text="${value.name}"/>
                         </select>
                     </div>
-                    <p>총금액 : <span id="totalAmount"></span></p>
+                    <p>총금액 : <span id="totalAmount" th:text="${item.itemPrice}"></span></p>
                     <input type="hidden" name="itemPrice" id="itemPrice" th:value="${item.getItemPrice()}"/>
                 </div>
                 <input type="hidden" th:value="${deliveryFragment.getReceiverName()}" name="receiverName">

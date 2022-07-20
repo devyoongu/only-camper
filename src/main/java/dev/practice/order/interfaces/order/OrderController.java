@@ -126,10 +126,12 @@ public class OrderController {
             return "order/addOrder";
         }
 
-        Long itemCount = itemReader.getItemCount(itemToken, orderItem.getOptionGroupOrdering(), orderItem.getOptionOrdering());
+        if (orderItem.getOptionGroupOrdering() != -1) {
+            Long itemCount = itemReader.getItemCount(itemToken, orderItem.getOptionGroupOrdering(), orderItem.getOptionOrdering());
 
-        if (itemCount < orderItem.getOptionOrdering()) {
-            bindingResult.reject("stockError", new Object[]{itemCount, orderItem.getOrderCount()}, null);
+            if (itemCount < orderItem.getOptionOrdering()) {
+                bindingResult.reject("stockError", new Object[]{itemCount, orderItem.getOrderCount()}, null);
+            }
         }
 
         OrderDto.RegisterOrderRequest orderDto = getOrderDto(itemToken, orderItem.getOrderCount(), orderItem.getOptionGroupOrdering(), orderItem.getOptionOrdering());

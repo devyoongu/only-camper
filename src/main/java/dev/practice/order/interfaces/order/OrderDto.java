@@ -50,7 +50,7 @@ public class OrderDto {
          * 주문 가격 = 주문 상품의 총 가격
          * 주문 하나의 상품의 가격 = (상품 가격 + 상품 옵션 가격) * 주문 갯수
          */
-        public Long calculateTotalAmount(int optionGroupOrdering, int optionOrdering) {
+        public Long calculateTotalAmount(Integer optionGroupOrdering, Integer optionOrdering) {
             return orderItemList.stream()
                     .mapToLong(registerOrderItem -> registerOrderItem.calculateTotalAmount(optionGroupOrdering, optionOrdering))
                     .sum();
@@ -98,15 +98,20 @@ public class OrderDto {
             this.representImageName = representImageName;
         }
 
-        public Long calculateTotalAmount(int optionGroupOrdering, int optionOrdering) {
-            var itemOptionTotalAmount = orderItemOptionGroupList.stream()
-                    .mapToLong(registerOrderItemOptionGroupRequest -> {
-                        if (registerOrderItemOptionGroupRequest.getOrdering() == optionGroupOrdering) {
-                            return registerOrderItemOptionGroupRequest.calculateTotalAmount(optionOrdering);
-                        }
-                        return 0;
-                    })
-                    .sum();
+        public Long calculateTotalAmount(Integer optionGroupOrdering, Integer optionOrdering) {
+            long itemOptionTotalAmount = 0;
+
+            if (optionGroupOrdering != null) {
+                itemOptionTotalAmount = orderItemOptionGroupList.stream()
+                        .mapToLong(registerOrderItemOptionGroupRequest -> {
+                            if (registerOrderItemOptionGroupRequest.getOrdering() == optionGroupOrdering) {
+                                return registerOrderItemOptionGroupRequest.calculateTotalAmount(optionOrdering);
+                            }
+                            return 0;
+                        })
+                        .sum();
+            }
+
             return (itemPrice + itemOptionTotalAmount) * orderCount;
         }
     }
@@ -130,7 +135,7 @@ public class OrderDto {
             this.orderItemOptionList.add(registerOrderItemOptionRequest);
         }
 
-        public Long calculateTotalAmount(int optionOrdering) {
+        public Long calculateTotalAmount(Integer optionOrdering) {
             long sum = 0L;
             for (RegisterOrderItemOptionRequest registerOrderItemOptionRequest : orderItemOptionList) {
                 if (registerOrderItemOptionRequest.getOrdering() == optionOrdering) {
