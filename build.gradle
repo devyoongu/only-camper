@@ -97,16 +97,16 @@ compileQuerydsl{
 }
 
 /*** comileQuerydsl.doFirst 추가*/
-compileQuerydsl.doFirst {
-    if (file(querydslDir).exists()) delete(file(querydslDir))
-}
+//compileQuerydsl.doFirst {
+//    if (file(querydslDir).exists()) delete(file(querydslDir))
+//}
 
-
+//lombok 충돌 오류로 추가
 configurations {
    querydsl.extendsFrom compileClasspath
 }
 
-compileJava {
-    options.annotationProcessorPath = configurations.annotationProcessor
-    options.setAnnotationProcessorGeneratedSourcesDirectory(file("$projectDir/src/generated/java"))
-}
+//compileJava {
+//    options.annotationProcessorPath = configurations.annotationProcessor
+//    options.setAnnotationProcessorGeneratedSourcesDirectory(file("$projectDir/src/generated/java"))
+//}
