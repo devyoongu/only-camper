@@ -94,7 +94,7 @@ public class OrderCommand {
         private final Integer ordering;
         private final String itemOptionName;
         private final Long itemOptionPrice;
-        private final Long optionStockQuantity;
+//        private final Long optionStockQuantity;
 
         public OrderItemOption toEntity(ItemOption itemOption, OrderItemOptionGroup orderItemOptionGroup) {
             return OrderItemOption.builder()
@@ -103,7 +103,7 @@ public class OrderCommand {
                     .ordering(ordering)
                     .itemOptionName(itemOptionName)
                     .itemOptionPrice(itemOptionPrice)
-                    .optionStockQuantity(optionStockQuantity)
+//                    .optionStockQuantity(optionStockQuantity)
                     .build();
         }
     }

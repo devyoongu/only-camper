@@ -73,12 +73,12 @@
                             <input type="hidden" th:field="*{itemOptionGroupList[__${stat.index}__].ordering}" th:value="${stat.index}">
 
                             <div class="form-group" th:if = "${group.getItemOptionList().size() > 0}">
-                                <table>
+                                <table style="width: 100%">
                                     <thead>
                                     <tr>
                                         <th> 옵션명</th>
                                         <th> 옵션가격</th>
-                                        <th> 제고수량</th>
+<!--                                        <th> 제고수량</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -95,11 +95,11 @@
                                                    th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionList[__${object.index}__].itemOptionPrice}"
                                                    class="form-control">
                                         </td>
-                                        <td>
-                                            <input type="text"
-                                                   th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionList[__${object.index}__].optionStockQuantity}"
-                                                   class="form-control">
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <input type="text"-->
+<!--                                                   th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionList[__${object.index}__].optionStockQuantity}"-->
+<!--                                                   class="form-control">-->
+<!--                                        </td>-->
                                     </tr>
                                     </tbody>
                                 </table>

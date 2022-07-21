@@ -165,8 +165,8 @@ public class OrderDto {
         @NotNull(message = "itemOptionPrice 는 필수값입니다")
         private Long itemOptionPrice;
 
-        @NotNull(message = "optionStockQuantity 는 필수값입니다")
-        private Long optionStockQuantity;
+//        @NotNull(message = "optionStockQuantity 는 필수값입니다")
+//        private Long optionStockQuantity;
     }
 
     @Getter

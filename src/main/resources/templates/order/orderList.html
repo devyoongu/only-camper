@@ -13,6 +13,7 @@
                 <th>상품가격</th>
                 <th>구매수량</th>
                 <th>주문상태</th>
+                <th>받는사람</th>
                 <th></th>
             </tr>
             </thead>
@@ -28,16 +29,17 @@
                 <td th:text="${order.totalAmount}"></td>
                 <td th:text="${order.orderItemList[0].orderCount}"></td>
                 <td th:text="${order.statusDescription}"></td>
+                <td th:text="${order.deliveryInfo.getReceiverName()}"></td>
                 <td>
                     <button th:if="${order.status == 'INIT'}" type="button" class="btn btn-primary"
                             data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"
                     th:data-itemName="${order.orderItemList[0].itemName}"
                     th:data-totalAmount="${order.totalAmount}"
                     th:data-orderToken="${order.orderToken}"
+                    th:data-receiverName="${order.deliveryInfo.getReceiverName()}"
                     >
                         결제
                     </button>
-
                 </td>
             </tr>
             </tbody>
@@ -64,6 +66,7 @@
                             <input type="text" name="totalAmount" id="totalAmount"
                                    class="form-control totalAmount" readonly/>
                             <input type="hidden" id="orderToken" class="orderToken">
+                            <input type="hidden" id="receiverName" class="receiverName">
                         </div>
                         <div class="mb-3">
                             <label for="payMethod" class="col-form-label">결제수단</label>

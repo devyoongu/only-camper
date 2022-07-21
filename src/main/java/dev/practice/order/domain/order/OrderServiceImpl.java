@@ -33,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
         var orderToken = paymentRequest.getOrderToken();
         var order = orderReader.getOrder(orderToken);
         paymentProcessor.pay(order, paymentRequest);
+
         order.orderComplete();
     }
 

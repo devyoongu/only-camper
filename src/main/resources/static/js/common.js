@@ -65,33 +65,43 @@ if (document.getElementById('exampleModal')) {
         const itemName = button.getAttribute('data-itemName');
         const totalAmount = button.getAttribute('data-totalAmount');
         const orderToken = button.getAttribute('data-orderToken');
+        const receiverName = button.getAttribute('data-receiverName');
 
         // const modalTitle = exampleModal.querySelector('.modal-title');
         const itemNameInput = exampleModal.querySelector('.modal-body .itemName');
         const totalAmountInput = exampleModal.querySelector('.modal-body .totalAmount');
         const orderTokenInput = exampleModal.querySelector('.modal-body .orderToken');
+        const receiverNameInput = exampleModal.querySelector('.modal-body .receiverName');
 
         // modalTitle.textContent = `${itemName}` + ' 결제';
         itemNameInput.value = itemName;
         totalAmountInput.value = totalAmount;
         orderTokenInput.value = orderToken;
+        receiverNameInput.value = receiverName;
     })
 }
 
 if (document.getElementById('btn-pay')) {
     const btnPay = document.getElementById('btn-pay');
     btnPay.addEventListener('click', event => {
-        var paramMap = {
+        var paramMap = JSON.stringify({
             orderToken: $("#orderToken").val(),
             payMethod: $("#payMethod").val(),
             amount :$("#totalAmount").val(),
             orderDescription: $("#orderDescription").val(),
-        };
+            receiverName: $("#receiverName").val(),
+        });
+
+        let url = "/api/v1/orders/payment-order";
+
+        if ($("#receiverName").val() == "TEMP_VALUE") {
+            url = "/api/v1/gift-orders/payment-order";
+        }
 
         $.ajax({
-            url: "/api/v1/orders/payment-order",
+            url: url,
             type: "POST",
-            // contentType: "application/json",
+            contentType: "application/json",
             data: paramMap,
         })
         .done(function (fragment) {
@@ -115,5 +125,23 @@ if (document.getElementById('btn-pay')) {
         });
     })
 }
+
+if (document.getElementById('giftModal')) {
+    const exampleModal = document.getElementById('giftModal');
+    exampleModal.addEventListener('show.bs.modal', event => {
+
+    })
+}
+
+if (document.getElementById('btn-gift')) {
+    const exampleModal = document.getElementById('btn-gift');
+    exampleModal.addEventListener('click', event => {
+        var isGiftInput = document.getElementById("isGift");
+        isGiftInput.value = "T"
+        document.getElementById('frm').submit();
+    })
+}
+
+
 
 // });
