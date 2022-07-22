@@ -12,11 +12,17 @@ import dev.practice.order.domain.order.OrderService;
 import dev.practice.order.domain.order.fragment.DeliveryFragment;
 import dev.practice.order.domain.order.gift.GiftApiCaller;
 import dev.practice.order.domain.order.item.OrderItem;
+import dev.practice.order.domain.user.User;
 import dev.practice.order.infrastructure.order.OrderRepository;
+import dev.practice.order.infrastructure.order.gift.RetrofitGiftApiResponse;
+import dev.practice.order.infrastructure.user.UserRepository;
 import dev.practice.order.interfaces.order.gift.GiftOrderDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
+import org.dom4j.rule.Mode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -54,10 +60,12 @@ public class OrderController {
 
     private final GiftApiCaller giftApiCaller;
 
+    private final UserRepository userRepository;
+
     @ModelAttribute("deliveryFragment")
-    public DeliveryFragment deliveryFragment() {
+    public DeliveryFragment deliveryFragment(@LoginUser SessionUser user) {
         return DeliveryFragment.builder()
-                .receiverName("receiverName")
+                .receiverName(user.getName())
                 .receiverPhone("receiverPhone")
                 .receiverZipcode("receiverZipcode")
                 .receiverAddress1("receiverAddress1")
@@ -115,8 +123,12 @@ public class OrderController {
 
         GiftOrderDto.RegisterOrderRequest giftDto = new GiftOrderDto.RegisterOrderRequest();
 
+        //todo:dto로 변환
+        List<User> users = userRepository.findAll();
+
         model.addAttribute("item", itemDto);
         model.addAttribute("gift", giftDto);
+        model.addAttribute("users", users);
 
         return "order/addOrder";
     }
@@ -159,14 +171,22 @@ public class OrderController {
         if ("T".equals(isGift)) {
             GiftOrderDto.RegisterOrderRequest registerOrderRequest = new GiftOrderDto.RegisterOrderRequest(orderDto);
 
+            Optional<User> userOptional = userRepository.findById(giftDto.getGiftReceiverUserId());
+
+            User receiverUser = userOptional.orElseThrow(IllegalStateException::new);
+
+            registerOrderRequest.setBuyerUserId(user.getId());
+            registerOrderRequest.setGiftReceiverUserId(giftDto.getGiftReceiverUserId());
             registerOrderRequest.setPushType(giftDto.getPushType());
-            registerOrderRequest.setGiftReceiverName(giftDto.getGiftReceiverName());
+            registerOrderRequest.setGiftReceiverName(receiverUser.getName());
             registerOrderRequest.setGiftReceiverPhone(giftDto.getGiftReceiverPhone());
             registerOrderRequest.setGiftMessage(giftDto.getGiftMessage());
 
             String giftToken = giftApiCaller.registerGift(registerOrderRequest);
 
-            return "redirect:/order/list";
+            orderDto.setReceiverName(receiverUser.getName());
+
+            return "redirect:/order/list";// gift 에서 주문등록 api 별도 호출하기 때문에 바로 리턴
         }
 
         var orderCommand = orderDtoMapper.of(orderDto);
@@ -174,6 +194,24 @@ public class OrderController {
 
         return "redirect:/order/list";
     }
+
+    @GetMapping("/gift-list")
+    public String giftList(@LoginUser SessionUser user, Model model,@ModelAttribute OrderSearchCondition condition) {
+
+        List<RetrofitGiftApiResponse.Gift> gifts = giftApiCaller.giftList(user.getId());
+
+        List<giftResponse> giftList = gifts.stream().map(gift ->
+                new giftResponse(user.getName()
+                        , gift.getGiftReceiverName()
+                        , orderRepository.findByOrderToken(gift.getOrderToken()).orElse(new Order()).getOrderItemList().stream().findFirst().get().getItemName()
+                        , gift.getStatus()
+                )).collect(Collectors.toList());
+
+        model.addAttribute("gifts", giftList);
+
+        return "order/giftList";
+    }
+
 
     /**
      * 옵션그룹선택 (옵션 리턴)
@@ -261,6 +299,15 @@ public class OrderController {
         private String itemToken;
         private Integer optionGroupOrdering;
         private Integer optionOrdering;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class giftResponse {
+        private String buyerUserName;
+        private String receiveUserName;
+        private String itemName;
+        private String status;
     }
 
 }

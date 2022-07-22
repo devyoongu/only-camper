@@ -65,19 +65,19 @@ if (document.getElementById('exampleModal')) {
         const itemName = button.getAttribute('data-itemName');
         const totalAmount = button.getAttribute('data-totalAmount');
         const orderToken = button.getAttribute('data-orderToken');
-        const receiverName = button.getAttribute('data-receiverName');
+        const receiverZipcode = button.getAttribute('data-receiverZipcode');
 
         // const modalTitle = exampleModal.querySelector('.modal-title');
         const itemNameInput = exampleModal.querySelector('.modal-body .itemName');
         const totalAmountInput = exampleModal.querySelector('.modal-body .totalAmount');
         const orderTokenInput = exampleModal.querySelector('.modal-body .orderToken');
-        const receiverNameInput = exampleModal.querySelector('.modal-body .receiverName');
+        const receiverZipcodeInput = exampleModal.querySelector('.modal-body .receiverZipcode');
 
         // modalTitle.textContent = `${itemName}` + ' 결제';
         itemNameInput.value = itemName;
         totalAmountInput.value = totalAmount;
         orderTokenInput.value = orderToken;
-        receiverNameInput.value = receiverName;
+        receiverZipcodeInput.value = receiverZipcode;
     })
 }
 
@@ -89,12 +89,12 @@ if (document.getElementById('btn-pay')) {
             payMethod: $("#payMethod").val(),
             amount :$("#totalAmount").val(),
             orderDescription: $("#orderDescription").val(),
-            receiverName: $("#receiverName").val(),
+            isGift: $("#receiverZipcode").val() == "TEMP_VALUE",
         });
 
         let url = "/api/v1/orders/payment-order";
 
-        if ($("#receiverName").val() == "TEMP_VALUE") {
+        if ($("#receiverZipcode").val() == "TEMP_VALUE") {
             url = "/api/v1/gift-orders/payment-order";
         }
 

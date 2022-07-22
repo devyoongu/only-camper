@@ -4,6 +4,9 @@
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 <div class="container custom-container">
+    <div class="text-center">
+        <h2>주문/선물 내역</h2>
+    </div>
     <div>
         <table class="table table-striped">
             <thead>
@@ -31,15 +34,20 @@
                 <td th:text="${order.statusDescription}"></td>
                 <td th:text="${order.deliveryInfo.getReceiverName()}"></td>
                 <td>
-                    <button th:if="${order.status == 'INIT'}" type="button" class="btn btn-primary"
-                            data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"
+                    <button th:if="${order.status == 'INIT'}" type="button"
+                            th:classappend="${ order.deliveryInfo.getReceiverZipcode() == 'TEMP_VALUE'? 'btn-outline-primary' : 'btn-primary'}"
+                            class="btn"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal"
                     th:data-itemName="${order.orderItemList[0].itemName}"
                     th:data-totalAmount="${order.totalAmount}"
                     th:data-orderToken="${order.orderToken}"
-                    th:data-receiverName="${order.deliveryInfo.getReceiverName()}"
+                    th:data-receiverZipcode="${order.deliveryInfo.getReceiverZipcode()}"
                     >
-                        결제
+                        <span th:if="${order.deliveryInfo.getReceiverZipcode() == 'TEMP_VALUE'}">선물결제</span>
+                        <span th:if="${order.deliveryInfo.getReceiverZipcode() != 'TEMP_VALUE'}">주문결제</span>
                     </button>
+                    <p th:if="${order.status == 'ORDER_COMPLETE' && order.deliveryInfo.getReceiverZipcode() == 'TEMP_VALUE'}">선물완료</p>
+                    <p th:if="${order.status == 'ORDER_COMPLETE' && order.deliveryInfo.getReceiverZipcode() != 'TEMP_VALUE'}">결제완료</p>
                 </td>
             </tr>
             </tbody>
@@ -66,7 +74,7 @@
                             <input type="text" name="totalAmount" id="totalAmount"
                                    class="form-control totalAmount" readonly/>
                             <input type="hidden" id="orderToken" class="orderToken">
-                            <input type="hidden" id="receiverName" class="receiverName">
+                            <input type="hidden" id="receiverZipcode" class="receiverZipcode">
                         </div>
                         <div class="mb-3">
                             <label for="payMethod" class="col-form-label">결제수단</label>

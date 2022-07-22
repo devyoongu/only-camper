@@ -116,7 +116,7 @@
                     </button>
                 </div>
                 <div class="col">
-                    <button type="button" class="w-100 btn btn-default btn-lg"
+                    <button type="button" class="w-100 btn btn-outline-primary btn-lg"
                             data-bs-toggle="modal" data-bs-target="#giftModal"
                     >
                         선물하기
@@ -156,10 +156,19 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="giftReceiverName" class="col-form-label">받는 사람</label>
-                                <input type="text" th:field = "*{giftReceiverName}" id="giftReceiverName"
-                                       class="form-control"/>
+                                <label for="giftReceiverUserId" class="col-form-label">받는 사람</label>
+                                <select name="giftReceiverUserId" id="giftReceiverUserId" class="form-control">
+                                    <option th:each="user : ${users}"
+                                            th:value="${user.getId()}"
+                                            th:text="${user.getName()}"/>
+                                </select>
                             </div>
+
+<!--                            <div class="mb-3">-->
+<!--                                <label for="giftReceiverName" class="col-form-label">받는 사람</label>-->
+<!--                                <input type="text" th:field = "*{giftReceiverName}" id="giftReceiverName"-->
+<!--                                       class="form-control"/>-->
+<!--                            </div>-->
 
                             <div class="mb-3">
                                 <label for="giftReceiverPhone" class="col-form-label">받는 사람 전화번호</label>

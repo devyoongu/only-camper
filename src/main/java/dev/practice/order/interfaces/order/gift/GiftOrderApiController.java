@@ -21,6 +21,7 @@ public class GiftOrderApiController {
 
     @PostMapping("/init")
     public CommonResponse registerOrder(@RequestBody @Valid GiftOrderDto.RegisterOrderRequest request) {
+        request.setReceiverName(request.getGiftReceiverName());//임시
         var orderCommand = giftOrderDtoMapper.of(request);
         var result = orderFacade.registerOrder(orderCommand);
         var response = giftOrderDtoMapper.of(result);
@@ -33,6 +34,7 @@ public class GiftOrderApiController {
             log.error("bindingResult error");
         }
 
+        //todo : isGift true 시 gift로 결제 완료 처리
         var orderPaymentCommand = giftOrderDtoMapper.of(request);
         giftFacade.paymentOrder(orderPaymentCommand);
         return CommonResponse.success("OK");

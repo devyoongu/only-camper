@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -24,5 +26,15 @@ public class GiftApiCallerImpl implements GiftApiCaller {
                 .orElseThrow(RuntimeException::new);
 
         return giftToken;
+    }
+
+    @Override
+    public List<RetrofitGiftApiResponse.Gift> giftList(Long giftReceiverUserId) {
+        var call= retrofitGiftApi.giftList(giftReceiverUserId);
+        List<RetrofitGiftApiResponse.Gift> gifts = retrofitUtils.responseSync(call)
+                .map(commonResponse -> commonResponse.getData())
+                .orElseThrow(RuntimeException::new);
+
+        return gifts;
     }
 }

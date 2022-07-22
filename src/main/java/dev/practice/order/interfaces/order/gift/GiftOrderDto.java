@@ -27,6 +27,8 @@ public class GiftOrderDto {
         private String giftReceiverName;
         private String giftReceiverPhone;
         private String giftMessage;
+        @NotNull(message = "giftReceiverId 는 필수값입니다")
+        private Long giftReceiverUserId;
 
         private List<RegisterOrderItem> orderItemList;
 
@@ -142,6 +144,8 @@ public class GiftOrderDto {
 
         @NotNull(message = "amount 는 필수값입니다")
         private Long amount;
+
+        private Boolean isGift;
 
 //        @NotBlank(message = "orderDescription 는 필수값입니다")
         private String orderDescription;

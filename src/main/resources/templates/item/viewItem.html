@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"/>
 <body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div class="jumbotron">
 
         <div class="py-5 text-center">
@@ -70,7 +70,7 @@
         </form>
 
     </div>
-    <div th:replace="fragments/footer :: footer"/>
 </div>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

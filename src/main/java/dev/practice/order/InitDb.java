@@ -23,7 +23,7 @@ import java.util.List;
 public class InitDb {
     private final InitService initService;
 
-//    @PostConstruct
+    @PostConstruct
     public void init() {
         initService.registerPartnerAndItem();
     }
@@ -102,7 +102,6 @@ public class InitDb {
 
 
         private ItemDto.RegisterItemOptionGroupRequest createOptionGroup(int ordring, String itemOptionGroupName) {
-
             return new ItemDto.RegisterItemOptionGroupRequest(ordring, itemOptionGroupName, createOptionList(ordring));
         }
 
