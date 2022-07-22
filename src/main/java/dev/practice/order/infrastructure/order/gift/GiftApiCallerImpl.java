@@ -30,6 +30,7 @@ public class GiftApiCallerImpl implements GiftApiCaller {
 
     @Override
     public List<RetrofitGiftApiResponse.Gift> giftList(Long giftReceiverUserId) {
+        //todo : gift 연결 안될 시 예외 처리
         var call= retrofitGiftApi.giftList(giftReceiverUserId);
         List<RetrofitGiftApiResponse.Gift> gifts = retrofitUtils.responseSync(call)
                 .map(commonResponse -> commonResponse.getData())
