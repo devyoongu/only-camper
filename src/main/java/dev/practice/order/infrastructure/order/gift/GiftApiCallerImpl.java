@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,13 +30,16 @@ public class GiftApiCallerImpl implements GiftApiCaller {
     }
 
     @Override
-    public List<RetrofitGiftApiResponse.Gift> giftList(Long giftReceiverUserId) {
-        //todo : gift 연결 안될 시 예외 처리
-        var call= retrofitGiftApi.giftList(giftReceiverUserId);
-        List<RetrofitGiftApiResponse.Gift> gifts = retrofitUtils.responseSync(call)
-                .map(commonResponse -> commonResponse.getData())
-                .orElseThrow(RuntimeException::new);
-
-        return gifts;
+    public List<RetrofitGiftApiResponse.Gift> giftList(Long giftReceiverUserId){
+        try {
+            var call= retrofitGiftApi.giftList(giftReceiverUserId);
+            List<RetrofitGiftApiResponse.Gift> gifts = retrofitUtils.responseSync(call)
+                    .map(commonResponse -> commonResponse.getData())
+                    .orElseThrow(RuntimeException::new);
+            return gifts;
+        } catch (Exception e) {
+            RetrofitGiftApiResponse.Gift gift = RetrofitGiftApiResponse.Gift.builder().build();
+            return new ArrayList<RetrofitGiftApiResponse.Gift>();
+        }
     }
 }

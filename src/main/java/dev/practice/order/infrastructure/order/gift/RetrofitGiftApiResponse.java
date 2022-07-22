@@ -1,8 +1,6 @@
 package dev.practice.order.infrastructure.order.gift;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 public class RetrofitGiftApiResponse {
 
