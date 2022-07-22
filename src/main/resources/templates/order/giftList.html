@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class="container custom-container">
+    <div class="text-center">
+        <h2>받은선물 내역</h2>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>보낸사람</th>
+                <th>받는사람</th>
+                <th>주문정보</th>
+                <th>주문상태</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="gift, i : ${gifts}">
+                <td th:text="${i.index}"></td>
+                <td th:text="${gift.getBuyerUserName()}"></td>
+                <td th:text="${gift.getReceiveUserName()}"></td>
+                <td th:text="${gift.getItemName()}"></td>
+                <td th:text="${gift.getStatus()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

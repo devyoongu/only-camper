@@ -24,10 +24,9 @@ public class PageDto {
         this.curPage = pageable.getPageNumber();
         this.pageSize = pageable.getPageSize();
 
-        log.error("total ={}",total);
-        log.error("getPageNumber ={}",pageable.getPageNumber());
-        log.error("getPageSize ={}",pageable.getPageSize());
-
+//        log.error("total ={}",total);
+//        log.error("getPageNumber ={}",pageable.getPageNumber());
+//        log.error("getPageSize ={}",pageable.getPageSize());
 
         this.endPage = (int) (Math.ceil((curPage + 1) / 10.0)) * 10; // 일단 endPage를 10단위로 세팅, view는 1부터 시작이므로 curPage+1
         this.startPage = this.endPage - (PAGENUM - 1); // 10단위 endPage에서 9를 빼면 시작페이지 구할 수 있음

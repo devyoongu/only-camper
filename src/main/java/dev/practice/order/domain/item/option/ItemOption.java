@@ -45,13 +45,13 @@ public class ItemOption extends AbstractEntity {
         if (ordering == null) throw new InvalidParamException("ItemOption.ordering null");
         if (StringUtils.isBlank(itemOptionName)) throw new InvalidParamException("ItemOption.itemOptionName null");
         if (itemOptionPrice == null) throw new InvalidParamException("ItemOption.itemOptionPrice null");
-        if (optionStockQuantity == null) throw new InvalidParamException("ItemOption.optionStockQuantity null");
+//        if (optionStockQuantity == null) throw new InvalidParamException("ItemOption.optionStockQuantity null");
 
         this.itemOptionGroup = itemOptionGroup;
         this.ordering = ordering;
         this.itemOptionName = itemOptionName;
         this.itemOptionPrice = itemOptionPrice;
-        this.optionStockQuantity = optionStockQuantity;
+//        this.optionStockQuantity = optionStockQuantity;
 
     }
 

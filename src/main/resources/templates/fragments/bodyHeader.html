@@ -51,6 +51,17 @@
                                   </span>
                                 </i>
                             </a>
+                            <a th:if="${user != null}" href="/order/gift-list" role="button" style="margin-left: 15px">
+                                <i class="fa fa-gift" style="position:relative;color: #eee;font-size: 35px;">
+                                    <span th:if="${myGiftCount>0}"
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                    style="top: 5px !important;font-size: 10px;background-color: green !important;"
+                                          th:text="${myGiftCount}">
+                                    99+
+                                    <span class="visually-hidden">unread messages</span>
+                                  </span>
+                                </i>
+                            </a>
                         </li>
                         <li th:if="${user == null}" class="nav-item">
                             <a href="/oauth2/authorization/google" class="btn btn-outline-success">Google Login</a>

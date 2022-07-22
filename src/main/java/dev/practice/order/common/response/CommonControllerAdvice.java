@@ -7,7 +7,9 @@ import dev.practice.order.config.auth.LoginUser;
 import dev.practice.order.config.auth.dto.SessionUser;
 import dev.practice.order.domain.order.Order;
 import dev.practice.order.domain.order.OrderService;
+import dev.practice.order.domain.order.gift.GiftApiCaller;
 import dev.practice.order.infrastructure.order.OrderRepository;
+import dev.practice.order.infrastructure.order.gift.RetrofitGiftApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
@@ -29,6 +31,8 @@ public class CommonControllerAdvice {
     private final OrderService orderService;
     private final OrderRepository orderRepository;
 
+    private final GiftApiCaller giftApiCaller;
+
     private static final List<ErrorCode> SPECIFIC_ALERT_TARGET_ERROR_CODE_LIST = Lists.newArrayList();
 
     @ModelAttribute("user")
@@ -39,7 +43,6 @@ public class CommonControllerAdvice {
         return null;
     }
 
-    //todo : 내가주문한건만
     @ModelAttribute("myOrderCount")
     public Integer orderCount(@LoginUser SessionUser user) {
         if (user == null) {
@@ -49,6 +52,17 @@ public class CommonControllerAdvice {
         int orderListMineCount = orderRepository.getOrderListMineCount(user);
 
         return orderListMineCount;
+    }
+
+    @ModelAttribute("myGiftCount")
+    public Integer giftCount(@LoginUser SessionUser user) {
+        if (user == null) {
+            return 0;
+        }
+
+        int size = giftApiCaller.giftList(user.getId()).size();
+
+        return size;
     }
 
     /**

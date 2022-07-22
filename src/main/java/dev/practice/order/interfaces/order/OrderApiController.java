@@ -4,6 +4,7 @@ import dev.practice.order.application.order.OrderFacade;
 import dev.practice.order.common.response.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,7 +33,11 @@ public class OrderApiController {
     }
 
     @PostMapping("/payment-order")
-    public CommonResponse paymentOrder(@Valid OrderDto.PaymentRequest paymentRequest) {
+    public CommonResponse paymentOrder(@RequestBody @Valid OrderDto.PaymentRequest paymentRequest, BindingResult bindingResult) {
+        if (bindingResult.getAllErrors().size() > 0) {
+            log.error("bindingResult={}",bindingResult);
+        }
+
         var paymentCommand = orderDtoMapper.of(paymentRequest);
         orderFacade.paymentOrder(paymentCommand);
         return CommonResponse.success("OK");

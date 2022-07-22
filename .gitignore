@@ -42,4 +42,6 @@ out/
 .vscode/
 /docker-compose
 
-src/main/resources/static/images/represent/
+#src/main/resources/static/images/represent/
+src/generated
+logging.config.path_IS_UNDEFINED

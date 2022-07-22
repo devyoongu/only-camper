@@ -10,7 +10,7 @@
             <h2>주문 등록</h2>
         </div>
 
-        <form method="post" th:object="${item}">
+        <form method="post" th:object="${item}" id="frm">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
                 <div class="col">
                     <img class="item-images" th:src="${item.representImagePath}"
@@ -26,7 +26,6 @@
                         <input type="hidden" th:value="${item.getItemToken()}" id="itemToken">
                         <input type="hidden" th:value="${item.getRepresentImagePath()}" name="representImagePath">
                         <input type="hidden" th:value="${item.getRepresentImageName()}" name="representImageName">
-                        <input type="hidden" th:value="${item.getRepresentImageSize()}" name="representImageSize">
                         <input type="hidden" th:value="${item.getRepresentImageSize()}" name="representImageSize">
 
                         <div th:each="group,stat : ${item.getOrderItemOptionGroupList()}">
@@ -62,12 +61,13 @@
                         <div class="mb-3" th:if="${optionList.size() >0}"
                              th:onchange="onCalcuChange()"
                         >
+                            <!--th:text="|${option.itemOptionName+'('+option.getItemOptionPrice()+'원)-잔여수량:'+ option.optionStockQuantity}|"/>-->
                             <label for="optionOrdering" class="form-label">옵션</label>
                             <select name="optionOrdering" id="optionOrdering" class="form-control">
                                 <option value="">옵션선택</option>
                                 <option th:each="option, itemStat : ${optionList}"
                                         th:value="${option.getOrdering()}"
-                                        th:text="|${option.itemOptionName+'('+option.getItemOptionPrice()+'원)-잔여수량:'+ option.optionStockQuantity}|"/>
+                                        th:text="|${option.itemOptionName}|"/>
                             </select>
                         </div>
                     </div>
@@ -102,6 +102,7 @@
                 <input type="hidden" th:value="${deliveryFragment.getReceiverAddress1()}" name="receiverAddress1">
                 <input type="hidden" th:value="${deliveryFragment.getReceiverAddress2()}" name="receiverAddress2">
                 <input type="hidden" th:value="${deliveryFragment.getEtcMessage()}" name="etcMessage">
+                <input type="hidden" id="isGift" name="isGift">
             </div>
 
 
@@ -115,6 +116,13 @@
                     </button>
                 </div>
                 <div class="col">
+                    <button type="button" class="w-100 btn btn-outline-primary btn-lg"
+                            data-bs-toggle="modal" data-bs-target="#giftModal"
+                    >
+                        선물하기
+                    </button>
+                </div>
+                <div class="col">
                     <button class="w-100 btn btn-secondary btn-lg"
                             onclick="location.href='partner.html'"
                             th:onclick="|location.href='@{/partner}'|"
@@ -122,6 +130,69 @@
                     </button>
                 </div>
             </div>
+
+            <div class="modal fade" id="giftModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">선물하기</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" th:object="${gift}">
+                            <div class="mb-3">
+                                <label class="col-form-label">전송수단</label>
+                                <div th:each="type,stat : ${pushTypes}" class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline">
+                                        <!--todo : 첫번째 radio checked <p th:text="${stat.index == 0}"></p>-->
+                                        <input class="form-check-input" type="radio" th:field="${gift.pushType}"
+                                               th:value="${type.name()}"
+                                               th:checked="${stat.index == 0}?'checked'">
+                                        <label class="form-check-label"
+                                               th:for="${#ids.prev('pushType')}"
+                                               th:text="${type.description}">1</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="giftReceiverUserId" class="col-form-label">받는 사람</label>
+                                <select name="giftReceiverUserId" id="giftReceiverUserId" class="form-control">
+                                    <option th:each="user : ${users}"
+                                            th:value="${user.getId()}"
+                                            th:text="${user.getName()}"/>
+                                </select>
+                            </div>
+
+<!--                            <div class="mb-3">-->
+<!--                                <label for="giftReceiverName" class="col-form-label">받는 사람</label>-->
+<!--                                <input type="text" th:field = "*{giftReceiverName}" id="giftReceiverName"-->
+<!--                                       class="form-control"/>-->
+<!--                            </div>-->
+
+                            <div class="mb-3">
+                                <label for="giftReceiverPhone" class="col-form-label">받는 사람 전화번호</label>
+                                <input type="text" th:field = "*{giftReceiverPhone}" id="giftReceiverPhone"
+                                       class="form-control"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="giftMessage" class="col-form-label">보낼 메시지</label>
+                                <input type="text" th:field = "*{giftMessage}" id="giftMessage"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <button class="btn btn-primary" id="btn-gift"
+                                    data-bs-dismiss="modal"
+                                    type="button">선물하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
 </div>
