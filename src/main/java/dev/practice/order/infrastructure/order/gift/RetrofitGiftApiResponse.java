@@ -17,6 +17,7 @@ public class RetrofitGiftApiResponse {
     public static class Gift {
         private final String orderToken;
         private final String giftToken;
+        private final Long buyerUserId;
         private final String pushType;
         private final String giftReceiverName;
         private final String giftReceiverPhone;

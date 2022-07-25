@@ -181,13 +181,14 @@ public class OrderController {
 
         List<RetrofitGiftApiResponse.Gift> gifts = giftApiCaller.giftList(user.getId(), null);
 
+
         //todo : getItemName() exception 처리
         List<giftResponse> giftList = gifts.stream()
                 .map(gift ->
                     new giftResponse(
                         gift.getGiftToken()
-                        ,user.getName()
-                        , gift.getGiftReceiverName()
+                        ,gift.getBuyerUserId() != null? userRepository.getById(gift.getBuyerUserId()).getName() : user.getName()
+                        , user.getName()
                         , orderRepository.findByOrderToken(gift.getOrderToken()).orElse(new Order()).getOrderItemList().stream().findFirst().get().getItemName()
                         , gift.getStatusDesc()
                         ,gift.getStatusName()
