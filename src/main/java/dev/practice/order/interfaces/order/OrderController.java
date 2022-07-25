@@ -140,6 +140,7 @@ public class OrderController {
     public String orderItem(@Valid @ModelAttribute("item") OrderDto.RegisterOrderItem orderItem, BindingResult bindingResult
             ,@ModelAttribute("deliveryFragment") DeliveryFragment deliveryFragment
             ,@PathVariable String itemToken,@LoginUser SessionUser user, @RequestParam("payMethod") String payMethod
+                            ,Model model
     ) {
         //검증 로직
         if (orderItem.getOptionGroupOrdering() != null && orderItem.getOptionGroupOrdering() != -1) { //그룹이 없는 아이템의 경우
@@ -150,6 +151,10 @@ public class OrderController {
         //검증에 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
             log.info("errors={} ", bindingResult);
+            GiftOrderDto.RegisterOrderRequest giftDto = new GiftOrderDto.RegisterOrderRequest();
+            List<User> users = userRepository.findAll();
+            model.addAttribute("gift", giftDto);
+            model.addAttribute("users", users);
             return "order/addOrder";
         }
 

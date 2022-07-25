@@ -57,7 +57,7 @@ function onCalcuChange() {
     });
 }
 
-
+//주문결제 modal
 if (document.getElementById('exampleModal')) {
     const exampleModal = document.getElementById('exampleModal');
     exampleModal.addEventListener('show.bs.modal', event => {
@@ -81,6 +81,7 @@ if (document.getElementById('exampleModal')) {
     })
 }
 
+//주문 or 선물 결제
 if (document.getElementById('btn-pay')) {
     const btnPay = document.getElementById('btn-pay');
     btnPay.addEventListener('click', event => {
@@ -126,13 +127,14 @@ if (document.getElementById('btn-pay')) {
     })
 }
 
+//선물하기 Modal
 if (document.getElementById('giftModal')) {
     const exampleModal = document.getElementById('giftModal');
     exampleModal.addEventListener('show.bs.modal', event => {
     })
 }
 
-//선물하기 시
+//선물하기 등록
 if (document.getElementById('btn-gift')) {
     const exampleModal = document.getElementById('btn-gift');
     exampleModal.addEventListener('click', event => {

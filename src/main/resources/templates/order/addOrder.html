@@ -148,7 +148,6 @@
                                 <label class="col-form-label">전송수단</label>
                                 <div th:each="type,stat : ${pushTypes}" class="form-check form-check-inline">
                                     <div class="form-check form-check-inline">
-                                        <!--todo : 첫번째 radio checked <p th:text="${stat.index == 0}"></p>-->
                                         <input class="form-check-input" type="radio" th:field="${gift.pushType}"
                                                name = "pushType"
                                                th:value="${type.name()}"
@@ -191,9 +190,9 @@
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast align-items-center  border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
             <div class="d-flex">
@@ -204,6 +203,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <div th:replace="fragments/footer :: footer"/>
 </body>
