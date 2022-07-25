@@ -7,29 +7,41 @@
     <div class="text-center">
         <h2>받은선물 내역</h2>
     </div>
-    <div>
+    <form id="frm" method="post">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
+<!--                <th>주문키</th>-->
                 <th>보낸사람</th>
                 <th>받는사람</th>
-                <th>주문정보</th>
-                <th>주문상태</th>
+                <th>선물정보</th>
+                <th>선물상태</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="gift, i : ${gifts}">
                 <td th:text="${i.index}"></td>
+<!--                <td th:text="${gift.getGiftToken()}"></td>-->
                 <td th:text="${gift.getBuyerUserName()}"></td>
                 <td th:text="${gift.getReceiveUserName()}"></td>
                 <td th:text="${gift.getItemName()}"></td>
-                <td th:text="${gift.getStatus()}"></td>
+                <td th:text="${gift.getStatusDesc()}"></td>
+                <td>
+<!--                    th:data-giftToken="${gift.getGiftToken()}"-->
+                    <button type="button"
+                            th:if="${gift.getStatusName() == 'ORDER_COMPLETE'}"
+                            th:onclick="onClickAccept([[${gift.getGiftToken()}]])"
+                            id="btn-gift-accept" class="btn btn-outline-primary">
+                        선물수락
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>
-    </div>
+        <input type="hidden" id="giftToken" name="giftToken">
+    </form>
 
 
 </div>

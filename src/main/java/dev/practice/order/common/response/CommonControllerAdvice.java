@@ -60,8 +60,7 @@ public class CommonControllerAdvice {
             return 0;
         }
 
-        int size = 0;
-        size = giftApiCaller.giftList(user.getId()).size();
+        int size = giftApiCaller.giftList(user.getId(), "ORDER_COMPLETE").size();
 
         return size;
     }

@@ -85,6 +85,7 @@ public class OrderDto {
 
         @NotNull(message = "옵션그룹 선택은 필수값입니다")
         private Integer optionGroupOrdering;
+
         private Integer optionOrdering;
 
         public RegisterOrderItem(Long orderCount, String itemToken, String itemName, Long itemPrice, List<RegisterOrderItemOptionGroupRequest> orderItemOptionGroupList, String representImagePath, long representImageSize, String representImageName) {
@@ -244,14 +245,15 @@ public class OrderDto {
     }
 
     @Getter
-    @Builder
+//    @Builder //todo : 임시
     @ToString
+    @NoArgsConstructor
     public static class DeliveryInfo {
-        private final String receiverName;
-        private final String receiverPhone;
-        private final String receiverZipcode;
-        private final String receiverAddress1;
-        private final String receiverAddress2;
-        private final String etcMessage;
+        private String receiverName;
+        private String receiverPhone;
+        private String receiverZipcode;
+        private String receiverAddress1;
+        private String receiverAddress2;
+        private String etcMessage;
     }
 }

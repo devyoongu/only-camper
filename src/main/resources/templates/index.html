@@ -51,6 +51,7 @@
                                         <i class="fa fa-shopping-cart" aria-hidden="true" style="margin-right: 4px;"></i>Buy
                                     </a>
                                     <a href="#"
+                                       th:if="${user != null}"
                                        th:attr="onclick=|checkIsPartner('${item.itemToken}')|"
                                        class="btn btn-sm btn-outline-secondary">
                                         <i class="fa fa-pencil" aria-hidden="true" style="margin-right: 4px;"></i>Edit

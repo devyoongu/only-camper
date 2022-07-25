@@ -21,6 +21,7 @@ public class RetrofitGiftApiResponse {
         private final String giftReceiverName;
         private final String giftReceiverPhone;
         private final String giftMessage;
-        private final String status;
+        private final String statusDesc;
+        private final String statusName;
     }
 }

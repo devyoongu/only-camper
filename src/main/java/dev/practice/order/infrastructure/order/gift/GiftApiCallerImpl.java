@@ -3,6 +3,7 @@ package dev.practice.order.infrastructure.order.gift;
 import dev.practice.order.domain.order.gift.GiftApiCaller;
 import dev.practice.order.infrastructure.order.RetrofitGiftApi;
 import dev.practice.order.infrastructure.retrofit.RetrofitUtils;
+import dev.practice.order.interfaces.order.OrderDto;
 import dev.practice.order.interfaces.order.gift.GiftOrderDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +30,11 @@ public class GiftApiCallerImpl implements GiftApiCaller {
         return giftToken;
     }
 
+
     @Override
-    public List<RetrofitGiftApiResponse.Gift> giftList(Long giftReceiverUserId){
+    public List<RetrofitGiftApiResponse.Gift> giftList(Long giftReceiverUserId, String Status){
         try {
-            var call= retrofitGiftApi.giftList(giftReceiverUserId);
+            var call= retrofitGiftApi.giftList(giftReceiverUserId, Status);
             List<RetrofitGiftApiResponse.Gift> gifts = retrofitUtils.responseSync(call)
                     .map(commonResponse -> commonResponse.getData())
                     .orElseThrow(RuntimeException::new);
@@ -41,5 +43,15 @@ public class GiftApiCallerImpl implements GiftApiCaller {
             RetrofitGiftApiResponse.Gift gift = RetrofitGiftApiResponse.Gift.builder().build();
             return new ArrayList<RetrofitGiftApiResponse.Gift>();
         }
+    }
+
+    @Override
+    public void acceptGift(OrderDto.DeliveryInfo deliveryInfo, String giftToken) {
+        var call = retrofitGiftApi.acceptGift(deliveryInfo, giftToken);
+        Object o = retrofitUtils.responseSync(call)
+                .map(commonResponse -> commonResponse.getData())
+                .orElseThrow(RuntimeException::new);
+
+        log.debug("object ={}", o);
     }
 }

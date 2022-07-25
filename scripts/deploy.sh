@@ -12,6 +12,7 @@ git pull
 
 # build 수행
 echo "> project build start"
+rm -rf /home/ec2-user/.gradle/daemon/7.1.1/
 ./gradlew clean
 ./gradlew build
 

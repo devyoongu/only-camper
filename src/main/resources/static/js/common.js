@@ -116,7 +116,7 @@ if (document.getElementById('btn-pay')) {
                 $("#liveToast").addClass("text-bg-primary");
                 setTimeout(function(){
                     location.reload();
-                },3000);
+                },2000);
             }
 
             const toast = new bootstrap.Toast(toastLiveExample);
@@ -129,19 +129,61 @@ if (document.getElementById('btn-pay')) {
 if (document.getElementById('giftModal')) {
     const exampleModal = document.getElementById('giftModal');
     exampleModal.addEventListener('show.bs.modal', event => {
-
     })
 }
 
+//선물하기 시
 if (document.getElementById('btn-gift')) {
     const exampleModal = document.getElementById('btn-gift');
     exampleModal.addEventListener('click', event => {
-        var isGiftInput = document.getElementById("isGift");
-        isGiftInput.value = "T"
-        document.getElementById('frm').submit();
+        var paramMap = JSON.stringify({
+            itemToken : $("#itemToken").val(),
+            buyerUserId : $("#buyerUserId").val(),
+            optionGroupOrdering : $("#optionGroupOrdering option:selected").val(),
+            optionOrdering : $("#optionOrdering option:selected").val(),
+            orderCount: $("#orderCount").val(),
+            payMethod : $("#payMethod option:selected").val(),
+            pushType:$('input:radio[name="pushType"]:checked').val(),
+            giftReceiverUserId : $("#giftReceiverUserId option:selected").val(),
+            giftReceiverName : $("#giftReceiverUserId option:selected").text(),
+            giftReceiverPhone : $("#giftReceiverPhone").val(),
+            giftMessage : $("#giftMessage").val(),
+        });
+
+        $.ajax({
+           url: "/api/v1/gift-orders/gift-init/"+$("#itemToken").val()+"/"+$("#orderCount").val(),
+           type: "POST",
+           contentType: "application/json",
+           data: paramMap,
+       })
+       .done(function (fragment) {
+           console.log(fragment);
+           const toastLiveExample = document.getElementById('liveToast');
+
+           if (fragment.result.toUpperCase() != "SUCCESS") {
+               $('#toast-body').text(fragment.errorCode);
+               $("#liveToast").addClass("text-bg-danger");
+           } else {
+               $('#toast-body').text("선물하기 완료하였습니다.");
+               $("#liveToast").removeClass("text-bg-danger");
+               $("#liveToast").addClass("text-bg-primary");
+               setTimeout(function(){
+                   window.location.href = "/order/list";
+               },2000);
+           }
+
+           const toast = new bootstrap.Toast(toastLiveExample);
+           toast.show();
+       })
+
     })
 }
 
-
+//선물수락
+function onClickAccept(giftToken) {
+    var giftTokenInput = document.getElementById("giftToken");
+    giftTokenInput.value = giftToken;
+    document.getElementById('frm').submit();
+}
 
 // });

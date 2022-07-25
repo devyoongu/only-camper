@@ -23,6 +23,8 @@
                         <input type="text" name="itemName" id="itemName"
                                th:value="${item.getItemName()}"
                                class="form-control" readonly/>
+                        <input th:if="${user} != null"
+                                type="hidden" th:value="${user.getId()}" id="buyerUserId">
                         <input type="hidden" th:value="${item.getItemToken()}" id="itemToken">
                         <input type="hidden" th:value="${item.getRepresentImagePath()}" name="representImagePath">
                         <input type="hidden" th:value="${item.getRepresentImageName()}" name="representImageName">
@@ -71,6 +73,9 @@
                             </select>
                         </div>
                     </div>
+                    <div class="field-error" th:errors="*{optionOrdering}">
+                        옵션 그룹 및 옵션을 선택해 주세요.
+                    </div>
 
                     <div class="mb-3">
                         <label for="orderCount" class="form-label">수량</label>
@@ -102,7 +107,6 @@
                 <input type="hidden" th:value="${deliveryFragment.getReceiverAddress1()}" name="receiverAddress1">
                 <input type="hidden" th:value="${deliveryFragment.getReceiverAddress2()}" name="receiverAddress2">
                 <input type="hidden" th:value="${deliveryFragment.getEtcMessage()}" name="etcMessage">
-                <input type="hidden" id="isGift" name="isGift">
             </div>
 
 
@@ -146,6 +150,7 @@
                                     <div class="form-check form-check-inline">
                                         <!--todo : 첫번째 radio checked <p th:text="${stat.index == 0}"></p>-->
                                         <input class="form-check-input" type="radio" th:field="${gift.pushType}"
+                                               name = "pushType"
                                                th:value="${type.name()}"
                                                th:checked="${stat.index == 0}?'checked'">
                                         <label class="form-check-label"
@@ -163,12 +168,6 @@
                                             th:text="${user.getName()}"/>
                                 </select>
                             </div>
-
-<!--                            <div class="mb-3">-->
-<!--                                <label for="giftReceiverName" class="col-form-label">받는 사람</label>-->
-<!--                                <input type="text" th:field = "*{giftReceiverName}" id="giftReceiverName"-->
-<!--                                       class="form-control"/>-->
-<!--                            </div>-->
 
                             <div class="mb-3">
                                 <label for="giftReceiverPhone" class="col-form-label">받는 사람 전화번호</label>
@@ -194,6 +193,16 @@
             </div>
 
         </form>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast align-items-center  border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="d-flex">
+                <div class="toast-body" id="toast-body">
+                    선물하기 완료하였습니다.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"/>

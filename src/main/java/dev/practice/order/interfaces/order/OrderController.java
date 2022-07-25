@@ -29,7 +29,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,9 +49,6 @@ public class OrderController {
     public static final Long ORDER_COUNT = 1L;
     private final OrderFacade orderFacade;
     private final OrderDtoMapper orderDtoMapper;
-    private final ItemService itemService;
-
-    private final OrderService orderService;
 
     private final ItemReader itemReader;
 
@@ -139,26 +139,23 @@ public class OrderController {
     @PostMapping("/{itemToken}")
     public String orderItem(@Valid @ModelAttribute("item") OrderDto.RegisterOrderItem orderItem, BindingResult bindingResult
             ,@ModelAttribute("deliveryFragment") DeliveryFragment deliveryFragment
-            ,@ModelAttribute("gift") GiftOrderDto.RegisterOrderRequest giftDto
-            , @PathVariable String itemToken,@LoginUser SessionUser user, @RequestParam("payMethod") String payMethod
-            ,@RequestParam("isGift") String isGift
+            ,@PathVariable String itemToken,@LoginUser SessionUser user, @RequestParam("payMethod") String payMethod
     ) {
+        //검증 로직
+        if (orderItem.getOptionGroupOrdering() != null && orderItem.getOptionGroupOrdering() != -1) { //그룹이 없는 아이템의 경우
+            if (orderItem.getOptionOrdering() == null) {
+                bindingResult.addError(new FieldError("item", "optionOrdering", "옵션 그룹 및 옵션을 선택해 주세요."));
+            }
+        }
         //검증에 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
             log.info("errors={} ", bindingResult);
             return "order/addOrder";
         }
 
-        /*if (orderItem.getOptionGroupOrdering() != -1) {
-            Long itemCount = itemReader.getItemCount(itemToken, orderItem.getOptionGroupOrdering(), orderItem.getOptionOrdering());
-
-            if (itemCount < orderItem.getOptionOrdering()) {
-                bindingResult.reject("stockError", new Object[]{itemCount, orderItem.getOrderCount()}, null);
-            }
-        }*/
-
         OrderDto.RegisterOrderRequest orderDto = getOrderDto(itemToken, orderItem.getOrderCount(), orderItem.getOptionGroupOrdering(), orderItem.getOptionOrdering());
 
+        //todo : 최초 form에서 orderDto에 전달
         orderDto.setUserId(user.getId());
         orderDto.setPayMethod(payMethod);
         orderDto.setReceiverName(deliveryFragment.getReceiverName());
@@ -167,27 +164,6 @@ public class OrderController {
         orderDto.setReceiverAddress1(deliveryFragment.getReceiverAddress1());
         orderDto.setReceiverAddress2(deliveryFragment.getReceiverAddress2());
         orderDto.setEtcMessage(deliveryFragment.getEtcMessage());
-
-        if ("T".equals(isGift)) {
-            GiftOrderDto.RegisterOrderRequest registerOrderRequest = new GiftOrderDto.RegisterOrderRequest(orderDto);
-
-            Optional<User> userOptional = userRepository.findById(giftDto.getGiftReceiverUserId());
-
-            User receiverUser = userOptional.orElseThrow(IllegalStateException::new);
-
-            registerOrderRequest.setBuyerUserId(user.getId());
-            registerOrderRequest.setGiftReceiverUserId(giftDto.getGiftReceiverUserId());
-            registerOrderRequest.setPushType(giftDto.getPushType());
-            registerOrderRequest.setGiftReceiverName(receiverUser.getName());
-            registerOrderRequest.setGiftReceiverPhone(giftDto.getGiftReceiverPhone());
-            registerOrderRequest.setGiftMessage(giftDto.getGiftMessage());
-
-            String giftToken = giftApiCaller.registerGift(registerOrderRequest);
-
-            orderDto.setReceiverName(receiverUser.getName());
-
-            return "redirect:/order/list";// gift 에서 주문등록 api 별도 호출하기 때문에 바로 리턴
-        }
 
         var orderCommand = orderDtoMapper.of(orderDto);
         var orderToken = orderFacade.registerOrder(orderCommand);
@@ -198,18 +174,32 @@ public class OrderController {
     @GetMapping("/gift-list")
     public String giftList(@LoginUser SessionUser user, Model model,@ModelAttribute OrderSearchCondition condition) {
 
-        List<RetrofitGiftApiResponse.Gift> gifts = giftApiCaller.giftList(user.getId());
+        List<RetrofitGiftApiResponse.Gift> gifts = giftApiCaller.giftList(user.getId(), null);
 
-        List<giftResponse> giftList = gifts.stream().map(gift ->
-                new giftResponse(user.getName()
+        //todo : getItemName() exception 처리
+        List<giftResponse> giftList = gifts.stream()
+                .map(gift ->
+                    new giftResponse(
+                        gift.getGiftToken()
+                        ,user.getName()
                         , gift.getGiftReceiverName()
                         , orderRepository.findByOrderToken(gift.getOrderToken()).orElse(new Order()).getOrderItemList().stream().findFirst().get().getItemName()
-                        , gift.getStatus()
-                )).collect(Collectors.toList());
+                        , gift.getStatusDesc()
+                        ,gift.getStatusName()
+                    )
+        ).collect(Collectors.toList());
 
         model.addAttribute("gifts", giftList);
 
         return "order/giftList";
+    }
+
+    @PostMapping("/gift-list")
+    public String acceptGift(@ModelAttribute OrderDto.DeliveryInfo deliveryInfo, @RequestParam String giftToken) {
+
+        giftApiCaller.acceptGift(deliveryInfo, giftToken);
+        return "redirect:/order/gift-list";
+//        return "order/giftList";
     }
 
 
@@ -304,10 +294,12 @@ public class OrderController {
     @Data
     @AllArgsConstructor
     static class giftResponse {
+        private String giftToken;
         private String buyerUserName;
         private String receiveUserName;
         private String itemName;
-        private String status;
+        private String statusDesc;
+        private String statusName;
     }
 
 }
