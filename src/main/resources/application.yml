@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/camper
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+
+      hibernate:
+        # show_sql: true
+        format_sql: true
+        use_sql_comments : true #jpql 로그볼 시
+
+
+#logging.level: #logger를 통해서 볼때
+#  org.hibernate.SQL: debug
+#  org.hibernate.type: trace

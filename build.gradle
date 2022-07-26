@@ -53,8 +53,9 @@ dependencies {
 
     implementation 'com.google.guava:guava:28.2-jre'
     implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'com.h2database:h2'
 
-    runtimeOnly 'com.h2database:h2'
+//    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
