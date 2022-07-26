@@ -16,3 +16,9 @@ notifications:
   email:
     recipients:
       - lee36656@naver.com
+
+# 암호화된 파일 복호화
+before_install:
+  - openssl aes-256-cbc -K $encrypted_15887e653782_key -iv $encrypted_15887e653782_iv -in application-real-db.properties.enc -out ./src/main/resources/application-real-db.properties -d
+  - openssl aes-256-cbc -K $encrypted_404881035eff_key -iv $encrypted_404881035eff_iv -in application-oauth.properties.enc -out ./src/main/resources/application-oauth.properties -d
+  - openssl aes-256-cbc -K $encrypted_c625083b3a3a_key -iv $encrypted_c625083b3a3a_iv -in aws.yml.enc -out ./src/main/resources/aws.yml -d
