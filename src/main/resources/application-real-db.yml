@@ -10,7 +10,7 @@ spring:
       driver-class-name: org.mariadb.jdbc.Driver
       jdbc-url: jdbc:mariadb://onlycamper.clbvjhbqwdz3.ap-northeast-2.rds.amazonaws.com:3306/only_camper
       username: lee36656
-      password: deux2580!
+      password: 
 #  flyway:
 #    user: order-svc
 #    password: order-pass
