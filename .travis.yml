@@ -15,7 +15,7 @@ script: "./gradlew clean build"
 before_deploy:
   - zip -r only-camper *
   - mkdir -p deploy
-  - mv order.zip deploy/order.zip
+  - mv only-camper.zip deploy/only-camper.zip
 
 deploy:
   - provider: s3
