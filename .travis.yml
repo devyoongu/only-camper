@@ -13,7 +13,7 @@ cache:
 script: "./gradlew clean build"
 
 before_deploy:
-  - zip -r order *
+  - zip -r only-camper *
   - mkdir -p deploy
   - mv order.zip deploy/order.zip
 
@@ -32,13 +32,12 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
     secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
     bucket: dubu-build # S3 버킷
-    key: order.zip # 빌드 파일을 압축해서 전달
+    key: only-camper.zip # 빌드 파일을 압축해서 전달
     bundle_type: zip
     application: only-camper # 웹 콘솔에서 등록한 CodeDeploy 어플리케이션
     deployment_group: only-camper-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
     region: ap-northeast-2
     wait-until-deployed: true
-
 
 notifications:
   email:
