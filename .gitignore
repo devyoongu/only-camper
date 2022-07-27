@@ -21,6 +21,7 @@ application-real-oauth.properties
 application-oauth.properties
 aws.yml
 application-real-db.properties
+application-real-db.yml
 
 ### IntelliJ IDEA ###
 .idea
