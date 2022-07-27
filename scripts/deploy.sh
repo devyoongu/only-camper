@@ -9,11 +9,11 @@ cd $REPOSITORY/$PROJECT_NAME/
 echo "> Git Pull"
 git pull
 
+
 #실행중인 8080포트 죽이기
 echo "> 8080 port kill"
 fuser 8080/tcp
 fuser -k 8080/tcp
-
 
 # build 수행
 echo "> project build start"
@@ -23,6 +23,7 @@ rm -rf /home/ec2-user/.gradle/daemon/7.1.1/
 
 echo "> directory로 이동"
 cd $REPOSITORY
+rm -rf nohup.out
 
 # build의 결과물 (jar 파일) 특정 위치로 복사
 echo "> build 파일 복사"
@@ -44,15 +45,9 @@ echo "> 새 애플리케이션 배포"
 JAR_NAME=$(ls -tr $REPOSITORY/ | grep jar | tail -n 1)
 
 echo "> Jar Name: $JAR_NAME"
-nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
-nohup java -jar -Dspring.profiles.active=real
+#nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
 
-#nohup java -jar \
- #   -Dspring.config.location=classpath:/application.properties,classpath:/application-real.properties,/home/ec2-user/app/application-oauth.properties,/home/ec2-user/app/application-real-db.properties \
-  #  -Dspring.profiles.active=real \
-   # $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
- nohup java -jar \
-    -Dspring.config.location=classpath:/application.properties,classpath:/application-real.properties,/home/ec2-user/app/application-oauth.properties,/home/ec2-user/app/application-real-db.properties \
+nohup java -jar \
+    -Dspring.config.location=classpath:/application.yml,classpath:/application-real.yml,classpath:/application-oauth.properties \
     -Dspring.profiles.active=real \
     $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
-
