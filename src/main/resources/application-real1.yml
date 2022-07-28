@@ -1,0 +1,11 @@
+server:
+  shutdown: graceful
+  port: 8081
+
+spring:
+  config:
+    activate:
+      on-profile: "real1"
+example:
+  gift:
+    base-url: http://ec2-3-38-1-28.ap-northeast-2.compute.amazonaws.com:8080/

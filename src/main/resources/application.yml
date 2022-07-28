@@ -4,6 +4,8 @@ spring:
     include: "oauth"
     group:
       "real": "real-db"
+      "real1": "real-db"
+      "real2": "real-db"
   config:
     import:
       - classpath:aws.yml
