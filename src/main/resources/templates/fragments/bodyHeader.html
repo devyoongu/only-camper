@@ -63,9 +63,23 @@
                                 </i>
                             </a>
                         </li>
+<!--                        <li th:if="${user == null}" class="nav-item dropdown">-->
+<!--                            <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button"-->
+<!--                               data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0">-->
+<!--                                Login-->
+<!--                            </a>-->
+<!--                            <ul class="dropdown-menu" aria-labelledby="loginDropdown">-->
+<!--                                &lt;!&ndash;                            <li><hr class="dropdown-divider"></li>&ndash;&gt;-->
+<!--                                <li><a href="/oauth2/authorization/google" class="btn btn btn-outline-warning">Google</a></li>-->
+<!--                                <li><a href="/oauth2/authorization/naver" class="btn btn-outline-success">Naver</a></li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
                         <li th:if="${user == null}" class="nav-item">
-                            <a href="/oauth2/authorization/google" class="btn btn-outline-success">Google Login</a>
+                            <a href="/oauth2/authorization/google" class="btn btn btn-warning">G</a>
+                            <a href="/oauth2/authorization/naver" class="btn btn-success">N</a>
                         </li>
+<!--                        <li th:if="${user == null}" class="nav-item">-->
+<!--                        </li>-->
                     </ul>
                 </div>
             </div>
