@@ -3,6 +3,7 @@ spring:
   profiles:
     include: "oauth"
     group:
+      "dev": "db"
       "real": "real-db"
       "real1": "real-db"
       "real2": "real-db"
