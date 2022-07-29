@@ -2,6 +2,10 @@ package dev.practice.order.infrastructure.order.gift;
 
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 public class RetrofitGiftApiResponse {
 
     @Getter
@@ -24,5 +28,6 @@ public class RetrofitGiftApiResponse {
         private final String giftMessage;
         private final String statusDesc;
         private final String statusName;
+        private final String paidAt;
     }
 }

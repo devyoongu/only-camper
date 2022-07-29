@@ -40,6 +40,7 @@ public class GiftApiCallerImpl implements GiftApiCaller {
                     .orElseThrow(RuntimeException::new);
             return gifts;
         } catch (Exception e) {
+            log.error("giftList error={}",e);
             RetrofitGiftApiResponse.Gift gift = RetrofitGiftApiResponse.Gift.builder().build();
             return new ArrayList<RetrofitGiftApiResponse.Gift>();
         }

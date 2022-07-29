@@ -11,7 +11,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>#</th>
+                <th>받은일자</th>
 <!--                <th>주문키</th>-->
                 <th>보낸사람</th>
                 <th>받는사람</th>
@@ -22,8 +22,8 @@
             </thead>
             <tbody>
             <tr th:each="gift, i : ${gifts}">
-                <td th:text="${i.index}"></td>
-<!--                <td th:text="${gift.getGiftToken()}"></td>-->
+<!--                <td th:text="${i.index}"></td>-->
+                <td th:text="${#temporals.format(gift.getPaidAt(), 'yyyy-MM-dd HH:mm')}"></td>
                 <td th:text="${gift.getBuyerUserName()}"></td>
                 <td th:text="${gift.getReceiveUserName()}"></td>
                 <td th:text="${gift.getItemName()}"></td>

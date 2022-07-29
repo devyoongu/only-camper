@@ -65,7 +65,7 @@ public class ItemController {
 
         searchCondition.setPartnerToken(findPartnerToken);
 
-        //item 객체만 쿼리
+        //item 객체만 쿼리 todo : 파트너 정보 추가
         Page<Item> itemPage = itemRepository.findItemAllWithDsl(searchCondition, pageable);
 
         //item DTO 변환 및 Lazy 객체에 대한 초기화를 통해 조회 쿼리  todo : repository>jpa에서 DTO로 받는 로직으로 변경 필요 (controller 레이어서 맞지 않는 코드)

@@ -16,6 +16,7 @@ import dev.practice.order.domain.user.User;
 import dev.practice.order.infrastructure.order.OrderRepository;
 import dev.practice.order.infrastructure.order.gift.RetrofitGiftApiResponse;
 import dev.practice.order.infrastructure.user.UserRepository;
+import dev.practice.order.interfaces.item.PageDto;
 import dev.practice.order.interfaces.order.gift.GiftOrderDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +38,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -99,9 +104,15 @@ public class OrderController {
             , @LoginUser SessionUser user, Model model) {
 
         condition.setUserId(user.getId());
-        List<OrderInfo.Main> orderList = orderRepository.getOrderListMine(condition, pageable);
+        Page<Order> orderPage = orderRepository.getOrderListMine(condition, pageable);
+
+        List<OrderInfo.Main> orderList = orderPage.getContent().stream()
+                .map(o -> orderInfoMapper.of(o, o.getOrderItemList()))
+                .collect(Collectors.toList());
 
         model.addAttribute("orderList", orderList);
+        model.addAttribute("page", new PageDto(orderPage.getTotalElements(), pageable));
+        model.addAttribute("activeNum", pageable.getPageNumber());
         return "order/orderList";
     }
 
@@ -181,18 +192,19 @@ public class OrderController {
 
         List<RetrofitGiftApiResponse.Gift> gifts = giftApiCaller.giftList(user.getId(), null);
 
-
         //todo : getItemName() exception 처리
         List<giftResponse> giftList = gifts.stream()
                 .map(gift ->
                     new giftResponse(
-                        gift.getGiftToken()
-                        ,gift.getBuyerUserId() != null? userRepository.getById(gift.getBuyerUserId()).getName() : user.getName()
-                        , user.getName()
-                        , orderRepository.findByOrderToken(gift.getOrderToken()).orElse(new Order()).getOrderItemList().stream().findFirst().get().getItemName()
-                        , gift.getStatusDesc()
-                        ,gift.getStatusName()
+                            gift.getGiftToken()
+                            , gift.getBuyerUserId() != null ? userRepository.getById(gift.getBuyerUserId()).getName() : user.getName()
+                            , user.getName()
+                            , orderRepository.findByOrderToken(gift.getOrderToken()).orElse(new Order()).getOrderItemList().stream().findFirst().get().getItemName()
+                            , gift.getStatusDesc()
+                            , gift.getStatusName()
+                            , LocalDateTime.parse(gift.getPaidAt())
                     )
+
         ).collect(Collectors.toList());
 
         model.addAttribute("gifts", giftList);
@@ -306,6 +318,7 @@ public class OrderController {
         private String itemName;
         private String statusDesc;
         private String statusName;
+        private LocalDateTime paidAt;
     }
 
 }

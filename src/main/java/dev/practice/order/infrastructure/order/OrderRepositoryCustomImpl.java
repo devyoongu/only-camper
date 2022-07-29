@@ -40,23 +40,21 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom{
     }
 
     @Override
-    public List<OrderInfo.Main> getOrderListMine(OrderSearchCondition condition, Pageable pageable) {
+    public Page<Order> getOrderListMine(OrderSearchCondition condition, Pageable pageable) {
 
-        List<Order> orderList = queryFactory.selectFrom(order)
+        QueryResults<Order> results = queryFactory.selectFrom(order)
                 .where(
                         userIdEq(condition.getUserId())
                 )
                 .offset(pageable.getOffset())
+                .orderBy(order.id.desc())
                 .limit(pageable.getPageSize())
-                .fetch();
+                .fetchResults();
 
+        List<Order> content = results.getResults();
+        long total = results.getTotal();
 
-        List<OrderInfo.Main> orderInfoList = orderList.stream()
-                .map(o -> orderInfoMapper.of(o, o.getOrderItemList()))
-                .collect(Collectors.toList());
-
-
-        return orderInfoList;
+        return new PageImpl<>(content, pageable, total);
 
     }
 

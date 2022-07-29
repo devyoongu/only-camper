@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class OrderInfo {
         private final String payMethod;
         private final Long totalAmount;
         private final DeliveryInfo deliveryInfo;
-        private final ZonedDateTime orderedAt;
+        private final LocalDateTime orderedAt;
         private final String status;
         private final String statusDescription;
         private final List<OrderItem> orderItemList;
