@@ -23,7 +23,20 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    @Value("${cloud.aws.credentials.instanceProfile}")
+    private String instanceProfile;
+
+    @Value("${cloud.aws.credentials.accessKey}")
+    private String accessKey;
+
+    @Value("${cloud.aws.credentials.secretKey}")
+    private String secretKey;
+
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+        log.error("bucket ={}", this.bucket);
+        log.error("instanceProfile ={}", this.instanceProfile);
+        log.error("accessKey ={}", this.accessKey);
+        log.error("secretKey ={}", this.secretKey);
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
