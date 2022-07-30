@@ -47,8 +47,6 @@ cloud:
       static: ap-northeast-2
     s3:
       bucket: dububucket
-    credentials:
-      accessKey: ''
-      secretKey: ''
-      instanceProfile: true
-      useDefaultAwsCredentialsChain: true
+#    credentials:
+#      instanceProfile: true
+#      useDefaultAwsCredentialsChain: true
