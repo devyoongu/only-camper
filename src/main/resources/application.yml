@@ -27,3 +27,14 @@ logging.level.org.hibernate.SQL: debug
 example:
   gift:
     base-url: http://localhost:18080/
+
+cloud:
+  aws:
+    s3:
+      bucket: dububucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instanceProfile: true
