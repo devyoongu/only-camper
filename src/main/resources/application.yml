@@ -48,5 +48,7 @@ cloud:
     s3:
       bucket: dububucket
     credentials:
+      accessKey: ''
+      secretKey: ''
       instanceProfile: true
       useDefaultAwsCredentialsChain: true

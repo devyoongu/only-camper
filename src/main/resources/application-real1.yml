@@ -9,26 +9,3 @@ spring:
 example:
   gift:
     base-url: http://ec2-3-38-1-28.ap-northeast-2.compute.amazonaws.com:8080/
-
-#cloud:
-#  aws:
-#    s3:
-#      bucket: dububucket
-#    region:
-#      static: ap-northeast-2
-#    stack:
-#      auto: false
-#    credentials:
-#      instanceProfile: true
-
-cloud:
-  aws:
-    stack:
-      auto: false
-    region:
-      static: ap-northeast-2
-    s3:
-      bucket: dububucket
-    credentials:
-      instanceProfile: true
-      useDefaultAwsCredentialsChain: true
