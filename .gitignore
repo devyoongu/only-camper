@@ -46,3 +46,4 @@ out/
 #src/main/resources/static/images/represent/
 src/generated
 logging.config.path_IS_UNDEFINED
+aws.yml.enc
