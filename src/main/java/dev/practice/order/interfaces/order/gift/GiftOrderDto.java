@@ -81,7 +81,7 @@ public class GiftOrderDto {
             this.itemToken = itemInfo.getItemToken();
             this.itemName = itemInfo.getItemName();
             this.itemPrice = itemInfo.getItemPrice();
-            this.orderItemOptionGroupList = registerOrderItemOptionGroupRequests;
+            this.orderItemOptionGroupList = og == null? null : registerOrderItemOptionGroupRequests;
         }
     }
 
@@ -99,11 +99,13 @@ public class GiftOrderDto {
         private List<RegisterOrderItemOptionRequest> orderItemOptionList;
 
         public RegisterOrderItemOptionGroupRequest(ItemInfo.ItemOptionGroupInfo og) {
-            this.ordering = og.getOrdering();
-            this.itemOptionGroupName = og.getItemOptionGroupName();
-            this.orderItemOptionList = og.getItemOptionList().stream()
-                    .map(o -> new RegisterOrderItemOptionRequest(o))
-                    .collect(Collectors.toList());
+            if (og != null) {
+                this.ordering = og.getOrdering();
+                this.itemOptionGroupName = og.getItemOptionGroupName();
+                this.orderItemOptionList = og.getItemOptionList().stream()
+                        .map(o -> new RegisterOrderItemOptionRequest(o))
+                        .collect(Collectors.toList());
+            }
         }
     }
 

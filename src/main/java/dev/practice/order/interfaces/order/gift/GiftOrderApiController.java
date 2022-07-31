@@ -64,6 +64,11 @@ public class GiftOrderApiController {
                 .map(og -> new GiftOrderDto.RegisterOrderItem(og, itemInfo, orderCount))
                 .collect(Collectors.toList());
 
+        if (itemOptionSeries.size() == 0) {
+            GiftOrderDto.RegisterOrderItem registerOrderItem = new GiftOrderDto.RegisterOrderItem(null, itemInfo, orderCount);
+            giftItemList.add(registerOrderItem);
+        }
+
         request.setOrderItemList(giftItemList);
 
         String s = giftApiCaller.registerGift(request);
