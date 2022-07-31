@@ -17,6 +17,7 @@ import dev.practice.order.infrastructure.partner.PartnerRepository;
 import dev.practice.order.interfaces.order.OrderController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,6 +57,12 @@ public class ItemController {
     private final S3Uploader s3Uploader;
 
     public String findPartnerToken = new String(); //heap 영역참조로 다른 쓰레드에서 접근하기 위함
+
+    @Value("${cloud.aws.credentials.accessKey}")
+    private String accessKey;
+
+    @Value("${cloud.aws.credentials.secretKey}")
+    private String secretKey;
 
     @GetMapping("/list-seller")
     public String itemListForSeller(@ModelAttribute("searchCondition") ItemSearchCondition searchCondition
@@ -100,6 +107,9 @@ public class ItemController {
     /**아이템 등록 form*/
     @GetMapping("/add")
     public String addItemForm(Model model) {
+
+        log.error("accessKey ={}", this.accessKey);
+        log.error("secretKey ={}", this.secretKey);
 
         ItemDto.RegisterItemRequest item = new ItemDto.RegisterItemRequest();
         ItemDto.RegisterItemOptionGroupRequest optionGroup= new ItemDto.RegisterItemOptionGroupRequest();
