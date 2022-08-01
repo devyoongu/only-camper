@@ -39,6 +39,26 @@ function changeEndOfSaleItem(itemToken) {
     });
 }
 
+/**
+ * 판매 상태로 변경
+ * */
+function changeOnSaleItem(itemToken) {
+    var paramMap = JSON.stringify({
+        itemToken: itemToken
+    });
+
+    $.ajax({
+        url: "/api/v1/items/change-on-sales",
+        type: "POST",
+        contentType: "application/json",
+        data: paramMap,
+    })
+    .done(function (fragment) {
+        console.log(fragment);
+        location.reload();
+    });
+}
+
 function onOptionGroupChange() {
     var paramMap = {
         itemToken: $("#itemToken").val(),
