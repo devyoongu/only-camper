@@ -5,6 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.Status;
+import dev.practice.order.domain.partner.QPartner;
 import dev.practice.order.interfaces.item.ItemSearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static dev.practice.order.domain.item.QItem.*;
+import static dev.practice.order.domain.partner.QPartner.*;
 import static org.springframework.util.StringUtils.isEmpty;
 
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
@@ -63,6 +65,19 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         long total = results.getTotal();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<Item> findItemAllWithDslJoinPartner(ItemSearchCondition searchCondition, Pageable pageable) {
+//        queryFactory.select(item)
+//                .from(item)
+//                .leftJoin(item.partnerId, partner.id)
+//                .fetch();
+
+
+
+
+        return null;
     }
 
     private BooleanExpression itemNameContains(String itemName) {

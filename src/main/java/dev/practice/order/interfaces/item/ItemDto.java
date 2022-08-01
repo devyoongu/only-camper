@@ -31,7 +31,7 @@ public class ItemDto {
         @NotNull(message = "제고수량은 필수입니다")
         private Long stockQuantity;
 
-        private String status;
+        private Status status;
 
         private String representImagePath;
         private long representImageSize;
@@ -42,18 +42,16 @@ public class ItemDto {
         private MultipartFile image;
         private List<RegisterItemOptionGroupRequest> itemOptionGroupList = new ArrayList<>();
 
-        public RegisterItemRequest(String partnerToken, String itemToken, String itemName, Long itemPrice
-                , Long stockQuantity, String status, String representImagePath, long representImageSize
-                , String representImageName, List<RegisterItemOptionGroupRequest> itemOptionGroupList) {
-            this.partnerToken = partnerToken;
-            this.itemToken = itemToken;
-            this.itemName = itemName;
-            this.itemPrice = itemPrice;
-            this.stockQuantity = stockQuantity;
-            this.status = status;
-            this.representImagePath = representImagePath;
-            this.representImageSize = representImageSize;
-            this.representImageName = representImageName;
+        public RegisterItemRequest(Item item, List<RegisterItemOptionGroupRequest> itemOptionGroupList) {
+            this.partnerToken = item.getPartnerToken();
+            this.itemToken = item.getItemToken();
+            this.itemName = item.getItemName();
+            this.itemPrice = item.getItemPrice();
+            this.stockQuantity = item.getStockQuantity();
+            this.status = item.getStatus();
+            this.representImagePath = item.getRepresentImagePath();
+            this.representImageSize = item.getRepresentImageSize();
+            this.representImageName = item.getRepresentImageName();
             this.itemOptionGroupList = itemOptionGroupList;
         }
 
@@ -63,7 +61,7 @@ public class ItemDto {
             this.itemName = item.getItemName();
             this.itemPrice = item.getItemPrice();
             this.stockQuantity = item.getStockQuantity();
-            this.status = item.getStatus().toString();
+            this.status = item.getStatus();
             this.representImagePath = item.getRepresentImagePath();
             this.representImageSize = item.getRepresentImageSize();
             this.representImageName = item.getRepresentImageName();

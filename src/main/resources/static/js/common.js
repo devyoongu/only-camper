@@ -19,6 +19,26 @@ function checkIsPartner(itemToken) {
     });
 }
 
+/**
+ * 판매 종료로 변경
+ * */
+function changeEndOfSaleItem(itemToken) {
+    var paramMap = JSON.stringify({
+        itemToken: itemToken
+    });
+
+    $.ajax({
+        url: "/api/v1/items/change-end-of-sales",
+        type: "POST",
+        contentType: "application/json",
+        data: paramMap,
+    })
+    .done(function (fragment) {
+        console.log(fragment);
+        location.reload();
+    });
+}
+
 function onOptionGroupChange() {
     var paramMap = {
         itemToken: $("#itemToken").val(),

@@ -67,10 +67,15 @@
                 </td>
                 <td th:text="${item.itemPrice}"></td>
                 <td th:text="${item.stockQuantity}"></td>
-                <td th:text="${item.status}"></td>
-                <td>
+                <td th:text="${item.status.getDescription()}"></td>
+                <!--<td>
                     <a href="#" th:attr="onclick=|checkIsPartner('${item.itemToken}')|"
                        class="btn btn-primary" role="button">수정</a>
+                </td>-->
+                <td>
+                    <a th:unless="${item.status.name() == 'END_OF_SALE'}"
+                            href="#" th:attr="onclick=|changeEndOfSaleItem('${item.itemToken}')|"
+                       class="btn btn-outline-primary" role="button">판매종료로 변경</a>
                 </td>
             </tr>
             </tbody>

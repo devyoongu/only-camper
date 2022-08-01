@@ -10,6 +10,7 @@ import dev.practice.order.domain.partner.PartnerService;
 import dev.practice.order.interfaces.item.ItemDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+//@Profile({"default"})
 public class InitDb {
     private final InitService initService;
 
@@ -79,10 +81,7 @@ public class InitDb {
         /**item 생성*/
         public ItemDto.RegisterItemRequest createItem(Item item) {
 
-            ItemDto.RegisterItemRequest itemDto = new ItemDto.RegisterItemRequest(item.getPartnerToken(), item.getItemToken()
-                    , item.getItemName(), item.getItemPrice(), item.getStockQuantity(), "PREPARE"
-                    , item.getRepresentImagePath(), item.getRepresentImageSize(), item.getRepresentImageName()
-                    , createOptionGroupList());
+            ItemDto.RegisterItemRequest itemDto = new ItemDto.RegisterItemRequest(item, createOptionGroupList());
 
             return itemDto;
         }

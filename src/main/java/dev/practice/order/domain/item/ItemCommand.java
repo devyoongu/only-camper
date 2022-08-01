@@ -19,15 +19,15 @@ public class ItemCommand {
         private final Long stockQuantity;
         private final List<RegisterItemOptionGroupRequest> itemOptionGroupRequestList; // ex) 색상, 사이즈
 
-        public Item toEntity(Long partnerId, String partnerToken) {
-            return Item.builder()
-                    .partnerToken(partnerToken)
-                    .partnerId(partnerId)
-                    .itemName(itemName)
-                    .itemPrice(itemPrice)
-                    .stockQuantity(stockQuantity)
-                    .build();
-        }
+//        public Item toEntity(Long partnerId, String partnerToken) {
+//            return Item.builder()
+////                    .partnerToken(partnerToken)
+////                    .partnerId(partnerId)
+//                    .itemName(itemName)
+//                    .itemPrice(itemPrice)
+//                    .stockQuantity(stockQuantity)
+//                    .build();
+//        }
     }
 
     @Getter

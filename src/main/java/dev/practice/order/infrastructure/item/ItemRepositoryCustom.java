@@ -14,4 +14,6 @@ public interface ItemRepositoryCustom {
 
     Page<Item> findItemAllWithDsl(ItemSearchCondition searchCondition, Pageable pageable);
 
+    Page<Item> findItemAllWithDslJoinPartner(ItemSearchCondition searchCondition, Pageable pageable);
+
 }

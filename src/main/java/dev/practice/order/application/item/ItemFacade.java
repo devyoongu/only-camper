@@ -1,7 +1,6 @@
 package dev.practice.order.application.item;
 
 import dev.practice.order.domain.notification.NotificationService;
-import dev.practice.order.domain.item.ItemCommand;
 import dev.practice.order.domain.item.ItemInfo;
 import dev.practice.order.domain.item.ItemService;
 import dev.practice.order.interfaces.item.ItemDto;

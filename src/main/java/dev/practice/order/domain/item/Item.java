@@ -59,7 +59,7 @@ public class Item extends AbstractEntity {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.stockQuantity = stockQuantity;
-        this.status = Status.PREPARE;
+        this.status = Status.ON_SALE;
         this.representImagePath = representImagePath;
         this.representImageSize = representImageSize;
         this.representImageName = representImageName;
@@ -83,7 +83,6 @@ public class Item extends AbstractEntity {
         this.stockQuantity = itemCommand.getStockQuantity();
     }
 
-    //    private List<ItemOptionGroup> itemOptionGroupList = Lists.newArrayList();
     public void updateOptionGroupList(List<ItemOptionGroup> itemOptionGroupList) {
         this.itemOptionGroupList = itemOptionGroupList;
     }
