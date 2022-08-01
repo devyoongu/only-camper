@@ -38,6 +38,13 @@
 
                     </div>
 
+                    <div class="mb-3">
+                        <label for="partnerName" class="form-label">판매자</label>
+                        <input type="text" name="partnerName" id="partnerName"
+                               th:value="${partner.getPartnerName()}"
+                               class="form-control" readonly/>
+                    </div>
+
                     <!--옵션그룹-->
                     <div id="optionGroupSelect">
                         <div class="mb-3" th:if="${item.orderItemOptionGroupList.size() >0}">

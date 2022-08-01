@@ -12,9 +12,11 @@ import dev.practice.order.domain.order.OrderService;
 import dev.practice.order.domain.order.fragment.DeliveryFragment;
 import dev.practice.order.domain.order.gift.GiftApiCaller;
 import dev.practice.order.domain.order.item.OrderItem;
+import dev.practice.order.domain.partner.Partner;
 import dev.practice.order.domain.user.User;
 import dev.practice.order.infrastructure.order.OrderRepository;
 import dev.practice.order.infrastructure.order.gift.RetrofitGiftApiResponse;
+import dev.practice.order.infrastructure.partner.PartnerRepository;
 import dev.practice.order.infrastructure.user.UserRepository;
 import dev.practice.order.interfaces.item.PageDto;
 import dev.practice.order.interfaces.order.gift.GiftOrderDto;
@@ -66,6 +68,8 @@ public class OrderController {
     private final GiftApiCaller giftApiCaller;
 
     private final UserRepository userRepository;
+
+    private final PartnerRepository partnerRepository;
 
     @ModelAttribute("deliveryFragment")
     public DeliveryFragment deliveryFragment(@LoginUser SessionUser user) {
@@ -133,6 +137,7 @@ public class OrderController {
                 , optionGroupList,item.getRepresentImagePath(),item.getRepresentImageSize(),item.getRepresentImageName());
 
         GiftOrderDto.RegisterOrderRequest giftDto = new GiftOrderDto.RegisterOrderRequest();
+        Partner partner = partnerRepository.getById(item.getPartnerId());
 
         //todo:dto로 변환
         List<User> users = userRepository.findAll();
@@ -140,6 +145,7 @@ public class OrderController {
         model.addAttribute("item", itemDto);
         model.addAttribute("gift", giftDto);
         model.addAttribute("users", users);
+        model.addAttribute("partner", partner);
 
         return "order/addOrder";
     }

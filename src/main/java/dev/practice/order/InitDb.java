@@ -40,8 +40,8 @@ public class InitDb {
         private final ItemFacade itemFacade;
 
         public void registerPartnerAndItem() {
-            String[] partners = {"강원건기", "춘천건기","파란자전거", "노랑풍선"};
-            String[] items = {"게이밍의자", "알파스캔모니터","미니벨로","우산"};
+            String[] partners = {"스노우라인", "헬리녹스","고릴라캠핑", "캠핑천국"};
+            String[] items = {"캠핑장비", "텐트장비","캠핑용품","텐트"};
 //            for (int i = 0; i < 10; i++) {
                 for (String partner : partners) {
                     int index = Arrays.asList(partners).indexOf(partner);

@@ -109,15 +109,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="status">상품상태</label>
-                        <select name="status" id="status" class="form-control">
-                            <!--                        <option value="">상품상태</option>-->
-                            <option th:each="value : ${T(dev.practice.order.domain.item.Status).values()}"
-                                    th:value="${value.name()}"
-                                    th:text="${value.getDescription()}"/>
-                        </select>
-                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <label for="status">상품상태</label>-->
+<!--                        <select name="status" id="status" class="form-control">-->
+<!--                            &lt;!&ndash;                        <option value="">상품상태</option>&ndash;&gt;-->
+<!--                            <option th:each="value : ${T(dev.practice.order.domain.item.Status).values()}"-->
+<!--                                    th:value="${value.name()}"-->
+<!--                                    th:text="${value.getDescription()}"/>-->
+<!--                        </select>-->
+<!--                    </div>-->
 
                 </div>
 
