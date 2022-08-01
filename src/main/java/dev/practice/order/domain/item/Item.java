@@ -5,6 +5,7 @@ import dev.practice.order.common.exception.InvalidParamException;
 import dev.practice.order.common.util.TokenGenerator;
 import dev.practice.order.domain.AbstractEntity;
 import dev.practice.order.domain.item.optiongroup.ItemOptionGroup;
+import dev.practice.order.domain.partner.Partner;
 import dev.practice.order.domain.partner.PartnerCommand;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @Entity
@@ -28,7 +31,11 @@ public class Item extends AbstractEntity {
     private String itemToken;
 
     private String partnerToken;
-    private Long partnerId;
+
+    @ManyToOne(fetch = LAZY) //
+    @JoinColumn(name = "partner_id") //partner join 필요로 인한 추가
+    private Partner partner;
+
     private String itemName;
     private Long itemPrice;
 
@@ -45,15 +52,15 @@ public class Item extends AbstractEntity {
     private String representImageName;
 
     @Builder
-    public Item(String partnerToken, Long partnerId, String itemName, Long itemPrice, Long stockQuantity,String representImagePath,
+    public Item(String partnerToken, Partner partner, String itemName, Long itemPrice, Long stockQuantity,String representImagePath,
     long representImageSize,
     String representImageName) {
-        if (partnerId == null) throw new InvalidParamException("Item.partnerId is null");
+        if (partner == null) throw new InvalidParamException("Item.partner is null");
         if (partnerToken == null) throw new InvalidParamException("Item.partnerToken is null");
         if (StringUtils.isBlank(itemName)) throw new InvalidParamException("Item.itemName is null");
         if (itemPrice == null) throw new InvalidParamException("Item.itemPrice is null");
 
-        this.partnerId = partnerId;
+        this.partner = partner;
         this.partnerToken = partnerToken;
         this.itemToken = TokenGenerator.randomCharacterWithPrefix(ITEM_PREFIX);
         this.itemName = itemName;

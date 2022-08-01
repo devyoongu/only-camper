@@ -3,6 +3,7 @@ package dev.practice.order.domain.partner;
 import dev.practice.order.common.exception.InvalidParamException;
 import dev.practice.order.common.util.TokenGenerator;
 import dev.practice.order.domain.AbstractEntity;
+import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Getter
@@ -34,6 +37,9 @@ public class Partner extends AbstractEntity {
 
     @OneToOne(mappedBy = "partner", fetch = FetchType.LAZY)
     private User user;
+
+    @OneToMany(mappedBy = "partner")
+    private List<Item> itemList = new ArrayList<>();
 
     @Getter
     @RequiredArgsConstructor

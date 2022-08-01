@@ -4,6 +4,7 @@ import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.Status;
 import dev.practice.order.domain.item.option.ItemOption;
 import dev.practice.order.domain.item.optiongroup.ItemOptionGroup;
+import dev.practice.order.domain.partner.Partner;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,10 +72,10 @@ public class ItemDto {
         }
 
         //DTO에 값이 저장되어 있기 대문에 바로 주입이 가능하여 편리함.
-        public Item toEntity(Long partnerId, String partnerToken) {
+        public Item toEntity(Long partnerId, Partner partner) {
             return Item.builder()
-                    .partnerToken(partnerToken)
-                    .partnerId(partnerId)
+                    .partnerToken(partner.getPartnerToken())
+                    .partner(partner)
                     .itemName(itemName)
                     .itemPrice(itemPrice)
                     .stockQuantity(stockQuantity)

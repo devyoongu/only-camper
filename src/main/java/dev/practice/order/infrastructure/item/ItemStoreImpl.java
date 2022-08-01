@@ -23,7 +23,7 @@ public class ItemStoreImpl implements ItemStore {
     private void validCheck(Item item) {
         if (StringUtils.isEmpty(item.getItemToken())) throw new InvalidParamException("Item.itemToken");
         if (StringUtils.isEmpty(item.getItemName())) throw new InvalidParamException("Item.itemName");
-        if (item.getPartnerId() == null) throw new InvalidParamException("Item.partnerId");
+        if (item.getPartner() == null) throw new InvalidParamException("Item.partner is null");
         if (item.getItemPrice() == null) throw new InvalidParamException("Item.itemPrice");
         if (item.getStatus() == null) throw new InvalidParamException("Item.status");
         if (item.getStockQuantity() == null) throw new InvalidParamException("Item.stockQuantity");

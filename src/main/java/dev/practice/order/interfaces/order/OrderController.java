@@ -137,7 +137,7 @@ public class OrderController {
                 , optionGroupList,item.getRepresentImagePath(),item.getRepresentImageSize(),item.getRepresentImageName());
 
         GiftOrderDto.RegisterOrderRequest giftDto = new GiftOrderDto.RegisterOrderRequest();
-        Partner partner = partnerRepository.getById(item.getPartnerId());
+        Partner partner = partnerRepository.getById(item.getPartner().getId());
 
         //todo:dto로 변환
         List<User> users = userRepository.findAll();

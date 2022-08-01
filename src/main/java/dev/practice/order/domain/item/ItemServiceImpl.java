@@ -28,7 +28,7 @@ public class ItemServiceImpl implements ItemService {
         //1. get partner
         var partner = partnerReader.getPartner(partnerToken);
         //2. command -> Item 객체 변환 및 partnerId로 item 조회
-        var initItem = itemDto.toEntity(partner.getId(), partnerToken);
+        var initItem = itemDto.toEntity(partner.getId(), partner);
         //3. item 객체 저장
         var item = itemStore.store(initItem);
         //4. factory를 이용한 itemOptionGroup, itemOption 저장

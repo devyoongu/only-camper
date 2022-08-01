@@ -1,11 +1,21 @@
 package dev.practice.order.infrastructure.item;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import dev.practice.order.domain.tupleDto.ItemOrderCountDto;
+import dev.practice.order.domain.tupleDto.PartnerItemCountDto;
+import dev.practice.order.domain.tupleDto.QPartnerItemCountDto;
 import dev.practice.order.domain.item.Item;
+import dev.practice.order.domain.item.QItem;
 import dev.practice.order.domain.item.Status;
-import dev.practice.order.domain.partner.QPartner;
 import dev.practice.order.interfaces.item.ItemSearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +26,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static dev.practice.order.domain.item.QItem.*;
+import static dev.practice.order.domain.order.item.QOrderItem.*;
 import static dev.practice.order.domain.partner.QPartner.*;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -67,17 +78,45 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
 
+    /**
+     * 판매자별 아이템 등록현황
+     */
     @Override
-    public Page<Item> findItemAllWithDslJoinPartner(ItemSearchCondition searchCondition, Pageable pageable) {
-//        queryFactory.select(item)
-//                .from(item)
-//                .leftJoin(item.partnerId, partner.id)
-//                .fetch();
+    public List<PartnerItemCountDto> findPartnerWithItemCount() {
+        return queryFactory.select(
+                new QPartnerItemCountDto(partner.id, partner.partnerName, item.count())
+        )
+                .from(item)
+                .leftJoin(item.partner, partner)
+                .where(statusEq(Status.valueOf("ON_SALE")))
+                .groupBy(item.partner)
+                .fetch();
+    }
 
+    /**
+     * 아이템별 판매내역
+     * item, order-item은 관계를 갖고 있지 않으므로 sub 쿼리로 진행
+     * */
+    @Override
+    public List<ItemOrderCountDto> findItemOrderStatusList() {
 
+        StringPath orderCount = Expressions.stringPath("orderCount");
 
-
-        return null;
+        return queryFactory.select(
+                Projections.constructor(ItemOrderCountDto.class,
+                        item.itemName
+                        , item.id
+                        , ExpressionUtils.as(JPAExpressions
+                                .select(orderItem.itemName.count())
+                                .from(orderItem)
+                                .where(orderItem.itemId.eq(item.id)), "orderCount")
+                )
+        )
+                .from(item)
+                .groupBy(item.itemName, item.id)
+                .orderBy(orderCount.desc())
+                .limit(10)
+                .fetch();
     }
 
     private BooleanExpression itemNameContains(String itemName) {

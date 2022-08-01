@@ -43,6 +43,7 @@
                         <input type="text" name="partnerName" id="partnerName"
                                th:value="${partner.getPartnerName()}"
                                class="form-control" readonly/>
+                        <input type="hidden" th:value="${partner.getId()}" name="partnerId">
                     </div>
 
                     <!--옵션그룹-->

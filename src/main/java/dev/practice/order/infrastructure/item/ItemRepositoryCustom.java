@@ -1,7 +1,9 @@
 package dev.practice.order.infrastructure.item;
 
+import com.querydsl.core.Tuple;
+import dev.practice.order.domain.tupleDto.ItemOrderCountDto;
+import dev.practice.order.domain.tupleDto.PartnerItemCountDto;
 import dev.practice.order.domain.item.Item;
-import dev.practice.order.interfaces.item.ItemController;
 import dev.practice.order.interfaces.item.ItemSearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ public interface ItemRepositoryCustom {
 
     Page<Item> findItemAllWithDsl(ItemSearchCondition searchCondition, Pageable pageable);
 
-    Page<Item> findItemAllWithDslJoinPartner(ItemSearchCondition searchCondition, Pageable pageable);
+    List<PartnerItemCountDto> findPartnerWithItemCount();
 
+    List<ItemOrderCountDto> findItemOrderStatusList();
 }

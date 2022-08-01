@@ -25,7 +25,7 @@ public class ItemInfo {
 
         public Main(Item item, List<ItemOptionGroupInfo> itemOptionGroupInfoList) {
             this.itemToken = item.getItemToken();
-            this.partnerId = item.getPartnerId();
+            this.partnerId = item.getPartner().getId();
             this.itemName = item.getItemName();
             this.itemPrice = item.getItemPrice();
             this.status = item.getStatus();

@@ -1,9 +1,11 @@
 package dev.practice.order.interfaces.item;
 
+import com.querydsl.core.Tuple;
 import dev.practice.order.application.item.ItemFacade;
 import dev.practice.order.config.auth.LoginUser;
 import dev.practice.order.config.auth.dto.SessionUser;
-import dev.practice.order.domain.item.FileInfo;
+import dev.practice.order.domain.tupleDto.ItemOrderCountDto;
+import dev.practice.order.domain.tupleDto.PartnerItemCountDto;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.ItemInfo;
 import dev.practice.order.domain.item.ItemService;
@@ -14,7 +16,6 @@ import dev.practice.order.infrastructure.aws.S3Uploader;
 import dev.practice.order.infrastructure.user.UserRepository;
 import dev.practice.order.infrastructure.item.ItemRepository;
 import dev.practice.order.infrastructure.partner.PartnerRepository;
-import dev.practice.order.interfaces.order.OrderController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +32,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

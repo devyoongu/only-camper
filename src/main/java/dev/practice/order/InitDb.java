@@ -43,7 +43,7 @@ public class InitDb {
             String[] partners = {"스노우라인", "헬리녹스","고릴라캠핑", "캠핑천국"};
             String[] items = {"캠핑장비", "텐트장비","캠핑용품","텐트"};
 //            for (int i = 0; i < 10; i++) {
-                for (String partner : partners) {
+                /*for (String partner : partners) {
                     int index = Arrays.asList(partners).indexOf(partner);
 
                     //파트너 생성
@@ -66,7 +66,7 @@ public class InitDb {
                     ItemDto.RegisterItemRequest itemCommand = createItem(item);
                     itemFacade.registerItem(itemCommand, partnerToken);
 
-                }
+                }*/
 //            }
         }
 

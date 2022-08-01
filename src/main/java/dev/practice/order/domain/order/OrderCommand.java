@@ -61,7 +61,7 @@ public class OrderCommand {
             return OrderItem.builder()
                     .order(order)
                     .orderCount(orderCount)
-                    .partnerId(item.getPartnerId())
+                    .partnerId(item.getPartner().getId())
                     .itemId(item.getId())
                     .itemToken(itemToken)
                     .itemName(itemName)
