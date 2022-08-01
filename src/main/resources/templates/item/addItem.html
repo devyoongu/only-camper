@@ -37,7 +37,7 @@
 
                     <div class="form-group">
                         <label for="itemPrice">상품가격</label>
-                        <input type="text" id="itemPrice" th:field="*{itemPrice}"
+                        <input type="number" id="itemPrice" th:field="*{itemPrice}"
                                th:errorclass="field-error" class="form-control" placeholder="가격을 입력하세요">
                         <div class="field-error" th:errors="*{itemPrice}">
                             가격 오류
@@ -45,7 +45,7 @@
                     </div>
                     <div class="form-group">
                         <label for="stockQuantity">재고수량</label>
-                        <input type="text" id="stockQuantity" th:field="*{stockQuantity}"
+                        <input type="number" id="stockQuantity" th:field="*{stockQuantity}"
                                th:errorclass="field-error" class="form-control" placeholder="재고수량을 입력하세요">
                         <div class="field-error" th:errors="*{stockQuantity}">
                             재고수량 오류
