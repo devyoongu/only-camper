@@ -47,4 +47,16 @@ public class AggregateDto {
             this.orderCount = orderCount;
         }
     }
+
+    @Data
+    public static class OrderDateCountDto {
+        private String orderDate;
+        private Long orderCount;
+
+        @QueryProjection
+        public OrderDateCountDto(String orderDate, Long orderCount) {
+            this.orderDate = orderDate;
+            this.orderCount = orderCount;
+        }
+    }
 }

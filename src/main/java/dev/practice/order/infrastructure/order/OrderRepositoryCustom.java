@@ -16,4 +16,6 @@ public interface OrderRepositoryCustom {
     int getOrderListMineCount(SessionUser user);
 
     List<AggregateDto.PartnerOrderCountDto> getOrderCountByPartner();
+
+    List<AggregateDto.OrderDateCountDto> getOrderCountByDate();
 }

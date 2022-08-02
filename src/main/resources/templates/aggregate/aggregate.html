@@ -3,19 +3,22 @@
 <head th:replace="fragments/header :: header"/>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-<div class="container custom-container">
-    <div class="text-center">
-        <h2>상품 등록/판매현황</h2>
-    </div>
-    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-2 g-3">
-        <div class="col">
-            <canvas id="partnerItemCount"></canvas>
-        </div>
-        <div class="col">
-            <canvas id="partnerOrderCount"></canvas>
-        </div>
-        <div class="col">
-            <canvas id="itemOrderCount"></canvas>
+
+<div class="bg-light">
+    <div class="container custom-container">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-2 g-3">
+            <div class="col">
+                <canvas id="partnerItemCount"></canvas>
+            </div>
+            <div class="col">
+                <canvas id="partnerOrderCount"></canvas>
+            </div>
+            <div class="col">
+                <canvas id="itemOrderCount"></canvas>
+            </div>
+            <div class="col">
+                <canvas id="orderDateCount"></canvas>
+            </div>
         </div>
     </div>
 </div>

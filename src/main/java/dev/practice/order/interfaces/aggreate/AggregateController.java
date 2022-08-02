@@ -53,6 +53,17 @@ public class AggregateController {
         return CommonResponse.success(itemOrderCountDtoList);
     }
 
+    /**
+     * 주문날짜별 - 판매현황
+     * */
+    @GetMapping("/order-datecount")
+    @ResponseBody
+    public CommonResponse getOrderCountByDate() {
+        List<AggregateDto.OrderDateCountDto> orderDateCountDtoList = orderRepository.getOrderCountByDate();
+
+        return CommonResponse.success(orderDateCountDtoList);
+    }
+
 
     @GetMapping
     public String viewChart () {

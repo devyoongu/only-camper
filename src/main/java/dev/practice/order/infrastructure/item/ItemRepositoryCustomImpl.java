@@ -94,6 +94,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .where(statusEq(Status.valueOf("ON_SALE")))
                 .groupBy(item.partner)
                 .orderBy(itemCount.desc())
+                .limit(7)
                 .fetch();
     }
 
@@ -119,7 +120,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(item)
                 .groupBy(item.itemName, item.id)
                 .orderBy(orderCount.desc())
-                .limit(10)
+                .limit(7)
                 .fetch();
     }
 

@@ -3,13 +3,11 @@ package dev.practice.order.infrastructure.order;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ConstantImpl;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.EnumPath;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import dev.practice.order.config.auth.dto.SessionUser;
@@ -109,10 +107,29 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom{
                 .from(partner)
                 .groupBy(partner.partnerName, partner.id)
                 .orderBy(orderCount.desc())
-                .limit(10)
+                .limit(7)
                 .fetch();
 
         return partnerOrderCountDtoList;
+    }
+
+    @Override
+    public List<AggregateDto.OrderDateCountDto> getOrderCountByDate() {
+        StringTemplate formattedDate = Expressions.stringTemplate("DATE_FORMAT({0}, {1})", order.updatedAt, ConstantImpl.create("%m-%d"));
+
+        List<AggregateDto.OrderDateCountDto> orderDateCountDtoList = queryFactory.select(
+                Projections.constructor(AggregateDto.OrderDateCountDto.class,
+                        formattedDate.as("orderDate"), order.id.count().as("orderCount")
+                )
+        )
+                .from(order)
+                .where(order.status.eq(Order.Status.valueOf("ORDER_COMPLETE")))
+                .groupBy(formattedDate)
+                .orderBy(formattedDate.asc())
+                .limit(7)
+                .fetch();
+
+        return orderDateCountDtoList;
     }
 
     private BooleanExpression userIdEq(Long userId) {
