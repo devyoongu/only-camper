@@ -32,7 +32,7 @@
                                data-bs-toggle="dropdown" aria-expanded="false" style="padding: 0">
                                 <img th:src="${user.getPicture()}" alt="profile" referrerpolicy="no-referrer"
                                      style="border-radius: 50px;border: 1px solid #ccc;width: 40px;">
-                                <span th:if="${user != null}" th:text="|${user.getName()+'('+user.getRole()+')'}|"
+                                <span th:if="${user != null}" th:text="|${user.getName()+'('+user.getEmail()+')'}|"
                                       style="line-height: 40px;"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarLgDropdown">

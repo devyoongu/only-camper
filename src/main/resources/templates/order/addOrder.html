@@ -71,13 +71,12 @@
                         <div class="mb-3" th:if="${optionList.size() >0}"
                              th:onchange="onCalcuChange()"
                         >
-                            <!--th:text="|${option.itemOptionName+'('+option.getItemOptionPrice()+'원)-잔여수량:'+ option.optionStockQuantity}|"/>-->
                             <label for="optionOrdering" class="form-label">옵션</label>
                             <select name="optionOrdering" id="optionOrdering" class="form-control">
                                 <option value="">옵션선택</option>
                                 <option th:each="option, itemStat : ${optionList}"
                                         th:value="${option.getOrdering()}"
-                                        th:text="|${option.itemOptionName}|"/>
+                                        th:text="|${option.itemOptionName+'('+option.getItemOptionPrice()+'원)'}|"/>
                             </select>
                         </div>
                     </div>

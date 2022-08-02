@@ -14,7 +14,9 @@
                 <p>
                     <a href="/item/add" class="btn btn-primary my-2">Product registration</a>
                     <a href="/item/list-seller" class="btn btn-secondary my-2">My products</a>
-                    <a href="/aggregate" class="btn btn-outline-success my-2">Sales status</a>
+                    <a href="/aggregate" class="btn btn-outline-success my-2">Sales status
+                        <i class="fa fa-bar-chart" aria-hidden="true" style="margin-right: 4px;"></i>
+                    </a>
                 </p>
             </div>
             <div th:unless="${user != null}" class="col-lg-6 col-md-8 mx-auto">
@@ -32,7 +34,7 @@
 
     <div class="bg-light index" style="padding-bottom: 30px;">
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 row-cols-xl-4 g-3">
                 <div th:each="item : ${items}" class="col">
                     <div class="card shadow-sm">
                         <a th:href="@{/order/{itemToken}(itemToken=${item.itemToken})}">
