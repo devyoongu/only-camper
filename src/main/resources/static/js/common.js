@@ -228,4 +228,19 @@ function onClickAccept(giftToken) {
     document.getElementById('frm').submit();
 }
 
+
+if (document.getElementById('profile_status')) {
+    let url = "/profile";
+
+    $.ajax({
+        url: url,
+        type: "GET",
+        contentType: "application/json",
+    })
+    .done(function (fragment) {
+        $('#profile_status').text(fragment);
+
+    });
+}
+
 // });

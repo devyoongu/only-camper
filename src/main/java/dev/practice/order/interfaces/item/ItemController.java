@@ -78,6 +78,7 @@ public class ItemController {
                 .collect(Collectors.toList());
 
         model.addAttribute("items", itemDtoList);
+        model.addAttribute("isSeller", true);
         model.addAttribute("page", new PageDto(itemPage.getTotalElements(), pageable));
         model.addAttribute("activeNum", pageable.getPageNumber());
         return "item/itemList";
@@ -96,6 +97,7 @@ public class ItemController {
                 .collect(Collectors.toList());
 
         model.addAttribute("items", itemDtoList);
+        model.addAttribute("isSeller", false);
         model.addAttribute("page", new PageDto(itemPage.getTotalElements(), pageable));
         model.addAttribute("activeNum", pageable.getPageNumber());
         return "item/itemList";

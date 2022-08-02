@@ -65,6 +65,7 @@ if (document.getElementById('partnerItemCount')) {
                         yAxes: [
                             {
                                 ticks: {
+                                    stepSize: 1, //y축 간격
                                     beginAtZero: true
                                 }
                             }
@@ -140,6 +141,9 @@ if (document.getElementById('partnerOrderCount')) {
                         yAxes: [
                             {
                                 ticks: {
+                                    stepSize: 1, //y축 간격
+                                    // suggestedMin: 0,//y축 최소 값
+                                    // suggestedMax: 100,//y축 최대값
                                     beginAtZero: true
                                 }
                             }
@@ -215,6 +219,7 @@ if (document.getElementById('itemOrderCount')) {
                         yAxes: [
                             {
                                 ticks: {
+                                    stepSize: 1, //y축 간격
                                     beginAtZero: true
                                 }
                             }
@@ -290,6 +295,7 @@ if (document.getElementById('orderDateCount')) {
                         yAxes: [
                             {
                                 ticks: {
+                                    stepSize: 1, //y축 간격
                                     beginAtZero: true
                                 }
                             }
