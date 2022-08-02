@@ -1,6 +1,7 @@
 package dev.practice.order.interfaces.aggreate;
 
 import com.querydsl.core.Tuple;
+import dev.practice.order.common.response.CommonResponse;
 import dev.practice.order.domain.tupleDto.AggregateDto;
 import dev.practice.order.infrastructure.item.ItemRepository;
 import dev.practice.order.infrastructure.order.OrderRepository;
@@ -19,34 +20,44 @@ public class AggregateController {
     private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
 
+    /**
+     * 파트너별 - 아이템 등록 현황
+     * */
     @GetMapping("/partner-itemcount")
     @ResponseBody
-    public List<AggregateDto.PartnerItemCountDto> findPartnerWithItemCount() {
+    public CommonResponse findPartnerWithItemCount() {
         List<AggregateDto.PartnerItemCountDto> partnerWithItemList = itemRepository.findPartnerWithItemCount();
 
-        log.error("partnerWithItemList ={}", partnerWithItemList);
-
-        return partnerWithItemList;
+        return CommonResponse.success(partnerWithItemList);
     }
 
-    @GetMapping("/item-ordercoount")
-    @ResponseBody
-    public List<AggregateDto.ItemOrderCountDto> findItemOrderStatusList() {
-        List<AggregateDto.ItemOrderCountDto> itemOrderCountDtoList = itemRepository.findItemOrderStatusList();
-
-        log.error("partnerWithItemList ={}", itemOrderCountDtoList);
-
-        return itemOrderCountDtoList;
-    }
-
+    /**
+     * 파트너별 - 판매현황
+     * */
     @GetMapping("/partner-ordercoount")
     @ResponseBody
-    public List<AggregateDto.PartnerOrderCountDto> getOrderCountByPartner() {
+    public CommonResponse getOrderCountByPartner() {
         List<AggregateDto.PartnerOrderCountDto> orderCountByPartner = orderRepository.getOrderCountByPartner();
 
-        log.error("partnerWithItemList ={}", orderCountByPartner);
-
-        return orderCountByPartner;
+        return CommonResponse.success(orderCountByPartner);
     }
+
+    /**
+     * 상품별 - 주문현황
+     * */
+    @GetMapping("/item-ordercoount")
+    @ResponseBody
+    public CommonResponse findItemOrderStatusList() {
+        List<AggregateDto.ItemOrderCountDto> itemOrderCountDtoList = itemRepository.findItemOrderStatusList();
+
+        return CommonResponse.success(itemOrderCountDtoList);
+    }
+
+
+    @GetMapping
+    public String viewChart () {
+        return "aggregate/aggregate";
+    }
+
 }
 

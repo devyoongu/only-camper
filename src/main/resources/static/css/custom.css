@@ -54,6 +54,11 @@ main > .container {
     height: 100%;
 }
 
+.col>canvas{
+    margin-top:50px
+}
+
+
 @media (max-width: 575px) {
     .index .shadow-sm>a{
         width: auto;
