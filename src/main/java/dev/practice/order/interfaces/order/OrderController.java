@@ -133,8 +133,8 @@ public class OrderController {
                 .map(og -> new OrderDto.RegisterOrderItemOptionGroupRequest(og.getOrdering(), og.getItemOptionGroupName(), null))
                 .collect(Collectors.toList());
 
-        OrderDto.RegisterOrderItem itemDto = new OrderDto.RegisterOrderItem(ORDER_COUNT, item.getItemToken(), item.getItemName(), item.getItemPrice()
-                , optionGroupList,item.getRepresentImagePath(),item.getRepresentImageSize(),item.getRepresentImageName());
+        OrderDto.RegisterOrderItem itemDto = new OrderDto.RegisterOrderItem(item);
+        itemDto.setOrderItemOptionGroupList(optionGroupList);
 
         GiftOrderDto.RegisterOrderRequest giftDto = new GiftOrderDto.RegisterOrderRequest();
         Partner partner = partnerRepository.getById(item.getPartner().getId());

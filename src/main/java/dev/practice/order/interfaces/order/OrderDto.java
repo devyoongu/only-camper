@@ -1,4 +1,5 @@
 package dev.practice.order.interfaces.order;
+import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.order.payment.PayMethod;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +65,7 @@ public class OrderDto {
     @NoArgsConstructor
     @Builder
     public static class RegisterOrderItem {
+        private Long partnerId;
         @NotNull(message = "orderCount 는 필수값입니다")
         private Long orderCount;
 
@@ -88,15 +90,15 @@ public class OrderDto {
 
         private Integer optionOrdering;
 
-        public RegisterOrderItem(Long orderCount, String itemToken, String itemName, Long itemPrice, List<RegisterOrderItemOptionGroupRequest> orderItemOptionGroupList, String representImagePath, long representImageSize, String representImageName) {
-            this.orderCount = orderCount;
-            this.itemToken = itemToken;
-            this.itemName = itemName;
-            this.itemPrice = itemPrice;
-            this.orderItemOptionGroupList = orderItemOptionGroupList;
-            this.representImagePath = representImagePath;
-            this.representImageSize = representImageSize;
-            this.representImageName = representImageName;
+        public RegisterOrderItem(Item item) {
+            this.partnerId = item.getPartner().getId();
+            this.orderCount = 1L;
+            this.itemToken = item.getItemToken();
+            this.itemName = item.getItemName();
+            this.itemPrice = item.getItemPrice();
+            this.representImagePath = item.getRepresentImagePath();
+            this.representImageSize = item.getRepresentImageSize();
+            this.representImageName = item.getRepresentImageName();
         }
 
         public Long calculateTotalAmount(Integer optionGroupOrdering, Integer optionOrdering) {

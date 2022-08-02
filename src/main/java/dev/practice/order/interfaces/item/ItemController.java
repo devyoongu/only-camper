@@ -1,11 +1,8 @@
 package dev.practice.order.interfaces.item;
 
-import com.querydsl.core.Tuple;
 import dev.practice.order.application.item.ItemFacade;
 import dev.practice.order.config.auth.LoginUser;
 import dev.practice.order.config.auth.dto.SessionUser;
-import dev.practice.order.domain.tupleDto.ItemOrderCountDto;
-import dev.practice.order.domain.tupleDto.PartnerItemCountDto;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.ItemInfo;
 import dev.practice.order.domain.item.ItemService;

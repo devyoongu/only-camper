@@ -10,9 +10,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import dev.practice.order.domain.tupleDto.ItemOrderCountDto;
-import dev.practice.order.domain.tupleDto.PartnerItemCountDto;
-import dev.practice.order.domain.tupleDto.QPartnerItemCountDto;
+import dev.practice.order.domain.tupleDto.*;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.QItem;
 import dev.practice.order.domain.item.Status;
@@ -82,14 +80,20 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
      * 판매자별 아이템 등록현황
      */
     @Override
-    public List<PartnerItemCountDto> findPartnerWithItemCount() {
+    public List<AggregateDto.PartnerItemCountDto> findPartnerWithItemCount() {
+        StringPath itemCount = Expressions.stringPath("itemCount");
+
         return queryFactory.select(
-                new QPartnerItemCountDto(partner.id, partner.partnerName, item.count())
+                new QAggregateDto_PartnerItemCountDto(
+                        partner.id, partner.partnerName
+                        , ExpressionUtils.as(item.count(),"itemCount")
+                )
         )
                 .from(item)
                 .leftJoin(item.partner, partner)
                 .where(statusEq(Status.valueOf("ON_SALE")))
                 .groupBy(item.partner)
+                .orderBy(itemCount.desc())
                 .fetch();
     }
 
@@ -98,12 +102,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
      * item, order-item은 관계를 갖고 있지 않으므로 sub 쿼리로 진행
      * */
     @Override
-    public List<ItemOrderCountDto> findItemOrderStatusList() {
+    public List<AggregateDto.ItemOrderCountDto> findItemOrderStatusList() {
 
         StringPath orderCount = Expressions.stringPath("orderCount");
 
         return queryFactory.select(
-                Projections.constructor(ItemOrderCountDto.class,
+                Projections.constructor(AggregateDto.ItemOrderCountDto.class,
                         item.itemName
                         , item.id
                         , ExpressionUtils.as(JPAExpressions
