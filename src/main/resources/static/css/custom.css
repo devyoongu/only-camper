@@ -65,6 +65,17 @@ main > .container {
 }
 
 
+/*메인 배너*/
+.mainBannerWrap{
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    background-image: url(../img/mainBnner.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 @media (max-width: 575px) {
     .index .shadow-sm>a{
         width: auto;

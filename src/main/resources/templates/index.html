@@ -5,32 +5,35 @@
 <div th:replace="fragments/bodyHeader :: bodyHeader"/>
 
 <main>
-    <section class="py-5 text-center container" style="padding: 0px !important;">
-        <div class="row py-lg-5" style="padding: 20px !important;">
-            <div th:if="${user != null}" class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">You are onlyCamper's seller</h1>
-                <p class="lead text-muted">You can register the product.<br>
-                    and you can check the registered product.</p>
-                <p>
-                    <a href="/item/add" class="btn btn-primary my-2">Product registration</a>
-                    <a href="/item/list-seller" class="btn btn-secondary my-2">My products</a>
-                    <a href="/aggregate" class="btn btn-outline-success my-2">Sales status
-                        <i class="fa fa-bar-chart" aria-hidden="true" style="margin-right: 4px;"></i>
-                    </a>
-                </p>
+    <div class="mainBannerWrap">
+        <section class="py-5 text-center container" style="padding: 0px !important;">
+
+            <div class="row py-lg-5" style="padding: 20px !important;">
+                <div th:if="${user != null}" class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="fw-light">You are onlyCamper's seller</h1>
+                    <p class="lead text-muted">You can register the product.<br>
+                        and you can check the registered product.</p>
+                    <p>
+                        <a href="/item/add" class="btn btn-primary my-2">Product registration</a>
+                        <a href="/item/list-seller" class="btn btn-secondary my-2">My products</a>
+                        <a href="/aggregate" class="btn btn-outline-success my-2">Sales status
+                            <i class="fa fa-bar-chart" aria-hidden="true" style="margin-right: 4px;"></i>
+                        </a>
+                    </p>
+                </div>
+                <div th:unless="${user != null}" class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="fw-light">Is this your first visit?</h1>
+                    <p class="lead text-muted">Log in to sign up for the seller<br>
+                        Take the opportunity to sell
+                    </p>
+                    <p>
+                        <a href="/oauth2/authorization/google" class="btn btn-outline-primary">Google</a>
+                        <a href="/oauth2/authorization/naver" class="btn btn-outline-success">Naver</a>
+                    </p>
+                </div>
             </div>
-            <div th:unless="${user != null}" class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Is this your first visit?</h1>
-                <p class="lead text-muted">Log in to sign up for the seller<br>
-                    Take the opportunity to sell
-                </p>
-                <p>
-                    <a href="/oauth2/authorization/google" class="btn btn-outline-primary">Google</a>
-                    <a href="/oauth2/authorization/naver" class="btn btn-outline-success">Naver</a>
-                </p>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <div class="bg-light index" style="padding: 15px 0;">
         <div class="container">
