@@ -1,7 +1,7 @@
 package dev.practice.order.interfaces.aggreate;
 
-import com.querydsl.core.Tuple;
 import dev.practice.order.common.response.CommonResponse;
+import dev.practice.order.domain.item.ItemReader;
 import dev.practice.order.domain.tupleDto.AggregateDto;
 import dev.practice.order.infrastructure.item.ItemRepository;
 import dev.practice.order.infrastructure.order.OrderRepository;
@@ -48,7 +48,9 @@ public class AggregateController {
     @GetMapping("/item-ordercoount")
     @ResponseBody
     public CommonResponse findItemOrderStatusList() {
-        List<AggregateDto.ItemOrderCountDto> itemOrderCountDtoList = itemRepository.findItemOrderStatusList();
+        int limit = 7;
+
+        List<AggregateDto.ItemOrderCountDto> itemOrderCountDtoList = itemRepository.findItemOrderCountList(limit);
 
         return CommonResponse.success(itemOrderCountDtoList);
     }

@@ -1,11 +1,10 @@
 package dev.practice.order.interfaces;
 
-import dev.practice.order.config.auth.LoginUser;
-import dev.practice.order.config.auth.dto.SessionUser;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.ItemReader;
 import dev.practice.order.domain.item.ItemService;
 import dev.practice.order.domain.item.Status;
+import dev.practice.order.domain.tupleDto.AggregateDto;
 import dev.practice.order.infrastructure.item.ItemRepository;
 import dev.practice.order.interfaces.item.ItemDto;
 import dev.practice.order.interfaces.item.ItemSearchCondition;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +42,11 @@ public class IndexController {
                 .map(item -> new ItemDto.RegisterItemRequest(item))
                 .collect(Collectors.toList());
 
+        int limit = 4;
+        List<AggregateDto.ItemOrderCountDto> itemMostOrderList = itemReader.findItemOrderCountList(limit);
+
         model.addAttribute("items", itemDtoList);
+        model.addAttribute("itemMostOrderList", itemMostOrderList);
         model.addAttribute("page", new PageDto(itemPage.getTotalElements(), pageable));
         model.addAttribute("activeNum", pageable.getPageNumber());
 

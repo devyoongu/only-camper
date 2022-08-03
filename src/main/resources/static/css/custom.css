@@ -54,6 +54,12 @@ main > .container {
     height: 100%;
 }
 
+.index .order-count {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
 .col>canvas{
     margin-top:50px
 }

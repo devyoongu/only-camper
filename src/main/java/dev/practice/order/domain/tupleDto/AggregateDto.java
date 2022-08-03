@@ -25,12 +25,18 @@ public class AggregateDto {
         private String itemName;
         private Long itemId;
         private Long orderCount;
+        private String itemToken;
+        private Long itemPrice;
+        private String representImagePath;
 
         @QueryProjection
-        public ItemOrderCountDto(String itemName, Long itemId, Long orderCount) {
+        public ItemOrderCountDto(String itemName, Long itemId, Long orderCount, String itemToken, Long itemPrice, String representImagePath) {
             this.itemName = itemName;
             this.itemId = itemId;
             this.orderCount = orderCount;
+            this.itemToken = itemToken;
+            this.itemPrice = itemPrice;
+            this.representImagePath = representImagePath;
         }
     }
 

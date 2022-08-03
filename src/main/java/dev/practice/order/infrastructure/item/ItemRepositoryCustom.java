@@ -16,5 +16,5 @@ public interface ItemRepositoryCustom {
 
     List<AggregateDto.PartnerItemCountDto> findPartnerWithItemCount();
 
-    List<AggregateDto.ItemOrderCountDto> findItemOrderStatusList();
+    List<AggregateDto.ItemOrderCountDto> findItemOrderCountList(int limit);
 }

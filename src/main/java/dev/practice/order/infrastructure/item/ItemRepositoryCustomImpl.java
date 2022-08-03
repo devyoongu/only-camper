@@ -10,6 +10,8 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import dev.practice.order.domain.order.Order;
+import dev.practice.order.domain.order.QOrder;
 import dev.practice.order.domain.tupleDto.*;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.QItem;
@@ -24,6 +26,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static dev.practice.order.domain.item.QItem.*;
+import static dev.practice.order.domain.order.QOrder.order;
 import static dev.practice.order.domain.order.item.QOrderItem.*;
 import static dev.practice.order.domain.partner.QPartner.*;
 import static org.springframework.util.StringUtils.isEmpty;
@@ -67,6 +70,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         , partnerTokenEq(condition.getPartnerToken())
                 )
                 .offset(pageable.getOffset())
+                .orderBy(item.id.desc())
                 .limit(pageable.getPageSize())
                 .fetchResults();// result + count
 
@@ -103,7 +107,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
      * item, order-item은 관계를 갖고 있지 않으므로 sub 쿼리로 진행
      * */
     @Override
-    public List<AggregateDto.ItemOrderCountDto> findItemOrderStatusList() {
+    public List<AggregateDto.ItemOrderCountDto> findItemOrderCountList(int limit) {
 
         StringPath orderCount = Expressions.stringPath("orderCount");
 
@@ -114,13 +118,19 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                         , ExpressionUtils.as(JPAExpressions
                                 .select(orderItem.itemName.count())
                                 .from(orderItem)
-                                .where(orderItem.itemId.eq(item.id)), "orderCount")
+                                .join(orderItem.order, order)
+                                .where(orderItem.itemId.eq(item.id)
+                                        ,order.status.eq(Order.Status.valueOf("ORDER_COMPLETE"))
+                                ), "orderCount")
+                        ,item.itemToken
+                        ,item.itemPrice
+                        ,item.representImagePath
                 )
         )
                 .from(item)
                 .groupBy(item.itemName, item.id)
                 .orderBy(orderCount.desc())
-                .limit(7)
+                .limit(limit)
                 .fetch();
     }
 

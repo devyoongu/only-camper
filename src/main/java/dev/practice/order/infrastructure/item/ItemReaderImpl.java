@@ -4,6 +4,7 @@ import dev.practice.order.common.exception.EntityNotFoundException;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.ItemInfo;
 import dev.practice.order.domain.item.ItemReader;
+import dev.practice.order.domain.tupleDto.AggregateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -58,6 +59,17 @@ public class ItemReaderImpl implements ItemReader {
         Long optionStockQuantity = optionGroupInfoList.get(optionGroupOrdering).getItemOptionList().get(optionOrdering).getOptionStockQuantity();
 
         return optionStockQuantity;
+    }
+
+    @Override
+    public List<AggregateDto.ItemOrderCountDto> findItemOrderCountList(int limit) {
+        List<AggregateDto.ItemOrderCountDto> itemMostOrderList = itemRepository.findItemOrderCountList(limit);
+
+        List<AggregateDto.ItemOrderCountDto> orderCountFilterList = itemMostOrderList.stream()
+                .filter(io -> io.getOrderCount() > 0)
+                .collect(Collectors.toList());
+
+        return orderCountFilterList;
     }
 
 
