@@ -28,12 +28,22 @@ public class ItemServiceImpl implements ItemService {
         //1. get partner
         var partner = partnerReader.getPartner(partnerToken);
         //2. command -> Item 객체 변환 및 partnerId로 item 조회
-        var initItem = itemDto.toEntity(partner.getId(), partner);
+        var initItem = itemDto.toEntity(partner);
         //3. item 객체 저장
         var item = itemStore.store(initItem);
         //4. factory를 이용한 itemOptionGroup, itemOption 저장
         itemOptionSeriesFactory.store(itemDto, item);
         return item.getItemToken();
+    }
+
+    //추가 yg
+    @Override
+    @Transactional
+    public void updateItem(String itemToken, ItemDto.UpdateItemRequest request) {
+        Item item = itemReader.getItemBy(itemToken);
+        item.updateItem(request);
+
+        itemOptionSeriesFactory.update(request, item);
     }
 
     @Override
@@ -58,14 +68,6 @@ public class ItemServiceImpl implements ItemService {
         //2. item series 조회
         var itemOptionGroupInfoList = itemReader.getItemOptionSeries(item);
         return new ItemInfo.Main(item, itemOptionGroupInfoList);
-    }
-
-    //추가 yg
-    @Override
-    @Transactional
-    public void updateItem(String itemToken, ItemCommand.RegisterItemRequest itemCommand) {
-        Item item = itemReader.getItemBy(itemToken);
-        item.updateItem(itemCommand);
     }
 
     @Override

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ItemOptionSeriesFactory {
     List<ItemOptionGroup> store(ItemDto.RegisterItemRequest request, Item item);
+    void update(ItemDto.UpdateItemRequest request, Item item);
 }

@@ -2,86 +2,134 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header"/>
 <body>
-<div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <div class="jumbotron">
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<div class="bg-light sub-page">
+    <div class="container-xl">
+        <div class="col-sm-5 mx-auto">
+            <div class="py-4 text-center">
+                <h2>상품 수정</h2>
+            </div>
 
-        <div class="py-5 text-center">
-            <h2>상품 수정</h2>
+            <form role="form" action="partnerMain.html" th:action  method="post" enctype="multipart/form-data">
+
+                <div th:object="${item}">
+
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error" th:each="err : ${#fields.globalErrors()}">글로벌 오류 메시지</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="partnerName">Seller</label>
+                        <input type="text" id="partnerName"  th:value="${user.getName()}"  class="form-control"
+                                                       readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemName">상품명</label>
+                        <input type="text" id="itemName" th:field="*{itemName}"
+                               th:errorclass="field-error" class="form-control" placeholder="상품명을 입력하세요">
+                        <div class="field-error" th:errors="*{itemName}">
+                            상품명 오류
+                        </div>
+                        <input type="hidden" th:field="*{partnerToken}">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="itemPrice">상품가격</label>
+                        <input type="number" id="itemPrice" th:field="*{itemPrice}"
+                               th:errorclass="field-error" class="form-control" placeholder="가격을 입력하세요">
+                        <div class="field-error" th:errors="*{itemPrice}">
+                            가격 오류
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="stockQuantity">재고수량</label>
+                        <input type="number" id="stockQuantity" th:field="*{stockQuantity}"
+                               th:errorclass="field-error" class="form-control" placeholder="재고수량을 입력하세요">
+                        <div class="field-error" th:errors="*{stockQuantity}">
+                            재고수량 오류
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="image">기존 대표 사진</label>
+                        <img th:if="${item.representImagePath != null} " class="item-images" th:src="${item.representImagePath}"
+                                                     src="/images/springInstroduction.png" alt="사진없음">
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="image">대표사진 변경 업로드</label>
+                        <input type="file" multiple="true" th:name="image" accept="image/*" class="form-control"
+                               placeholder="상품 대표사진을 업로드해주세요">
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div>
+                        <div class="form-group"  th:each="group,stat : *{itemOptionGroupList}">
+                            <label for="itemOptionGroupList" >옵션그룹명(<span th:text="${stat.index+1}"></span>)</label>
+                            <input type="text" id="itemOptionGroupList"
+                                   th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionGroupName}"
+                                   class="form-control"
+                                   placeholder="옵션그룹명을 입력하세요(ex, 사이즈, 색상)">
+                            <input type="hidden" th:field="*{itemOptionGroupList[__${stat.index}__].ordering}" th:value="${stat.index}">
+                            <input type="hidden" th:field="*{itemOptionGroupList[__${stat.index}__].optionGroupId}" th:value="${stat.index}">
+
+
+                            <div class="form-group" th:if = "${group.getItemOptionList().size() > 0}">
+                                <table style="width: 100%">
+                                    <thead>
+                                    <tr>
+                                        <th> 옵션명</th>
+                                        <th> 옵션가격</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="option,object : ${group.getItemOptionList()}">
+                                        <td>
+                                            <input type="text"
+                                                   th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionList[__${object.index}__].itemOptionName}"
+                                                   class="form-control"
+                                                   placeholder="ex) XL, X">
+                                            <input type="hidden" th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionList[__${object.index}__].ordering}">
+                                            <input type="hidden" th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionList[__${object.index}__].itemOptionId}">
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   th:field="*{itemOptionGroupList[__${stat.index}__].itemOptionList[__${object.index}__].itemOptionPrice}"
+                                                   class="form-control">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <hr class="my-4">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button class="w-100 btn btn-primary btn-lg" type="submit">상품 수정</button>
+                    </div>
+                    <div class="col">
+                        <button class="w-100 btn btn-secondary btn-lg"
+                                onclick="location.href='partner.html'"
+                                th:onclick="|location.href='@{/partner}'|"
+                                type="button">취소
+                        </button>
+                    </div>
+                </div>
+
+
+            </form>
+
         </div>
-
-        <form action="viewItem.html.html" th:action  method="post">
-
-            <div th:object="${item}">
-
-                <div th:if="${#fields.hasGlobalErrors()}">
-                    <p class="field-error" th:each="err : ${#fields.globalErrors()}">글로벌 오류 메시지</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="itemToken">상품id</label>
-                    <input type="text" id="itemToken" th:field="*{itemToken}"
-                           th:errorclass="field-error" class="form-control" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="itemName">상품명</label>
-                    <input type="text" id="itemName" th:field="*{itemName}"
-                           th:errorclass="field-error" class="form-control" placeholder="상품명을 입력하세요">
-                    <div class="field-error" th:errors="*{itemName}">
-                        상품명 오류
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="itemPrice">상품가격</label>
-                    <input type="text" id="itemPrice" th:field="*{itemPrice}"
-                           th:errorclass="field-error" class="form-control" placeholder="가격을 입력하세요">
-                    <div class="field-error" th:errors="*{itemPrice}">
-                        가격 오류
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="stockQuantity">재고수량</label>
-                    <input type="text" id="stockQuantity" th:field="*{stockQuantity}"
-                           th:errorclass="field-error" class="form-control" placeholder="재고수량을 입력하세요">
-                    <div class="field-error" th:errors="*{stockQuantity}">
-                        재고수량 오류
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="status">상품상태</label>
-                    <select name="status" id="status" class="form-control">
-<!--                        <option value="">상품상태</option>-->
-                        <option th:each="value : ${T(dev.practice.order.domain.item.Status).values()}"
-                                th:value="${value.name()}"
-                                th:text="${value.getDescription()}"/>
-                    </select>
-                </div>
-
-            </div>
-
-            <hr class="my-4">
-
-            <div class="row">
-                <div class="col">
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">상품 수정</button>
-                </div>
-                <div class="col">
-                    <button class="w-100 btn btn-secondary btn-lg"
-                            onclick="location.href='item.html'"
-                            th:onclick="|location.href='@{/item}'|"
-                            type="button">목록으로
-                    </button>
-                </div>
-            </div>
-
-
-        </form>
-
     </div>
-    <div th:replace="fragments/footer :: footer"/>
 </div>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

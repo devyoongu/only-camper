@@ -4,6 +4,8 @@ import dev.practice.order.application.item.ItemFacade;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.ItemCommand;
 import dev.practice.order.domain.item.Status;
+import dev.practice.order.domain.item.option.ItemOption;
+import dev.practice.order.domain.partner.Partner;
 import dev.practice.order.domain.partner.PartnerCommand;
 import dev.practice.order.domain.partner.PartnerInfo;
 import dev.practice.order.domain.partner.PartnerService;
@@ -42,32 +44,34 @@ public class InitDb {
         public void registerPartnerAndItem() {
             String[] partners = {"스노우라인", "헬리녹스","고릴라캠핑", "캠핑천국"};
             String[] items = {"캠핑장비", "텐트장비","캠핑용품","텐트"};
-//            for (int i = 0; i < 10; i++) {
-                /*for (String partner : partners) {
-                    int index = Arrays.asList(partners).indexOf(partner);
 
-                    //파트너 생성
-                    PartnerCommand partnerCommand = createPartner(partner, "11111-11111", "lee36656@gmail.com");
-                    PartnerInfo partnerInfo = partnerService.registerPartner(partnerCommand);
-                    String partnerToken = partnerInfo.getPartnerToken();
+            for (String partnerName : partners) {
+                int index = Arrays.asList(partners).indexOf(partnerName);
 
-                    Item item = Item.builder()
-                            .partnerToken(partnerToken)
-                            .partnerId(partnerInfo.getId())
-                            .itemName(items[index])
-                            .itemPrice(10000L)
-                            .stockQuantity(100L)
-                            .representImageName(index+1+".jpeg")
-                            .representImagePath("/images/represent/"+(index+1)+".jpeg")
-                            .representImageSize(0)
-                            .build();
+                //파트너 생성
+                PartnerCommand partnerCommand = createPartner(partnerName, "11111-11111", "lee36656@gmail.com");
+                Partner partner = partnerCommand.toEntity();
+                PartnerInfo partnerInfo = partnerService.registerPartner(partnerCommand);
+                String partnerToken = partnerInfo.getPartnerToken();
 
-                    //item 생성
-                    ItemDto.RegisterItemRequest itemCommand = createItem(item);
-                    itemFacade.registerItem(itemCommand, partnerToken);
+                Item item = Item.builder()
+                        .partnerToken(partnerToken)
+                        .partner(partner)
+                        .itemName(items[index])
+                        .itemPrice(10000L)
+                        .stockQuantity(100L)
+                        .representImageName(index+1+".jpeg")
+                        .representImagePath("/images/represent/"+(index+1)+".jpeg")
+                        .representImageSize(0)
+                        .build();
 
-                }*/
-//            }
+                ItemDto.RegisterItemRequest requestItem = new ItemDto.RegisterItemRequest(item);
+
+                //item 생성
+                ItemDto.RegisterItemRequest itemCommand = createItem(requestItem, partner);
+                itemFacade.registerItem(itemCommand, partnerToken);
+
+            }
         }
 
         public PartnerCommand createPartner(String partnerName, String businessNo, String email) {
@@ -79,9 +83,11 @@ public class InitDb {
         }
 
         /**item 생성*/
-        public ItemDto.RegisterItemRequest createItem(Item item) {
+        public ItemDto.RegisterItemRequest createItem(ItemDto.RegisterItemRequest requestItem, Partner partner) {
+            requestItem.setItemOptionGroupList(createOptionGroupList());
 
-            ItemDto.RegisterItemRequest itemDto = new ItemDto.RegisterItemRequest(item, createOptionGroupList());
+            Item item = requestItem.toEntity(partner);
+            ItemDto.RegisterItemRequest itemDto = new ItemDto.RegisterItemRequest(item);
 
             return itemDto;
         }
@@ -123,6 +129,7 @@ public class InitDb {
         }
 
         public ItemDto.RegisterItemOptionRequest createOption(Integer ordering, String itemOptionName, Long itemOptionPrice, Long optionStockQuantity) {
+
             return new ItemDto.RegisterItemOptionRequest(ordering, itemOptionName, itemOptionPrice, optionStockQuantity);
         }
 

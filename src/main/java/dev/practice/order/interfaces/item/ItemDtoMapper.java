@@ -21,6 +21,11 @@ public interface ItemDtoMapper {
     ItemCommand.RegisterItemRequest of(ItemDto.RegisterItemRequest request);
 
     @Mappings({
+            @Mapping(source = "request.itemOptionGroupList", target = "itemOptionGroupRequestList")
+    })
+    ItemCommand.RegisterItemRequest of(ItemDto.UpdateItemRequest request);
+
+    @Mappings({
             @Mapping(source = "itemOptionList", target = "itemOptionRequestList"
     )})
     ItemCommand.RegisterItemOptionGroupRequest of(ItemDto.RegisterItemOptionGroupRequest request);

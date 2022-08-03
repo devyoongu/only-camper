@@ -5,6 +5,7 @@ import dev.practice.order.common.exception.InvalidParamException;
 import dev.practice.order.domain.AbstractEntity;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.option.ItemOption;
+import dev.practice.order.interfaces.item.ItemDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,4 +52,9 @@ public class ItemOptionGroup extends AbstractEntity {
         this.itemOptionList.add(itemOption);
         return this;
     }
+
+    public void updateOptionGroup(ItemDto.RegisterItemOptionGroupRequest itemOptionGroup) {
+        this.itemOptionGroupName = itemOptionGroup.getItemOptionGroupName();
+    }
+
 }

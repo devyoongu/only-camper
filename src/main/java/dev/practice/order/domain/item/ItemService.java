@@ -12,7 +12,7 @@ public interface ItemService {
     void changeEndOfSale(String itemToken);
     ItemInfo.Main retrieveItemInfo(String itemToken);
 
-    void updateItem(String itemToken, ItemCommand.RegisterItemRequest itemCommand);
+    void updateItem(String itemToken, ItemDto.UpdateItemRequest request);
 
     List<Item> getItems();
 

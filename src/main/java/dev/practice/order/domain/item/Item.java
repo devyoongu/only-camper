@@ -7,6 +7,7 @@ import dev.practice.order.domain.AbstractEntity;
 import dev.practice.order.domain.item.optiongroup.ItemOptionGroup;
 import dev.practice.order.domain.partner.Partner;
 import dev.practice.order.domain.partner.PartnerCommand;
+import dev.practice.order.interfaces.item.ItemDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,13 +40,11 @@ public class Item extends AbstractEntity {
     private String itemName;
     private Long itemPrice;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
-    private List<ItemOptionGroup> itemOptionGroupList = Lists.newArrayList();
-
     @Enumerated(EnumType.STRING)
     private Status status;
-
     private Long stockQuantity;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST)
+    private List<ItemOptionGroup> itemOptionGroupList = Lists.newArrayList();
 
     private String representImagePath;
     private long representImageSize;
@@ -84,10 +83,12 @@ public class Item extends AbstractEntity {
         return this.status == Status.ON_SALE;
     }
 
-    public void updateItem(ItemCommand.RegisterItemRequest itemCommand) {
-        this.itemName = itemCommand.getItemName();
-        this.itemPrice = itemCommand.getItemPrice();
-        this.stockQuantity = itemCommand.getStockQuantity();
+    public void updateItem(ItemDto.UpdateItemRequest request) {
+        this.itemName = request.getItemName();
+        this.itemPrice = request.getItemPrice();
+        this.stockQuantity = request.getStockQuantity();
+        this.representImagePath = request.getRepresentImagePath();
+        this.itemOptionGroupList = getItemOptionGroupList();
     }
 
     public void updateOptionGroupList(List<ItemOptionGroup> itemOptionGroupList) {

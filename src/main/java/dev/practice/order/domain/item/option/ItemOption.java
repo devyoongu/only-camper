@@ -5,6 +5,7 @@ import dev.practice.order.common.exception.InvalidParamException;
 import dev.practice.order.domain.AbstractEntity;
 import dev.practice.order.domain.item.NotEnoughStockException;
 import dev.practice.order.domain.item.optiongroup.ItemOptionGroup;
+import dev.practice.order.interfaces.item.ItemDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,6 +54,11 @@ public class ItemOption extends AbstractEntity {
         this.itemOptionPrice = itemOptionPrice;
 //        this.optionStockQuantity = optionStockQuantity;
 
+    }
+
+    public void updateItemOption(ItemDto.RegisterItemOptionRequest itemOptionRequest) {
+        this.itemOptionName = itemOptionRequest.getItemOptionName();
+        this.itemOptionPrice = itemOptionRequest.getItemOptionPrice();
     }
 
     /**

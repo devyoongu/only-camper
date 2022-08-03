@@ -5,6 +5,7 @@ import dev.practice.order.config.auth.LoginUser;
 import dev.practice.order.config.auth.dto.SessionUser;
 import dev.practice.order.domain.item.Item;
 import dev.practice.order.domain.item.ItemInfo;
+import dev.practice.order.domain.item.ItemReader;
 import dev.practice.order.domain.item.ItemService;
 import dev.practice.order.domain.partner.Partner;
 import dev.practice.order.domain.partner.PartnerService;
@@ -13,6 +14,7 @@ import dev.practice.order.infrastructure.aws.S3Uploader;
 import dev.practice.order.infrastructure.user.UserRepository;
 import dev.practice.order.infrastructure.item.ItemRepository;
 import dev.practice.order.infrastructure.partner.PartnerRepository;
+import dev.practice.order.interfaces.order.OrderDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -53,13 +56,9 @@ public class ItemController {
 
     private final S3Uploader s3Uploader;
 
+    private final ItemReader itemReader;
+
     public String findPartnerToken = new String(); //heap 영역참조로 다른 쓰레드에서 접근하기 위함
-
-    @Value("${cloud.aws.credentials.accessKey}")
-    private String accessKey;
-
-    @Value("${cloud.aws.credentials.secretKey}")
-    private String secretKey;
 
     @GetMapping("/list-seller")
     public String itemListForSeller(@ModelAttribute("searchCondition") ItemSearchCondition searchCondition
@@ -107,15 +106,12 @@ public class ItemController {
     @GetMapping("/add")
     public String addItemForm(Model model) {
 
-        log.error("accessKey ={}", this.accessKey);
-        log.error("secretKey ={}", this.secretKey);
-
         ItemDto.RegisterItemRequest item = new ItemDto.RegisterItemRequest();
         ItemDto.RegisterItemOptionGroupRequest optionGroup= new ItemDto.RegisterItemOptionGroupRequest();
 
         for (int i = 0; i < 2; i++) {
             List<ItemDto.RegisterItemOptionRequest> registerItemOptionRequests = optionGroup.addOptionList(new ItemDto.RegisterItemOptionRequest(i));
-            item.addItemGroup(new ItemDto.RegisterItemOptionGroupRequest(registerItemOptionRequests, i));
+            item.addItemGroup(new ItemDto.RegisterItemOptionGroupRequest(i, null, registerItemOptionRequests));
         }
 
         model.addAttribute("item", item);
@@ -142,7 +138,7 @@ public class ItemController {
 
         //상세 화면으로 이동
         redirectAttributes.addAttribute("itemToken", itemToken);
-        return "redirect:/item/view/{itemToken}";
+        return "redirect:/order/{itemToken}";
     }
 
     @GetMapping("/view/{itemToken}")
@@ -155,41 +151,52 @@ public class ItemController {
     }
 
     @GetMapping("/edit/{itemToken}")
-    public String itemEditForm(@PathVariable String itemToken, Model model,RedirectAttributes redirectAttributes) {
-        ItemInfo.Main itemInfo = itemFacade.retrieveItemInfo(itemToken);
+    public String itemEditForm(@PathVariable String itemToken, Model model) {
+        Item findItem = itemReader.getItemBy(itemToken);
 
-        model.addAttribute("item", itemInfo);
+        List<ItemInfo.ItemOptionGroupInfo> itemOptionSeries = itemReader.getItemOptionSeries(findItem);
+        ItemInfo.Main item = new ItemInfo.Main(findItem, itemOptionSeries);
+
+        model.addAttribute("item", item);
+
         return "item/editItem";
     }
 
-    @GetMapping("/ispartner/{itemToken}")
-    @ResponseBody
-    public Boolean orderItemGroupOption(@PathVariable String itemToken, @LoginUser SessionUser user) {
-        ItemInfo.Main itemInfo = itemFacade.retrieveItemInfo(itemToken);
-
-        Boolean isPartner = true;
-
-        if (itemInfo.getPartnerId() != user.getPartner().getId()) {
-            isPartner = false;
-        }
-
-        return isPartner;
-    }
-
-
     @PostMapping("/edit/{itemToken}")
-    public String itemEdit(@PathVariable String itemToken, @Valid @ModelAttribute ItemDto.RegisterItemRequest request, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
+    public String itemEdit(@PathVariable String itemToken, @Valid @ModelAttribute ItemDto.UpdateItemRequest updateDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws IOException {
         //검증에 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
             return "item/editItem";
         }
-        var itemCommand = itemDtoMapper.of(request);
-        itemService.updateItem(itemToken, itemCommand);
+
+        if (!StringUtils.isEmpty(updateDto.getImage().getOriginalFilename())) {
+            String aStatic = s3Uploader.upload(updateDto.getImage(), "static");
+            updateDto.setRepresentImagePath(aStatic);
+        } else {
+            Item findItem = itemReader.getItemBy(itemToken);
+            updateDto.setRepresentImagePath(findItem.getRepresentImagePath());
+        }
+
+        var itemCommand = itemDtoMapper.of(updateDto);
+        itemService.updateItem(itemToken, updateDto);
 
         //상세 화면으로 이동
         redirectAttributes.addAttribute("itemToken", itemToken);
-        return "redirect:/item/view/{itemToken}";
+        return "redirect:/order/{itemToken}";
+    }
+
+    @GetMapping("/ispartner/{itemToken}")
+    @ResponseBody
+    public Boolean isPartner(@PathVariable String itemToken, @LoginUser SessionUser user) {
+        ItemInfo.Main itemInfo = itemFacade.retrieveItemInfo(itemToken);
+
+        Boolean isPartner = true;
+
+        if (itemInfo.getPartner().getId() != user.getPartner().getId()) {
+            isPartner = false;
+        }
+
+        return isPartner;
     }
 
     private void findByPartnerToken(SessionUser user) {

@@ -43,19 +43,6 @@ public class ItemDto {
         private MultipartFile image;
         private List<RegisterItemOptionGroupRequest> itemOptionGroupList = new ArrayList<>();
 
-        public RegisterItemRequest(Item item, List<RegisterItemOptionGroupRequest> itemOptionGroupList) {
-            this.partnerToken = item.getPartnerToken();
-            this.itemToken = item.getItemToken();
-            this.itemName = item.getItemName();
-            this.itemPrice = item.getItemPrice();
-            this.stockQuantity = item.getStockQuantity();
-            this.status = item.getStatus();
-            this.representImagePath = item.getRepresentImagePath();
-            this.representImageSize = item.getRepresentImageSize();
-            this.representImageName = item.getRepresentImageName();
-            this.itemOptionGroupList = itemOptionGroupList;
-        }
-
         public RegisterItemRequest(Item item) {
             this.partnerToken = item.getPartnerToken();
             this.itemToken = item.getItemToken();
@@ -72,7 +59,7 @@ public class ItemDto {
         }
 
         //DTO에 값이 저장되어 있기 대문에 바로 주입이 가능하여 편리함.
-        public Item toEntity(Long partnerId, Partner partner) {
+        public Item toEntity(Partner partner) {
             return Item.builder()
                     .partnerToken(partner.getPartnerToken())
                     .partner(partner)
@@ -88,10 +75,6 @@ public class ItemDto {
         public void addItemGroup(RegisterItemOptionGroupRequest itemOptionGroup) {
             this.itemOptionGroupList.add(itemOptionGroup);
         }
-
-        URI convertStrToUri(String url) {
-            return URI.create(url);
-        }
     }
 
     @Getter
@@ -101,11 +84,13 @@ public class ItemDto {
     @AllArgsConstructor
     public static class RegisterItemOptionGroupRequest {
 
+        private Long optionGroupId;
         private Integer ordering;
         private String itemOptionGroupName;
         private List<RegisterItemOptionRequest> itemOptionList = new ArrayList<>();
 
         public RegisterItemOptionGroupRequest(ItemOptionGroup itemOptionGroup) {
+            this.optionGroupId = itemOptionGroup.getId();
             this.ordering = itemOptionGroup.getOrdering();
             this.itemOptionGroupName = itemOptionGroup.getItemOptionGroupName();
             this.itemOptionList = itemOptionGroup.getItemOptionList().stream()
@@ -113,7 +98,8 @@ public class ItemDto {
                     .collect(Collectors.toList());
         }
 
-        public RegisterItemOptionGroupRequest(List<RegisterItemOptionRequest> itemOptionList, Integer ordering) {
+        public RegisterItemOptionGroupRequest(Integer ordering, String itemOptionGroupName, List<RegisterItemOptionRequest> itemOptionList) {
+            this.itemOptionGroupName = itemOptionGroupName;
             this.ordering = ordering;
             this.itemOptionList = itemOptionList;
         }
@@ -138,20 +124,31 @@ public class ItemDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RegisterItemOptionRequest {
+        private Long itemOptionId;
         private Integer ordering = 1;
         private String itemOptionName;
         private Long itemOptionPrice;
         private Long optionStockQuantity;
 
         public RegisterItemOptionRequest(ItemOption itemOption) {
+            this.itemOptionId = itemOption.getId();
             this.ordering = itemOption.getOrdering();
             this.itemOptionName = itemOption.getItemOptionName();
             this.itemOptionPrice = itemOption.getItemOptionPrice();
             this.optionStockQuantity = itemOption.getOptionStockQuantity();
         }
 
+        //임시
         public RegisterItemOptionRequest(Integer ordering) {
             this.ordering = ordering;
+        }
+
+        //임시
+        public RegisterItemOptionRequest(Integer ordering, String itemOptionName, Long itemOptionPrice, Long optionStockQuantity) {
+            this.ordering = ordering;
+            this.itemOptionName = itemOptionName;
+            this.itemOptionPrice = itemOptionPrice;
+            this.optionStockQuantity = optionStockQuantity;
         }
 
         public ItemOption toEntity(ItemOptionGroup itemOptionGroup) {
@@ -165,6 +162,49 @@ public class ItemDto {
         }
 
     }
+
+
+    @Getter
+    @Setter
+    @ToString
+    @NoArgsConstructor
+    public static class UpdateItemRequest {
+        private String partnerToken;
+        private String itemToken;
+
+        @NotBlank(message = "상품명은 필수입니다")
+        private String itemName;
+        @NotNull(message = "상품가격은 필수입니다")
+        private Long itemPrice;
+        @NotNull(message = "제고수량은 필수입니다")
+        private Long stockQuantity;
+
+        private Status status;
+
+        private String representImagePath;
+        private long representImageSize;
+        private String representImageName;
+
+        private MultipartFile image;
+        private List<RegisterItemOptionGroupRequest> itemOptionGroupList = new ArrayList<>();
+
+        public UpdateItemRequest(Item item) {
+            this.partnerToken = item.getPartnerToken();
+            this.itemToken = item.getItemToken();
+            this.itemName = item.getItemName();
+            this.itemPrice = item.getItemPrice();
+            this.stockQuantity = item.getStockQuantity();
+            this.status = item.getStatus();
+            this.representImagePath = item.getRepresentImagePath();
+            this.representImageSize = item.getRepresentImageSize();
+            this.representImageName = item.getRepresentImageName();
+            this.itemOptionGroupList = item.getItemOptionGroupList().stream()
+                    .map(og -> new RegisterItemOptionGroupRequest(og))
+                    .collect(Collectors.toList());
+        }
+    }
+
+
 
     @Getter
     @Builder
@@ -185,11 +225,15 @@ public class ItemDto {
     @ToString
     public static class Main {
         private final String itemToken;
-        private final Long partnerId;
+        private final String partnerToken;
+        private final Partner partner;
         private final String itemName;
         private final Long itemPrice;
         private final Status status;
         private final List<ItemOptionGroupInfo> itemOptionGroupList;
+        private final String representImagePath;
+        private final long representImageSize;
+        private final String representImageName;
     }
 
     @Getter
