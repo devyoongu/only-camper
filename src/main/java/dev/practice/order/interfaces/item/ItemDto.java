@@ -58,6 +58,20 @@ public class ItemDto {
                     .collect(Collectors.toList());
         }
 
+        //임시 -테스트용도
+        public RegisterItemRequest(Item item, List<RegisterItemOptionGroupRequest> itemOptionGroupList) {
+            this.partnerToken = item.getPartnerToken();
+            this.itemToken = item.getItemToken();
+            this.itemName = item.getItemName();
+            this.itemPrice = item.getItemPrice();
+            this.stockQuantity = item.getStockQuantity();
+            this.status = item.getStatus();
+            this.representImagePath = item.getRepresentImagePath();
+            this.representImageSize = item.getRepresentImageSize();
+            this.representImageName = item.getRepresentImageName();
+            this.itemOptionGroupList = itemOptionGroupList;
+        }
+
         //DTO에 값이 저장되어 있기 대문에 바로 주입이 가능하여 편리함.
         public Item toEntity(Partner partner) {
             return Item.builder()
@@ -127,7 +141,7 @@ public class ItemDto {
         private Long itemOptionId;
         private Integer ordering = 1;
         private String itemOptionName;
-        private Long itemOptionPrice;
+        private Long itemOptionPrice = 0L;
         private Long optionStockQuantity;
 
         public RegisterItemOptionRequest(ItemOption itemOption) {
@@ -138,12 +152,12 @@ public class ItemDto {
             this.optionStockQuantity = itemOption.getOptionStockQuantity();
         }
 
-        //임시
+        //임시 -테스트용도
         public RegisterItemOptionRequest(Integer ordering) {
             this.ordering = ordering;
         }
 
-        //임시
+        //임시 -테스트용도
         public RegisterItemOptionRequest(Integer ordering, String itemOptionName, Long itemOptionPrice, Long optionStockQuantity) {
             this.ordering = ordering;
             this.itemOptionName = itemOptionName;

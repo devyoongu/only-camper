@@ -124,7 +124,7 @@ public class OrderController {
      * 1. 상품주문- Form
      */
     @GetMapping("/{itemToken}")
-    public String orderItemForm(@PathVariable String itemToken, Model model) {
+    public String orderItemForm(@PathVariable String itemToken, Model model, @LoginUser SessionUser user) {
 
         Item item = itemReader.getItemBy(itemToken);
         List<ItemInfo.ItemOptionGroupInfo> itemOptionSeries = itemReader.getItemOptionSeries(item);
@@ -139,6 +139,15 @@ public class OrderController {
         GiftOrderDto.RegisterOrderRequest giftDto = new GiftOrderDto.RegisterOrderRequest();
         Partner partner = partnerRepository.getById(item.getPartner().getId());
 
+
+        ItemInfo.Main itemInfo = itemFacade.retrieveItemInfo(itemToken);
+
+        Boolean isPartner = true;
+
+        if (itemInfo.getPartner().getId() != user.getPartner().getId()) {
+            isPartner = false;
+        }
+
         //todo:dto로 변환
         List<User> users = userRepository.findAll();
 
@@ -146,6 +155,7 @@ public class OrderController {
         model.addAttribute("gift", giftDto);
         model.addAttribute("users", users);
         model.addAttribute("partner", partner);
+        model.addAttribute("isPartner", isPartner);
 
         return "order/addOrder";
     }

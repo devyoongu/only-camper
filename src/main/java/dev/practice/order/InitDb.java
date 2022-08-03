@@ -27,7 +27,7 @@ import java.util.List;
 public class InitDb {
     private final InitService initService;
 
-//    @PostConstruct
+    @PostConstruct
     public void init() {
         initService.registerPartnerAndItem();
     }
@@ -84,10 +84,11 @@ public class InitDb {
 
         /**item 생성*/
         public ItemDto.RegisterItemRequest createItem(ItemDto.RegisterItemRequest requestItem, Partner partner) {
-            requestItem.setItemOptionGroupList(createOptionGroupList());
+            List<ItemDto.RegisterItemOptionGroupRequest> optionGroupList = createOptionGroupList();
+            requestItem.setItemOptionGroupList(optionGroupList);
 
             Item item = requestItem.toEntity(partner);
-            ItemDto.RegisterItemRequest itemDto = new ItemDto.RegisterItemRequest(item);
+            ItemDto.RegisterItemRequest itemDto = new ItemDto.RegisterItemRequest(item, optionGroupList);
 
             return itemDto;
         }

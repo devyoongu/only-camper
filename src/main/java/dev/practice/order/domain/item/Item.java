@@ -52,8 +52,7 @@ public class Item extends AbstractEntity {
 
     @Builder
     public Item(String partnerToken, Partner partner, String itemName, Long itemPrice, Long stockQuantity,String representImagePath,
-    long representImageSize,
-    String representImageName) {
+    long representImageSize, String representImageName) {
         if (partner == null) throw new InvalidParamException("Item.partner is null");
         if (partnerToken == null) throw new InvalidParamException("Item.partnerToken is null");
         if (StringUtils.isBlank(itemName)) throw new InvalidParamException("Item.itemName is null");

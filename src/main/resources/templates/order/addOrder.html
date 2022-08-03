@@ -140,6 +140,12 @@
                             type="button">취소
                     </button>
                 </div>
+                <div class="col" th:if="${isPartner}">
+                    <button class="w-100 btn btn-outline-info btn-lg"
+                            th:onclick="|location.href='@{/item/edit/{itemToken}(itemToken=${itemToken})}'|"
+                            type="button">상품수정
+                    </button>
+                </div>
             </div>
 
             <div class="modal fade" id="giftModal" tabindex="-1" aria-labelledby="exampleModalLabel">
