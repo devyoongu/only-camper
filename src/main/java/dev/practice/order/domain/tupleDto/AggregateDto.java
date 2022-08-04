@@ -95,8 +95,8 @@ public class AggregateDto {
             this.status = order.getStatus();
             this.receiverZipcode = order.getDeliveryFragment().getReceiverZipcode();
             this.totalAmount = order.calculateTotalAmount();
+            this.receiverName = order.getDeliveryFragment().getReceiverName();
 
-            this.receiverName = orderItem.getItemName();
             this.itemToken = orderItem.getItemToken();
             this.itemName = orderItem.getItemName();
             this.itemPrice = orderItem.getItemPrice();
