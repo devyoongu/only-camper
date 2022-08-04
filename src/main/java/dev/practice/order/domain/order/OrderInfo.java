@@ -71,6 +71,5 @@ public class OrderInfo {
         private final Integer ordering;
         private final String itemOptionName;
         private final Long itemOptionPrice;
-        private final Long optionStockQuantity;
     }
 }
