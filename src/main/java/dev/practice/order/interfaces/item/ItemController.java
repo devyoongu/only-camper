@@ -201,7 +201,7 @@ public class ItemController {
 
     private String findByPartnerToken(SessionUser user) {
         User findUser = userRepository.getById(user.getId());
-        Partner partner = partnerRepository.getById(findUser.getId());
+        Partner partner = partnerRepository.getById(findUser.getPartner().getId());
         String partnerToken = partner.getPartnerToken();
         return partnerToken;
 

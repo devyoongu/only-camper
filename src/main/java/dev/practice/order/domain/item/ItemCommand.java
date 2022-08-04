@@ -35,6 +35,23 @@ public class ItemCommand {
     @Getter
     @Builder
     @ToString
+    public static class UpdateItemRequest {
+        private final String partnerToken;
+        private final String itemToken;
+        private final String itemName;
+        private final Long itemPrice;
+        private final Long stockQuantity;
+        private final String statusName;
+        private final String representImagePath;
+        private final long representImageSize;
+        private final String representImageName;
+        private final List<RegisterItemOptionGroupRequest> itemOptionGroupRequestList; // ex) 색상, 사이즈
+
+    }
+
+    @Getter
+    @Builder
+    @ToString
     public static class RegisterItemOptionGroupRequest {  // ex) 색상
         private final Integer ordering;
         private final String itemOptionGroupName;

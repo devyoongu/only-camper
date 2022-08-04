@@ -67,6 +67,41 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom{
 
     }
 
+    /**
+     * 내가 주문한 리스트
+     * */
+    @Override
+    public Page<AggregateDto.OrderItemListDto> getOrderListMine2(OrderSearchCondition condition, Pageable pageable) {
+
+        QueryResults<AggregateDto.OrderItemListDto> results = queryFactory.select(
+                Projections.constructor(AggregateDto.OrderItemListDto.class,
+                        order
+                        ,orderItem
+                        , ExpressionUtils.as(JPAExpressions
+                                        .select(item.representImagePath)
+                                        .from(item)
+                                        .where(item.id.eq(orderItem.itemId))
+                                , "representImagePath")
+                )
+        )
+                .from(order)
+                .join(order.orderItemList, orderItem).fetchJoin()
+                .where(
+                        userIdEq(condition.getUserId())
+                )
+                .offset(pageable.getOffset())
+                .orderBy(order.id.desc())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+
+        List<AggregateDto.OrderItemListDto> content = results.getResults();
+        long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
+
+    }
+
     @Override
     public int getOrderListMineCount(SessionUser user) {
 

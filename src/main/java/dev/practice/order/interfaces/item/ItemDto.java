@@ -193,7 +193,7 @@ public class ItemDto {
         @NotNull(message = "제고수량은 필수입니다")
         private Long stockQuantity;
 
-        private Status status;
+        private String statusName;
 
         private String representImagePath;
         private long representImageSize;
@@ -208,7 +208,7 @@ public class ItemDto {
             this.itemName = item.getItemName();
             this.itemPrice = item.getItemPrice();
             this.stockQuantity = item.getStockQuantity();
-            this.status = item.getStatus();
+            this.statusName = item.getStatus().name();
             this.representImagePath = item.getRepresentImagePath();
             this.representImageSize = item.getRepresentImageSize();
             this.representImageName = item.getRepresentImageName();

@@ -61,9 +61,11 @@
                 <td th:text="${i.index}"></td>
                 <td>
                     <a th:href="@{/order/{itemToken}(itemToken=${item.getItemToken()})}"
-                       th:text="${item.itemName}"
                        class="link-primary">
-                        상품명</a>
+                        <img th:if="${item.representImagePath != null} " class="item-images item-thumbnail" th:src="${item.representImagePath}"
+                                             src="/images/springInstroduction.png" alt="사진없음">
+                        <span th:text="${item.itemName}">상품명</span>
+                    </a>
                 </td>
                 <td th:text="${item.itemPrice}"></td>
                 <td th:text="${item.stockQuantity}"></td>
@@ -74,12 +76,14 @@
                 </td>-->
                 <td>
                     <span th:if="${isSeller}">
-                        <a th:if="${item.status.name() == 'ON_SALE'}"
-                           href="#" th:attr="onclick=|changeEndOfSaleItem('${item.itemToken}')|"
-                           class="btn btn-outline-primary" role="button">판매종료로 변경</a>
-                        <a th:if="${item.status.name() == 'END_OF_SALE'}"
-                           href="#" th:attr="onclick=|changeOnSaleItem('${item.itemToken}')|"
-                           class="btn btn-primary" role="button">판매상태로 변경</a>
+<!--                        <a th:if="${item.status.name() == 'ON_SALE'}"-->
+<!--                           href="#" th:attr="onclick=|changeEndOfSaleItem('${item.itemToken}')|"-->
+<!--                           class="btn btn-outline-primary" role="button">판매종료로 변경</a>-->
+<!--                        <a th:if="${item.status.name() == 'END_OF_SALE'}"-->
+<!--                           href="#" th:attr="onclick=|changeOnSaleItem('${item.itemToken}')|"-->
+<!--                           class="btn btn-primary" role="button">판매상태로 변경</a>-->
+                        <a href="#" th:attr="onclick=|checkIsPartner('${item.itemToken}')|"
+                                               class="btn btn-primary" role="button">수정</a>
                     </span>
                 </td>
             </tr>

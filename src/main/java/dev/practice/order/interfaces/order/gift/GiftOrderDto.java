@@ -34,7 +34,7 @@ public class GiftOrderDto {
         @NotNull(message = "받는사람은 필수값입니다")
         private Long giftReceiverUserId;
 
-        private List<RegisterOrderItem> orderItemList;
+        private List<RegisterOrderItem> orderItemList = new ArrayList<>();
 
         private String receiverName = "TEMP_VALUE";
         private String receiverPhone = "TEMP_VALUE";
@@ -43,13 +43,13 @@ public class GiftOrderDto {
         private String receiverAddress2 = "TEMP_VALUE";
         private String etcMessage = "TEMP_VALUE";
 
-        /*public RegisterOrderRequest(OrderDto.RegisterOrderRequest orderDto) {
-            this.buyerUserId = orderDto.getUserId();
-            this.payMethod = orderDto.getPayMethod();
-            this.orderItemList = orderDto.getOrderItemList().stream().map(oi ->
-                    new GiftOrderDto.RegisterOrderItem(oi))
-                    .collect(Collectors.toList());
-        }*/
+        private Integer optionGroupOrdering;
+        private Integer optionOrdering;
+
+        public void addOrderItemList(GiftOrderDto.RegisterOrderItem orderItem) {
+            this.orderItemList.add(orderItem);
+        }
+
     }
 
     @Getter
@@ -69,19 +69,17 @@ public class GiftOrderDto {
         @NotNull(message = "itemPrice 는 필수값입니다")
         private Long itemPrice;
 
-        private List<RegisterOrderItemOptionGroupRequest> orderItemOptionGroupList;
+        private List<RegisterOrderItemOptionGroupRequest> orderItemOptionGroupList = new ArrayList<>();
 
-        public RegisterOrderItem(ItemInfo.ItemOptionGroupInfo og, ItemInfo.Main itemInfo, Long orderCount) {
-            RegisterOrderItemOptionGroupRequest registerOrderItemOptionGroupRequest = new RegisterOrderItemOptionGroupRequest(og);
+        public void addOrderItemOptionGroup(GiftOrderDto.RegisterOrderItemOptionGroupRequest registerOrderItemOptionRequest) {
+            this.orderItemOptionGroupList.add(registerOrderItemOptionRequest);
+        }
 
-            ArrayList<RegisterOrderItemOptionGroupRequest> registerOrderItemOptionGroupRequests = new ArrayList<>();
-            registerOrderItemOptionGroupRequests.add(registerOrderItemOptionGroupRequest);
-
+        public RegisterOrderItem(ItemInfo.Main itemInfo, Long orderCount) {
             this.orderCount = orderCount;
             this.itemToken = itemInfo.getItemToken();
             this.itemName = itemInfo.getItemName();
             this.itemPrice = itemInfo.getItemPrice();
-            this.orderItemOptionGroupList = og == null? null : registerOrderItemOptionGroupRequests;
         }
     }
 
@@ -96,16 +94,15 @@ public class GiftOrderDto {
         @NotBlank(message = "itemOptionGroupName 는 필수값입니다")
         private String itemOptionGroupName;
 
-        private List<RegisterOrderItemOptionRequest> orderItemOptionList;
+        private List<RegisterOrderItemOptionRequest> orderItemOptionList = new ArrayList<>();
 
-        public RegisterOrderItemOptionGroupRequest(ItemInfo.ItemOptionGroupInfo og) {
-            if (og != null) {
-                this.ordering = og.getOrdering();
-                this.itemOptionGroupName = og.getItemOptionGroupName();
-                this.orderItemOptionList = og.getItemOptionList().stream()
-                        .map(o -> new RegisterOrderItemOptionRequest(o))
-                        .collect(Collectors.toList());
-            }
+        public void addOption(GiftOrderDto.RegisterOrderItemOptionRequest optionRequest) {
+            this.orderItemOptionList.add(optionRequest);
+        }
+
+        public RegisterOrderItemOptionGroupRequest(ItemInfo.ItemOptionGroupInfo optionGroupInfo) {
+            this.ordering = optionGroupInfo.getOrdering();
+            this.itemOptionGroupName = optionGroupInfo.getItemOptionGroupName();
         }
     }
 
@@ -122,9 +119,6 @@ public class GiftOrderDto {
 
         @NotNull(message = "itemOptionPrice 는 필수값입니다")
         private Long itemOptionPrice;
-
-//        @NotNull(message = "optionStockQuantity 는 필수값입니다")
-//        private Long optionStockQuantity;
 
         public RegisterOrderItemOptionRequest(ItemInfo.ItemOptionInfo option) {
             this.ordering = option.getOrdering();
@@ -155,7 +149,6 @@ public class GiftOrderDto {
 
         private Boolean isGift;
 
-//        @NotBlank(message = "orderDescription 는 필수값입니다")
         private String orderDescription;
     }
 

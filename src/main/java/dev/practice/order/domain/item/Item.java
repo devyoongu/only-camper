@@ -88,6 +88,7 @@ public class Item extends AbstractEntity {
         this.stockQuantity = request.getStockQuantity();
         this.representImagePath = request.getRepresentImagePath();
         this.itemOptionGroupList = getItemOptionGroupList();
+        this.status = Status.valueOf(request.getStatusName());
     }
 
     public void updateOptionGroupList(List<ItemOptionGroup> itemOptionGroupList) {

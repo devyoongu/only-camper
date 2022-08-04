@@ -28,29 +28,21 @@ public class OrderItemOption extends AbstractEntity {
     private String itemOptionName;
     private Long itemOptionPrice;
 
-    private Long optionStockQuantity;
-
     @Builder
     public OrderItemOption(
             ItemOption itemOption,
             OrderItemOptionGroup orderItemOptionGroup,
             Integer ordering,
             String itemOptionName,
-            Long itemOptionPrice,
-            Long optionStockQuantity) {
+            Long itemOptionPrice) {
         if (orderItemOptionGroup == null) throw new InvalidParamException();
         if (ordering == null) throw new InvalidParamException();
         if (StringUtils.isEmpty(itemOptionName)) throw new InvalidParamException();
         if (itemOptionPrice == null) throw new InvalidParamException();
-//        if (optionStockQuantity == null) throw new InvalidParamException();
 
         this.orderItemOptionGroup = orderItemOptionGroup;
         this.ordering = ordering;
         this.itemOptionName = itemOptionName;
         this.itemOptionPrice = itemOptionPrice;
-//        this.optionStockQuantity = optionStockQuantity;
-
-//        itemOption.removeStock(optionStockQuantity);
-
     }
 }

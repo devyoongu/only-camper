@@ -25,30 +25,30 @@
 <!--                <td th:text="${order.getOrderedAt()}"></td>-->
                 <td th:text="${#temporals.format(order.getOrderedAt(), 'yyyy-MM-dd HH:mm')}"></td>
                 <td>
-                    <a th:href="@{/order/{itemToken}(itemToken=${order.orderItemList[0].getItemToken()})}"
-                       th:text="${order.orderItemList[0].itemName}"
+                    <a th:href="@{/order/{itemToken}(itemToken=${order.getItemToken()})}"
+                       th:text="${order.getItemName()}"
                        class="link-primary">
                         상품명</a>
                 </td>
-                <td th:text="${order.totalAmount}"></td>
-                <td th:text="${order.orderItemList[0].orderCount}"></td>
-                <td th:text="${order.statusDescription}"></td>
-                <td th:text="${order.deliveryInfo.getReceiverName()}"></td>
+                <td th:text="${order.getTotalAmount()}"></td>
+                <td th:text="${order.getOrderCount()}"></td>
+                <td th:text="${order.status.description}"></td>
+                <td th:text="${order.getReceiverName()}"></td>
                 <td>
-                    <button th:if="${order.status == 'INIT'}" type="button"
-                            th:classappend="${ order.deliveryInfo.getReceiverZipcode() == 'TEMP_VALUE'? 'btn-outline-primary' : 'btn-primary'}"
+                    <button th:if="${order.status.name() == 'INIT'}" type="button"
+                            th:classappend="${ order.getReceiverZipcode() == 'TEMP_VALUE'? 'btn-outline-primary' : 'btn-primary'}"
                             class="btn"
                             data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    th:data-itemName="${order.orderItemList[0].itemName}"
-                    th:data-totalAmount="${order.totalAmount}"
-                    th:data-orderToken="${order.orderToken}"
-                    th:data-receiverZipcode="${order.deliveryInfo.getReceiverZipcode()}"
+                    th:data-itemName="${order.getItemName()}"
+                    th:data-totalAmount="${order.getTotalAmount()}"
+                    th:data-orderToken="${order.getTotalAmount()}"
+                    th:data-receiverZipcode="${order.getReceiverZipcode()}"
                     >
-                        <span th:if="${order.deliveryInfo.getReceiverZipcode() == 'TEMP_VALUE'}">선물결제</span>
-                        <span th:if="${order.deliveryInfo.getReceiverZipcode() != 'TEMP_VALUE'}">주문결제</span>
+                        <span th:if="${order.getReceiverZipcode() == 'TEMP_VALUE'}">선물결제</span>
+                        <span th:if="${order.getReceiverZipcode() != 'TEMP_VALUE'}">주문결제</span>
                     </button>
-                    <p th:if="${order.status == 'ORDER_COMPLETE' && order.deliveryInfo.getReceiverZipcode() == 'TEMP_VALUE'}">선물완료</p>
-                    <p th:if="${order.status == 'ORDER_COMPLETE' && order.deliveryInfo.getReceiverZipcode() != 'TEMP_VALUE'}">결제완료</p>
+                    <p th:if="${order.status.description == 'ORDER_COMPLETE' && order.getReceiverZipcode() == 'TEMP_VALUE'}">선물완료</p>
+                    <p th:if="${order.status.description == 'ORDER_COMPLETE' && order.getReceiverZipcode() != 'TEMP_VALUE'}">결제완료</p>
                 </td>
             </tr>
             </tbody>

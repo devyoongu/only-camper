@@ -107,7 +107,18 @@
 
                             <hr class="my-4">
                         </div>
+                        <div class="form-group">
+                            <label for="status">상품상태</label>
+                            <select name="statusName" id="status" class="form-control">
+                                <option th:each="value : ${T(dev.practice.order.domain.item.Status).values()}"
+                                        th:value="${value.name()}"
+                                        th:selected="${value.name()} == ${item.status.name()}"
+                                        th:text="${value.getDescription()}"/>
+                            </select>
+                        </div>
                     </div>
+
+                    <hr class="my-4">
 
                 </div>
 

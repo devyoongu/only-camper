@@ -23,7 +23,7 @@ public interface ItemDtoMapper {
     @Mappings({
             @Mapping(source = "request.itemOptionGroupList", target = "itemOptionGroupRequestList")
     })
-    ItemCommand.RegisterItemRequest of(ItemDto.UpdateItemRequest request);
+    ItemCommand.UpdateItemRequest of(ItemDto.UpdateItemRequest request);
 
     @Mappings({
             @Mapping(source = "itemOptionList", target = "itemOptionRequestList"

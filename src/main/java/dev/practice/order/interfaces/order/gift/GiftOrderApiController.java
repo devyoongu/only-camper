@@ -60,20 +60,33 @@ public class GiftOrderApiController {
         Item itemBy = itemReader.getItemBy(itemToken);
         List<ItemInfo.ItemOptionGroupInfo> itemOptionSeries = itemReader.getItemOptionSeries(itemBy);
 
-        List<GiftOrderDto.RegisterOrderItem> giftItemList = itemOptionSeries.stream()
-                .map(og -> new GiftOrderDto.RegisterOrderItem(og, itemInfo, orderCount))
-                .collect(Collectors.toList());
+        Integer optionGroupOrdering = request.getOptionGroupOrdering();
+        Integer optionOrdering = request.getOptionOrdering();
+        var orderItem = new GiftOrderDto.RegisterOrderItem(itemInfo, orderCount);
 
-        if (itemOptionSeries.size() == 0) {
-            GiftOrderDto.RegisterOrderItem registerOrderItem = new GiftOrderDto.RegisterOrderItem(null, itemInfo, orderCount);
-            giftItemList.add(registerOrderItem);
+        //3. orderItem 객체 생성
+        for (ItemInfo.ItemOptionGroupInfo optionGroup : itemOptionSeries) {
+            if (optionGroup.getOrdering() == optionGroupOrdering) {
+                //Option Group 지정 저장
+                var orderItemOptionGroup = new GiftOrderDto.RegisterOrderItemOptionGroupRequest(optionGroup);
+
+                //Option 지정 저장
+                List<ItemInfo.ItemOptionInfo> itemOptionList = optionGroup.getItemOptionList();
+                for (ItemInfo.ItemOptionInfo itemOption : itemOptionList) {
+                    if (optionOrdering != -1 && itemOption.getOrdering() == optionOrdering) {
+                        var orderItemOptionRequest = new GiftOrderDto.RegisterOrderItemOptionRequest(itemOption);
+                        orderItemOptionGroup.addOption(orderItemOptionRequest);
+                    }
+                }
+
+                orderItem.addOrderItemOptionGroup(orderItemOptionGroup);
+            }
         }
+        request.addOrderItemList(orderItem);
 
-        request.setOrderItemList(giftItemList);
+        String giftToken = giftApiCaller.registerGift(request);
 
-        String s = giftApiCaller.registerGift(request);
-
-        return CommonResponse.success(s);
+        return CommonResponse.success(giftToken);
     }
 
 

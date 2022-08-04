@@ -13,6 +13,9 @@ import java.util.List;
 
 public interface OrderRepositoryCustom {
     Page<Order> getOrderListMine(OrderSearchCondition condition, Pageable pageable);
+
+    Page<AggregateDto.OrderItemListDto> getOrderListMine2(OrderSearchCondition condition, Pageable pageable);
+
     int getOrderListMineCount(SessionUser user);
 
     List<AggregateDto.PartnerOrderCountDto> getOrderCountByPartner();

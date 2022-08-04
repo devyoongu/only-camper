@@ -81,7 +81,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     /**
-     * 판매자별 아이템 등록현황
+     * Aggregate - 판매자별 아이템 등록현황
      */
     @Override
     public List<AggregateDto.PartnerItemCountDto> findPartnerWithItemCount() {
@@ -103,7 +103,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     }
 
     /**
-     * 아이템별 판매내역
+     * Aggregate - 아이템별 판매내역
      * item, order-item은 관계를 갖고 있지 않으므로 sub 쿼리로 진행
      * */
     @Override
@@ -145,7 +145,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         if (!StringUtils.hasText(partnerToken)) {
             return null;
         }
-        return item.partnerToken.contains(partnerToken);
+        return item.partnerToken.eq(partnerToken);
     }
 
     private BooleanExpression statusEq(Status status) {

@@ -13,6 +13,7 @@ import dev.practice.order.domain.order.fragment.DeliveryFragment;
 import dev.practice.order.domain.order.gift.GiftApiCaller;
 import dev.practice.order.domain.order.item.OrderItem;
 import dev.practice.order.domain.partner.Partner;
+import dev.practice.order.domain.tupleDto.AggregateDto;
 import dev.practice.order.domain.user.User;
 import dev.practice.order.infrastructure.order.OrderRepository;
 import dev.practice.order.infrastructure.order.gift.RetrofitGiftApiResponse;
@@ -52,8 +53,6 @@ import java.util.stream.Collectors;
 @RequestMapping("order")
 @RequiredArgsConstructor
 public class OrderController {
-
-    public static final Long ORDER_COUNT = 1L;
     private final OrderFacade orderFacade;
     private final OrderDtoMapper orderDtoMapper;
 
@@ -102,8 +101,8 @@ public class OrderController {
     /**
      * 0. 주문 목록
      */
-    @GetMapping("/list")
-    public String items(@ModelAttribute OrderSearchCondition condition
+//    @GetMapping("/list")
+    public String orderItemList(@ModelAttribute OrderSearchCondition condition
             , @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable
             , @LoginUser SessionUser user, Model model) {
 
@@ -115,6 +114,23 @@ public class OrderController {
                 .collect(Collectors.toList());
 
         model.addAttribute("orderList", orderList);
+        model.addAttribute("page", new PageDto(orderPage.getTotalElements(), pageable));
+        model.addAttribute("activeNum", pageable.getPageNumber());
+        return "order/orderList";
+    }
+
+    /**
+     * 0. 주문 목록
+     */
+    @GetMapping("/list")
+    public String orderItemList2(@ModelAttribute OrderSearchCondition condition
+            , @PageableDefault(size = 10, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable
+            , @LoginUser SessionUser user, Model model) {
+
+        condition.setUserId(user.getId());
+        Page<AggregateDto.OrderItemListDto> orderPage = orderRepository.getOrderListMine2(condition, pageable);
+
+        model.addAttribute("orderList", orderPage.getContent());
         model.addAttribute("page", new PageDto(orderPage.getTotalElements(), pageable));
         model.addAttribute("activeNum", pageable.getPageNumber());
         return "order/orderList";
