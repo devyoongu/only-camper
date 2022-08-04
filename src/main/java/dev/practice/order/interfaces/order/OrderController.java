@@ -129,8 +129,9 @@ public class OrderController {
 
         condition.setUserId(user.getId());
         Page<AggregateDto.OrderItemListDto> orderPage = orderRepository.getOrderListMine2(condition, pageable);
+        List<AggregateDto.OrderItemListDto> content = orderPage.getContent();
 
-        model.addAttribute("orderList", orderPage.getContent());
+        model.addAttribute("orderList", content);
         model.addAttribute("page", new PageDto(orderPage.getTotalElements(), pageable));
         model.addAttribute("activeNum", pageable.getPageNumber());
         return "order/orderList";

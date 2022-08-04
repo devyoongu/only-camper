@@ -7,7 +7,7 @@
     <div class="text-center">
         <h2>주문/선물하기 내역</h2>
     </div>
-    <div>
+    <div class="item-list">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -22,13 +22,14 @@
             </thead>
             <tbody>
             <tr th:each="order, i : ${orderList}">
-<!--                <td th:text="${order.getOrderedAt()}"></td>-->
                 <td th:text="${#temporals.format(order.getOrderedAt(), 'yyyy-MM-dd HH:mm')}"></td>
                 <td>
                     <a th:href="@{/order/{itemToken}(itemToken=${order.getItemToken()})}"
-                       th:text="${order.getItemName()}"
                        class="link-primary">
-                        상품명</a>
+                        <img th:if="${order.representImagePath != null} " class="item-images item-thumbnail" th:src="${order.representImagePath}"
+                                                                     src="/images/springInstroduction.png" alt="사진없음">
+                        <span th:text="${order.getItemName()}">상품명</span>
+                    </a>
                 </td>
                 <td th:text="${order.getTotalAmount()}"></td>
                 <td th:text="${order.getOrderCount()}"></td>

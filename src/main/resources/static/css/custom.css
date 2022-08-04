@@ -71,6 +71,10 @@ main > .container {
     border:1px solid #eeeeee;
 }
 
+.item-list table td{
+    line-height: 100px;
+}
+
 /*메인 배너*/
 .mainBannerWrap{
     width: 100%;
