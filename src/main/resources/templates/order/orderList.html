@@ -42,7 +42,7 @@
                             data-bs-toggle="modal" data-bs-target="#exampleModal"
                     th:data-itemName="${order.getItemName()}"
                     th:data-totalAmount="${order.getTotalAmount()}"
-                    th:data-orderToken="${order.getTotalAmount()}"
+                    th:data-orderToken="${order.getOrderToken()}"
                     th:data-receiverZipcode="${order.getReceiverZipcode()}"
                     >
                         <span th:if="${order.getReceiverZipcode() == 'TEMP_VALUE'}">선물결제</span>

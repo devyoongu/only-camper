@@ -65,14 +65,14 @@ main > .container {
 }
 
 .item-thumbnail{
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     border-radius: 10%;
     border:1px solid #eeeeee;
 }
 
 .item-list table td{
-    line-height: 100px;
+    line-height: 60px;
 }
 
 /*메인 배너*/
