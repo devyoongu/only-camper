@@ -42,7 +42,8 @@ public class InitDb {
         private final ItemFacade itemFacade;
 
         public void registerPartnerAndItem() {
-            String[] partners = {"스노우라인", "헬리녹스","고릴라캠핑", "캠핑천국"};
+            String[] partners = {"스프링부트", "SQS","EC2", "S3Bucket"};
+//            String[] partners = {"JPA", "Thymeleaf","EginX", "travis"};
             String[] items = {"캠핑장비", "텐트장비","캠핑용품","텐트"};
 
             for (String partnerName : partners) {
@@ -61,7 +62,7 @@ public class InitDb {
                         .itemPrice(10000L)
                         .stockQuantity(100L)
                         .representImageName(index+1+".jpeg")
-                        .representImagePath("/images/represent/"+(index+1)+".jpeg")
+                        .representImagePath("/images/represent/"+(index+5)+".jpeg")
                         .representImageSize(0)
                         .build();
 

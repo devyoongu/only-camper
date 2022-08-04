@@ -61,7 +61,7 @@
                                         <a th:href="@{/order/{itemToken}(itemToken=${item.itemToken})}" class="btn btn-sm btn-outline-secondary">
                                             <i class="fa fa-shopping-cart" aria-hidden="true" style="margin-right: 4px;"></i>Buy
                                         </a>
-                                        <a href="#"
+                                        <a href="javascript:void(0);"
                                            th:if="${user != null}"
                                            th:attr="onclick=|checkIsPartner('${item.itemToken}')|"
                                            class="btn btn-sm btn-outline-secondary">
@@ -99,7 +99,7 @@
                                         <a th:href="@{/order/{itemToken}(itemToken=${item.itemToken})}" class="btn btn-sm btn-outline-secondary">
                                             <i class="fa fa-shopping-cart" aria-hidden="true" style="margin-right: 4px;"></i>Buy
                                         </a>
-                                        <a href="#"
+                                        <a href="javascript:void(0);"
                                            th:if="${user != null}"
                                            th:attr="onclick=|checkIsPartner('${item.itemToken}')|"
                                            class="btn btn-sm btn-outline-secondary">
