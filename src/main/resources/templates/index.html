@@ -55,7 +55,7 @@
                                 </svg>
                             </a>
                             <div class="card-body">
-                                <p th:text="${item.itemName}" class="card-text"></p>
+                                <p th:text="${item.itemName}" class="card-text text-truncate"></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <a th:href="@{/order/{itemToken}(itemToken=${item.itemToken})}" class="btn btn-sm btn-outline-secondary">
@@ -93,7 +93,7 @@
                                 </svg>
                             </a>
                             <div class="card-body">
-                                <p th:text="${item.itemName}" class="card-text"></p>
+                                <p th:text="${item.itemName}" class="card-text text-truncate"></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <a th:href="@{/order/{itemToken}(itemToken=${item.itemToken})}" class="btn btn-sm btn-outline-secondary">

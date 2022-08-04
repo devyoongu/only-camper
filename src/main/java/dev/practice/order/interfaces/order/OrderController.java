@@ -23,6 +23,7 @@ import dev.practice.order.interfaces.item.PageDto;
 import dev.practice.order.interfaces.order.gift.GiftOrderDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ast.Or;
@@ -237,15 +238,21 @@ public class OrderController {
         //todo : getItemName() exception 처리
         List<giftResponse> giftList = gifts.stream()
                 .map(gift ->
-                    new giftResponse(
-                            gift.getGiftToken()
-                            , gift.getBuyerUserId() != null ? userRepository.getById(gift.getBuyerUserId()).getName() : user.getName()
-                            , user.getName()
-                            , orderRepository.findByOrderToken(gift.getOrderToken()).orElse(new Order()).getOrderItemList().stream().findFirst().get().getItemName()
-                            , gift.getStatusDesc()
-                            , gift.getStatusName()
-                            , LocalDateTime.parse(gift.getPaidAt())
-                    )
+                        {try {
+                            return new giftResponse(
+                                    gift.getGiftToken()
+                                    , gift.getBuyerUserId() != null ? userRepository.getById(gift.getBuyerUserId()).getName() : user.getName()
+                                    , user.getName()
+                                    , orderRepository.findByOrderToken(gift.getOrderToken()).orElse(new Order()).getOrderItemList().stream().findFirst().get().getItemName()
+                                    , gift.getStatusDesc()
+                                    , gift.getStatusName()
+                                    , LocalDateTime.parse(gift.getPaidAt())
+                            );
+                        } catch (Exception e) {
+                            log.error("giftResponse error ={}",e);
+                            return new giftResponse();
+                        }}
+
 
         ).collect(Collectors.toList());
 
@@ -353,6 +360,7 @@ public class OrderController {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     static class giftResponse {
         private String giftToken;
         private String buyerUserName;
