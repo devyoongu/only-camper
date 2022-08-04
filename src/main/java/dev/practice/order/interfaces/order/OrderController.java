@@ -143,7 +143,6 @@ public class OrderController {
         ItemInfo.Main itemInfo = itemFacade.retrieveItemInfo(itemToken);
 
         Boolean isPartner = true;
-
         if (itemInfo.getPartner().getId() != user.getPartner().getId()) {
             isPartner = false;
         }
@@ -178,10 +177,20 @@ public class OrderController {
         //검증에 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
             log.info("errors={} ", bindingResult);
-            GiftOrderDto.RegisterOrderRequest giftDto = new GiftOrderDto.RegisterOrderRequest();
+
+            Item item = itemReader.getItemBy(itemToken);
+            Partner partner = partnerRepository.getById(item.getPartner().getId());
+            Boolean isPartner = true;
+            if (item.getPartner().getId() != user.getPartner().getId()) {
+                isPartner = false;
+            }
+
             List<User> users = userRepository.findAll();
-            model.addAttribute("gift", giftDto);
+            model.addAttribute("gift", new GiftOrderDto.RegisterOrderRequest());
             model.addAttribute("users", users);
+            model.addAttribute("partner", partner);
+            model.addAttribute("isPartner", isPartner);
+
             return "order/addOrder";
         }
 

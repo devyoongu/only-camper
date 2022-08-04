@@ -64,9 +64,9 @@ public class ItemController {
     public String itemListForSeller(@ModelAttribute("searchCondition") ItemSearchCondition searchCondition
             , @PageableDefault(size = 10, sort = "createdDate",direction = Sort.Direction.DESC) Pageable pageable, Model model, @LoginUser SessionUser user) {
 
-        findByPartnerToken(user);
+        String byPartnerToken = findByPartnerToken(user);
 
-        searchCondition.setPartnerToken(findPartnerToken);
+        searchCondition.setPartnerToken(byPartnerToken);
 
         //item 객체만 쿼리 todo : 파트너 정보 추가
         Page<Item> itemPage = itemRepository.findItemAllWithDsl(searchCondition, pageable);
@@ -127,14 +127,14 @@ public class ItemController {
             return "item/addItem";
         }
 
-        findByPartnerToken(user);
+        String byPartnerToken = findByPartnerToken(user);
 
 //        FileInfo fileInfo = itemService.fileSaveAndParsing(itemDto.getImage());
 
         String aStatic = s3Uploader.upload(itemDto.getImage(), "static");
         itemDto.setRepresentImagePath(aStatic);
 
-        var itemToken = itemService.registerItem(itemDto, this.findPartnerToken);
+        var itemToken = itemService.registerItem(itemDto, byPartnerToken);
 
         //상세 화면으로 이동
         redirectAttributes.addAttribute("itemToken", itemToken);
@@ -199,8 +199,13 @@ public class ItemController {
         return isPartner;
     }
 
-    private void findByPartnerToken(SessionUser user) {
-       Optional<User> userOptional = userRepository.findById(user.getId());
+    private String findByPartnerToken(SessionUser user) {
+        User findUser = userRepository.getById(user.getId());
+        Partner partner = partnerRepository.getById(findUser.getId());
+        String partnerToken = partner.getPartnerToken();
+        return partnerToken;
+
+       /*Optional<User> userOptional = userRepository.findById(user.getId());
 
        userOptional.ifPresent(findUser -> {
            Long partnerId = findUser.getPartner().getId();
@@ -209,7 +214,7 @@ public class ItemController {
            partnerOptional.ifPresent(findPartner -> {
                findPartnerToken = findPartner.getPartnerToken();
            });
-       });
+       });*/
    }
 }
 
