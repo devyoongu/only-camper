@@ -14,6 +14,7 @@ public class BaseException extends RuntimeException {
     private ErrorCode errorCode;
 
     public BaseException() {
+        System.out.println("errorCode2 = " + errorCode);
     }
 
     public BaseException(ErrorCode errorCode) {
