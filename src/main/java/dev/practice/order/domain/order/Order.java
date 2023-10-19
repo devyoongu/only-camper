@@ -53,7 +53,8 @@ public class Order extends AbstractEntity {
         ORDER_COMPLETE("결제완료"),
         DELIVERY_PREPARE("배송준비"),
         IN_DELIVERY("배송중"),
-        DELIVERY_COMPLETE("배송완료");
+        DELIVERY_COMPLETE("배송완료"),
+        DELIVERY_COMPLETE2("배송완료2");
 
         private final String description;
     }
