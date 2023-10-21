@@ -46,6 +46,8 @@ public class Order extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String develop;
+
     @Getter
     @RequiredArgsConstructor
     public enum Status {
