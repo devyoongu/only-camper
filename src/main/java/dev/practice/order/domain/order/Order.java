@@ -47,10 +47,8 @@ public class Order extends AbstractEntity {
     private Status status;
 
     private String develop;
-    private String develop2;
 
     private String staging;
-    private String staging2;
 
     @Getter
     @RequiredArgsConstructor
