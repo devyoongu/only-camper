@@ -50,6 +50,7 @@ public class Order extends AbstractEntity {
     private String develop2;
 
     private String staging;
+    private String staging2;
 
     @Getter
     @RequiredArgsConstructor
