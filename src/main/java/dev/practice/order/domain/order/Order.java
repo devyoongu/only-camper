@@ -48,6 +48,8 @@ public class Order extends AbstractEntity {
 
     private String develop;
 
+    private String staging;
+
     @Getter
     @RequiredArgsConstructor
     public enum Status {
